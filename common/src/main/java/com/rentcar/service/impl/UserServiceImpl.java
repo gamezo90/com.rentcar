@@ -7,12 +7,12 @@ import com.rentcar.repository.RoleRepository;
 import com.rentcar.repository.UserRepository;
 import com.rentcar.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.sql.Timestamp;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +21,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private final RoleRepository roleRepository;
+
+    private final BCryptPasswordEncoder passwordEncoder;
 
 
     @Override
@@ -43,15 +45,20 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User create(User user) {
-        if (checkUserLoginAndEmailForNotExistInDB(user)) {
-            Role roleUser = roleRepository.findByRoleName(SystemRoles.ROLE_USER);
 
-            user.setRoles(Set.of(roleUser));
-            roleUser.getUsers().add(user);
+        user.setCreationDate(new Timestamp(new Date().getTime()));
+        user.setModificationDate(new Timestamp(new Date().getTime()));
+        user.setIsDeleted(false);
+        user.setIsBanned(false);
+        user.setCreationDate(new Timestamp(new Date().getTime()));
+        user.getCredentials().setPassword(passwordEncoder.encode(user.getCredentials().getPassword()));
+        Role roleUser = roleRepository.findByRoleName(SystemRoles.ROLE_USER);
 
-            userRepository.save(user);
-        }
-        return user;
+        user.setRoles(Set.of(roleUser));
+
+        userRepository.save(user);
+
+        return userRepository.findById(user.getId()).orElseThrow(IllegalArgumentException::new);
     }
 
     @Transactional

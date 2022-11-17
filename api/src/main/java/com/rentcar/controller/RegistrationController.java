@@ -28,10 +28,8 @@ public class RegistrationController {
   @PostMapping("/createUser")
   @Transactional
   public ResponseEntity<Object> addUser(@Valid @RequestBody UserCreateRequest createRequest) {
-
     User newUser = userMapper.convertCreateRequest(createRequest);
-    UserResponse response =
-            userMapper.toResponse(userService.create(newUser));
+    UserResponse response = userMapper.toResponse(userService.create(newUser));
     return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
 }
