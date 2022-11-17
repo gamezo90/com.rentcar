@@ -24,11 +24,7 @@ public class UserResponse {
 
     private String gender;
 
-    private String userLogin;
-
-    private String userPassword;
-
-    private String userEmail;
+    private CredentialsResponse credentials;
 
     private Set<RoleResponse> roles;
 
