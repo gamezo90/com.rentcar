@@ -17,9 +17,9 @@ public interface UserService {
 
     void update(User user);
 
-    Optional<User> block(Long id, Boolean isDeleted);
-
-    User findById(Long userId);
+     User findById(Long userId);
 
     Long softDelete(Long userId);
+
+    User block(Long id, Boolean isDeleted);
 }

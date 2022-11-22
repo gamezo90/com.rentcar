@@ -49,6 +49,18 @@ public class UserServiceImpl implements UserService {
         return userId;
     }
 
+    @Transactional
+    @Override
+    public User block(Long id, Boolean isDeleted) {
+
+        User user = findById(id);
+
+        user.setIsDeleted(isDeleted);
+        userRepository.save(user);
+
+        return user;
+    }
+
 
     @Override
     public List<User> findAll() {return userRepository.findAllByOrderById();}
@@ -96,18 +108,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Transactional
-    @Override
-    public Optional<User> block(Long id, Boolean isDeleted) {
-//
-//        Optional<User> user = findById(id);
-//
-//        user.get().setIsDeleted(isDeleted);
-//        update(user.get());
-//
-//        return user;
-        return null;
-    }
 
     private boolean checkUserLoginAndEmailForNotExistInDB(User user) {
 

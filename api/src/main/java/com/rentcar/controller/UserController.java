@@ -1,6 +1,7 @@
 package com.rentcar.controller;
 
 import com.rentcar.controller.mappers.UserMapper;
+import com.rentcar.controller.requests.BlockRequest;
 import com.rentcar.controller.requests.RoleRequest;
 import com.rentcar.controller.requests.UserCreateRequest;
 import com.rentcar.controller.requests.UserUpdateRequest;
@@ -122,5 +123,20 @@ public class UserController {
         userService.softDelete(id);
         return new ResponseEntity<>(
                 Collections.singletonMap("The user was deleted, id:", id), HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Object> block(@PathVariable("id") String id,
+                                        @RequestBody BlockRequest request) {
+
+        long userId = Long.parseLong(id);
+        Boolean isDeleted = request.getIsDeleted();
+
+        User user = userService.block(userId, isDeleted);
+
+        return new ResponseEntity<>(
+                Collections.singletonMap(user, userMapper.toResponse(user)),
+                HttpStatus.OK
+        );
     }
 }
