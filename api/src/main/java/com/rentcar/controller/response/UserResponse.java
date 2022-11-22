@@ -28,6 +28,8 @@ public class UserResponse {
 
     private Set<RoleResponse> roles;
 
+    private Set<CarsResponse> cars;
+
 }
 
 
