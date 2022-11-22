@@ -1,14 +1,17 @@
 package com.rentcar.controller;
 
+import com.rentcar.controller.mappers.UserMapper;
 import com.rentcar.controller.requests.RoleRequest;
 import com.rentcar.controller.requests.UserCreateRequest;
 import com.rentcar.controller.requests.UserUpdateRequest;
+import com.rentcar.controller.response.UserResponse;
 import com.rentcar.domain.Gender;
 import com.rentcar.domain.Role;
 import com.rentcar.domain.User;
 import com.rentcar.repository.RoleRepository;
 import com.rentcar.repository.UserRepository;
 import com.rentcar.security.util.PrincipalUtil;
+import com.rentcar.service.UserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -18,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +48,10 @@ public class UserController {
 
     private final ConversionService converter;
 
+    private final UserMapper userMapper;
+
+    private final UserService userService;
+
     @GetMapping("/findAllUser")
     public ResponseEntity<Object> findAllUser() {
 
@@ -56,6 +64,13 @@ public class UserController {
 
         return new ResponseEntity<>(Collections.singletonMap("result",
                 repository.findById(userId)), HttpStatus.OK);
+    }
+
+    @GetMapping("/findUserByIdss/{id}")
+    public ResponseEntity<Map<String, Object>> findUserrrById(@PathVariable String id) {
+        Long userId = Long.parseLong(id);
+        UserResponse user = userMapper.toResponse(userService.findById(userId));
+        return new ResponseEntity<>(Collections.singletonMap("user", user), HttpStatus.OK);
     }
 
     @GetMapping("/findUserByLogin")
@@ -100,5 +115,12 @@ public class UserController {
         model.put("user", repository.findById(updatedUser.getId()).get());
 
         return new ResponseEntity<>(model, HttpStatus.CREATED);
+    }
+
+    @PatchMapping("/delete/{id}")
+    public ResponseEntity<Object> softDeleteUsersById(@PathVariable Long id) {
+        userService.softDelete(id);
+        return new ResponseEntity<>(
+                Collections.singletonMap("The user was deleted, id:", id), HttpStatus.OK);
     }
 }

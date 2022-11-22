@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -24,16 +25,40 @@ public class UserServiceImpl implements UserService {
 
     private final BCryptPasswordEncoder passwordEncoder;
 
+    @Override
+    public User findById(Long userId) {
+        return userRepository
+                .findById(userId)
+                .orElseThrow(
+                        () ->
+                                new EntityNotFoundException(
+                                        String.format("The user with id:%d not found", userId)));
+    }
+
+    @Override
+    public Long softDelete(Long userId) {
+        User toUpdate =
+                userRepository
+                        .findById(userId)
+                        .orElseThrow(
+                                () ->
+                                        new EntityNotFoundException(
+                                                String.format("The user with id: %d not found", userId)));
+        toUpdate.setIsDeleted(true);
+        userRepository.save(toUpdate);
+        return userId;
+    }
+
 
     @Override
     public List<User> findAll() {return userRepository.findAllByOrderById();}
 
-    @Override
-    public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
-//                .orElseThrow(()->
-//                new NoSuchEntityException(String.format("User with this id \"%s\" not found", id)));
-    }
+//    @Override
+//    public Optional<User> findById(Long id) {
+//        return userRepository.findById(id);
+////                .orElseThrow(()->
+////                new NoSuchEntityException(String.format("User with this id \"%s\" not found", id)));
+//    }
 
     @Override
     public Optional<User> findByLogin(String login) {
@@ -74,13 +99,14 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public Optional<User> block(Long id, Boolean isDeleted) {
-
-        Optional<User> user = findById(id);
-
-        user.get().setIsDeleted(isDeleted);
-        update(user.get());
-
-        return user;
+//
+//        Optional<User> user = findById(id);
+//
+//        user.get().setIsDeleted(isDeleted);
+//        update(user.get());
+//
+//        return user;
+        return null;
     }
 
     private boolean checkUserLoginAndEmailForNotExistInDB(User user) {

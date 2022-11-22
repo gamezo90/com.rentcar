@@ -9,7 +9,7 @@ public interface UserService {
 
     List<User> findAll();
 
-    Optional<User> findById(Long id);
+//    Optional<User> findById(Long id);
 
     Optional<User> findByLogin(String login);
 
@@ -18,4 +18,8 @@ public interface UserService {
     void update(User user);
 
     Optional<User> block(Long id, Boolean isDeleted);
+
+    User findById(Long userId);
+
+    Long softDelete(Long userId);
 }
