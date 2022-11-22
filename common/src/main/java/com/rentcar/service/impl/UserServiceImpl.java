@@ -37,14 +37,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Long softDelete(Long userId) {
-        User toUpdate =
-                userRepository
-                        .findById(userId)
+        User toUpdate = userRepository.findById(userId)
                         .orElseThrow(
                                 () ->
                                         new EntityNotFoundException(
                                                 String.format("The user with id: %d not found", userId)));
-        toUpdate.setIsDeleted(true);
         userRepository.save(toUpdate);
         return userId;
     }

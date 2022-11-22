@@ -59,15 +59,15 @@ public class UserController {
                 repository.findAll(PageRequest.of(0, 10))), HttpStatus.OK);
     }
 
-    @GetMapping("/findUserById")
-    public ResponseEntity<Object> findUserById(@RequestParam("id") Long userId) {
+//    @GetMapping("/findUserById")
+//    public ResponseEntity<Object> findUserById(@RequestParam("id") Long userId) {
+//
+//        return new ResponseEntity<>(Collections.singletonMap("result",
+//                repository.findById(userId)), HttpStatus.OK);
+//    }
 
-        return new ResponseEntity<>(Collections.singletonMap("result",
-                repository.findById(userId)), HttpStatus.OK);
-    }
-
-    @GetMapping("/findUserByIdss/{id}")
-    public ResponseEntity<Map<String, Object>> findUserrrById(@PathVariable String id) {
+    @GetMapping("/findUserById/{id}")
+    public ResponseEntity<Map<String, Object>> findUserById(@PathVariable String id) {
         Long userId = Long.parseLong(id);
         UserResponse user = userMapper.toResponse(userService.findById(userId));
         return new ResponseEntity<>(Collections.singletonMap("user", user), HttpStatus.OK);
@@ -120,7 +120,6 @@ public class UserController {
     @PatchMapping("/delete/{id}")
     public ResponseEntity<Object> softDeleteUsersById(@PathVariable Long id) {
         userService.softDelete(id);
-        return new ResponseEntity<>(
-                Collections.singletonMap("The user was deleted, id:", id), HttpStatus.OK);
+        return new ResponseEntity<>(Collections.singletonMap("The user was deleted, id:", id), HttpStatus.OK);
     }
 }
