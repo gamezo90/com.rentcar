@@ -27,15 +27,27 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User softDelete(Long id) {
+    public User softDelete(String login) {
 
-        User user = userRepository.findById(id).get();
+        User user = userRepository.findByCredentialsLogin(login).get();
 
         user.setIsDeleted(true);
         userRepository.save(user);
 
         return user;
     }
+
+    @Transactional
+    public User block(String login) {
+
+        User user = userRepository.findByCredentialsLogin(login).get();
+
+        user.setIsBanned(true);
+        userRepository.save(user);
+
+        return user;
+    }
+
 
     @Transactional
     @Override

@@ -10,5 +10,5 @@ public interface UserService {
 
     User update(User userToUpdate);
 
-    User softDelete(Long id);
+    User softDelete(String login);
 }

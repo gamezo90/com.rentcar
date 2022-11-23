@@ -8,6 +8,7 @@ import com.rentcar.domain.User;
 import com.rentcar.repository.RoleRepository;
 import com.rentcar.repository.UserRepository;
 import com.rentcar.service.UserService;
+import com.rentcar.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +35,8 @@ public class UserController {
 
     private final UserService userService;
 
+    private final UserServiceImpl userService1;
+
     @GetMapping("/findAllUser")
     public ResponseEntity<Object> findAllUser() {
 
@@ -53,12 +56,18 @@ public class UserController {
         return new ResponseEntity<>(Collections.singletonMap("result", repository.findByCredentialsLogin(login)), HttpStatus.OK);
     }
 
-    @PatchMapping("/softDeleteUserById/{id}")
-    public ResponseEntity<Object> softDeleteUserById(@PathVariable("id") String id, @RequestBody BlockRequest request) {
+    @PatchMapping("/softDeleteUserByLogin/{login}")
+    public ResponseEntity<Object> softDeleteUserByLogin(@PathVariable("login") String login) {
 
-        long userId = Long.parseLong(id);
+        User user = userService.softDelete(login);
 
-        User user = userService.softDelete(userId);
+        return new ResponseEntity<>(Collections.singletonMap(user, userMapper.toResponse(user)), HttpStatus.OK);
+    }
+
+    @PatchMapping("/softDeleteUserByLogin1111111/{login}")
+    public ResponseEntity<Object> block(@PathVariable("login") String login) {
+
+        User user = userService1.block(login);
 
         return new ResponseEntity<>(Collections.singletonMap(user, userMapper.toResponse(user)), HttpStatus.OK);
     }
