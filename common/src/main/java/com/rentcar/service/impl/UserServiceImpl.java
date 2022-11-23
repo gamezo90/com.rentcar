@@ -27,11 +27,11 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User softDelete(Long id, Boolean isDeleted) {
+    public User softDelete(Long id) {
 
         User user = userRepository.findById(id).get();
 
-        user.setIsDeleted(isDeleted);
+        user.setIsDeleted(true);
         userRepository.save(user);
 
         return user;

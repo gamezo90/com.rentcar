@@ -57,10 +57,8 @@ public class UserController {
     public ResponseEntity<Object> softDeleteUserById(@PathVariable("id") String id, @RequestBody BlockRequest request) {
 
         long userId = Long.parseLong(id);
-   //     Boolean isDeleted = request.getIsDeleted();
-        Boolean isDeleted = true;
 
-        User user = userService.softDelete(userId, isDeleted);
+        User user = userService.softDelete(userId);
 
         return new ResponseEntity<>(Collections.singletonMap(user, userMapper.toResponse(user)), HttpStatus.OK);
     }
