@@ -2,7 +2,6 @@ package com.rentcar.controller;
 
 import com.rentcar.controller.mappers.UserMapper;
 import com.rentcar.controller.requests.BlockRequest;
-import com.rentcar.controller.requests.UserCreateRequest;
 import com.rentcar.controller.requests.UserUpdateRequest;
 import com.rentcar.controller.response.UserResponse;
 import com.rentcar.domain.User;
@@ -14,15 +13,10 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -43,8 +37,7 @@ public class UserController {
     @GetMapping("/findAllUser")
     public ResponseEntity<Object> findAllUser() {
 
-        return new ResponseEntity<>(Collections.singletonMap("result",
-                repository.findAll(PageRequest.of(0, 10))), HttpStatus.OK);
+        return new ResponseEntity<>(Collections.singletonMap("result", repository.findAll(PageRequest.of(0, 10))), HttpStatus.OK);
     }
 
     @GetMapping("/findUserById/{id}")
@@ -57,28 +50,23 @@ public class UserController {
     @GetMapping("/findUserByLogin")
     public ResponseEntity<Object> findUserByLogin(@RequestParam("user_login") String login) {
 
-        return new ResponseEntity<>(Collections.singletonMap("result",
-                repository.findByCredentialsLogin(login)), HttpStatus.OK);
+        return new ResponseEntity<>(Collections.singletonMap("result", repository.findByCredentialsLogin(login)), HttpStatus.OK);
     }
 
     @PatchMapping("/softDeleteUserById/{id}")
-    public ResponseEntity<Object> softDeleteUserById(@PathVariable("id") String id,
-                                                     @RequestBody BlockRequest request) {
+    public ResponseEntity<Object> softDeleteUserById(@PathVariable("id") String id, @RequestBody BlockRequest request) {
 
         long userId = Long.parseLong(id);
         Boolean isDeleted = request.getIsDeleted();
 
-        User user = userService.block(userId, isDeleted);
+        User user = userService.softDelete(userId, isDeleted);
 
-        return new ResponseEntity<>(
-                Collections.singletonMap(user, userMapper.toResponse(user)),
-                HttpStatus.OK
-        );
+        return new ResponseEntity<>(Collections.singletonMap(user, userMapper.toResponse(user)), HttpStatus.OK);
     }
 
-    @PutMapping(value = "/updateUser/{id}")
-    public ResponseEntity<Object> updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateRequest request) {
-        User updatedUser = userMapper.convertUpdateRequest(request, userService.findById(id));
+    @PutMapping(value = "/updateUser/{login}")
+    public ResponseEntity<Object> updateUser(@RequestParam("user_login") String login, @Valid @RequestBody UserUpdateRequest request) {
+        User updatedUser = userMapper.convertUpdateRequest(request, repository.findByCredentialsLogin(login).get());
         UserResponse userResponse = userMapper.toResponse(userService.update(updatedUser));
         return new ResponseEntity<>(Collections.singletonMap("user", userResponse), HttpStatus.OK);
     }

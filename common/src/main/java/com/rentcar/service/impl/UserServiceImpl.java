@@ -27,28 +27,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(Long userId) {
-        return userRepository
-                .findById(userId)
-                .orElseThrow(
+        return userRepository.findById(userId).orElseThrow(
                         () ->
                                 new EntityNotFoundException(
                                         String.format("The user with id:%d not found", userId)));
     }
 
-    @Override
-    public Long softDelete(Long userId) {
-        User toUpdate = userRepository.findById(userId)
-                        .orElseThrow(
-                                () ->
-                                        new EntityNotFoundException(
-                                                String.format("The user with id: %d not found", userId)));
-        userRepository.save(toUpdate);
-        return userId;
-    }
-
     @Transactional
     @Override
-    public User block(Long id, Boolean isDeleted) {
+    public User softDelete(Long id, Boolean isDeleted) {
 
         User user = findById(id);
 
@@ -56,24 +43,6 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         return user;
-    }
-
-
-    @Override
-    public List<User> findAll() {return userRepository.findAllByOrderById();}
-
-//    @Override
-//    public Optional<User> findById(Long id) {
-//        return userRepository.findById(id);
-////                .orElseThrow(()->
-////                new NoSuchEntityException(String.format("User with this id \"%s\" not found", id)));
-//    }
-
-    @Override
-    public Optional<User> findByLogin(String login) {
-        return userRepository.findByCredentialsLogin(login);
-//                .orElseThrow(() ->
-//                new NoSuchEntityException(String.format("User with this login \"%s\" not found", login)));
     }
 
     @Transactional
@@ -105,6 +74,5 @@ public class UserServiceImpl implements UserService {
         userRepository.save(userToUpdate);
         return userRepository.findById(userToUpdate.getId()).orElseThrow(EntityNotFoundException::new);
     }
-
 
 }
