@@ -10,7 +10,5 @@ public interface UserService {
 
     User update(User userToUpdate);
 
-    User findById(Long userId);
-
     User softDelete(Long id, Boolean isDeleted);
 }

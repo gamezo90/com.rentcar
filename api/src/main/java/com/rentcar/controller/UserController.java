@@ -43,7 +43,7 @@ public class UserController {
     @GetMapping("/findUserById/{id}")
     public ResponseEntity<Map<String, Object>> findUserById(@PathVariable String id) {
         Long userId = Long.parseLong(id);
-        UserResponse user = userMapper.toResponse(userService.findById(userId));
+        UserResponse user = userMapper.toResponse(repository.findById(userId).get());
         return new ResponseEntity<>(Collections.singletonMap("user", user), HttpStatus.OK);
     }
 
@@ -57,7 +57,8 @@ public class UserController {
     public ResponseEntity<Object> softDeleteUserById(@PathVariable("id") String id, @RequestBody BlockRequest request) {
 
         long userId = Long.parseLong(id);
-        Boolean isDeleted = request.getIsDeleted();
+   //     Boolean isDeleted = request.getIsDeleted();
+        Boolean isDeleted = true;
 
         User user = userService.softDelete(userId, isDeleted);
 

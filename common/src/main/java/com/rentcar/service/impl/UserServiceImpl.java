@@ -25,19 +25,11 @@ public class UserServiceImpl implements UserService {
 
     private final BCryptPasswordEncoder passwordEncoder;
 
-    @Override
-    public User findById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(
-                        () ->
-                                new EntityNotFoundException(
-                                        String.format("The user with id:%d not found", userId)));
-    }
-
     @Transactional
     @Override
     public User softDelete(Long id, Boolean isDeleted) {
 
-        User user = findById(id);
+        User user = userRepository.findById(id).get();
 
         user.setIsDeleted(isDeleted);
         userRepository.save(user);
