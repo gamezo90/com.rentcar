@@ -14,6 +14,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,21 +61,6 @@ public class UserController {
                 repository.findByCredentialsLogin(login)), HttpStatus.OK);
     }
 
-    @PostMapping("/updateUser")
-    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, timeout = 100, rollbackFor = Exception.class)
-    public ResponseEntity<Object> updateUser(@Valid @RequestBody UserUpdateRequest updateRequest) {
-
-        User user = converter.convert(updateRequest, User.class);
-        User updatedUser = repository.save(user);
-
-//        repository.createRoleRow(createdUser.getId(),4L);
-
-        Map<String, Object> model = new HashMap<>();
-        model.put("user", repository.findById(updatedUser.getId()).get());
-
-        return new ResponseEntity<>(model, HttpStatus.CREATED);
-    }
-
     @PatchMapping("/softDeleteUserById/{id}")
     public ResponseEntity<Object> softDeleteUserById(@PathVariable("id") String id,
                                                      @RequestBody BlockRequest request) {
@@ -89,4 +75,12 @@ public class UserController {
                 HttpStatus.OK
         );
     }
+
+    @PutMapping(value = "/updateUser/{id}")
+    public ResponseEntity<Object> updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateRequest request) {
+        User updatedUser = userMapper.convertUpdateRequest(request, userService.findById(id));
+        UserResponse userResponse = userMapper.toResponse(userService.update(updatedUser));
+        return new ResponseEntity<>(Collections.singletonMap("user", userResponse), HttpStatus.OK);
+    }
+
 }

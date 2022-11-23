@@ -97,39 +97,14 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void update(User user) {
-
-        if (checkUserLoginAndEmailForNotExistInDB(user)) {
-
-            userRepository.save(user);
-        }
+    public User update(User userToUpdate) {
+        userToUpdate.setModificationDate(new Timestamp(new Date().getTime()));
+        userToUpdate
+                .getCredentials()
+                .setPassword(passwordEncoder.encode(userToUpdate.getCredentials().getPassword()));
+        userRepository.save(userToUpdate);
+        return userRepository.findById(userToUpdate.getId()).orElseThrow(EntityNotFoundException::new);
     }
 
 
-    private boolean checkUserLoginAndEmailForNotExistInDB(User user) {
-
-        String userLogin = user.getCredentials().getLogin();
-        Optional<User> userByLogin = userRepository.findByCredentialsLogin(userLogin);
-
-//        if (userByLogin.isPresent() && checkUsersIdForMismatch(userByLogin.get(), user)) {
-//            throw new EntityAlreadyExsistException(
-//                    String.format("User with this login \"%s\" already exists", userLogin));
-//        }
-
-        String userEmail = user.getCredentials().getEmail();
-        Optional<User> userByEmail = userRepository.findByCredentialsEmail(userEmail);
-
-//        if (userByEmail.isPresent() && checkUsersIdForMismatch(userByEmail.get(), user)) {
-//
-//            throw new EntityAlreadyExsistException(
-//                    String.format("User with this email \"%s\" already exists", userEmail));
-//        }
-
-        return true;
-    }
-
-    private boolean checkUsersIdForMismatch(User user1, User user2) {
-
-        return !user1.getId().equals(user2.getId());
-    }
 }

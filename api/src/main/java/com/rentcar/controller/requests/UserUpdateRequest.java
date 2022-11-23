@@ -11,10 +11,6 @@ import java.sql.Timestamp;
 @Data
 public class UserUpdateRequest {
 
-    @ApiModelProperty(required = true, allowableValues = "sla8565vka", dataType = "long", notes = "user's id")
-    @NotNull
-    private Long id;
-
     @ApiModelProperty(required = true, allowableValues = "slavka", dataType = "string", notes = "user's login")
     @NotNull
     @Size(min = 2, max = 20)
