@@ -30,6 +30,8 @@ public class UserResponse {
 
     private Set<CarsResponse> cars;
 
+    private DiscountResponse discountResponse;
+
 }
 
 
