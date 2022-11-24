@@ -54,7 +54,8 @@ public class UserController {
     }
 
     @PatchMapping("/softDeleteUserById/{id}")
-    public ResponseEntity<Object> softDeleteUserById(@PathVariable("id") String id, @RequestBody BlockRequest request) {
+    public ResponseEntity<Object> softDeleteUserById(@PathVariable("id") String login, @RequestBody BlockRequest request) {
+
 
         long userId = Long.parseLong(id);
    //     Boolean isDeleted = request.getIsDeleted();

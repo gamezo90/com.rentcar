@@ -3,6 +3,7 @@ package com.rentcar.service.impl;
 import com.rentcar.domain.Role;
 import com.rentcar.domain.SystemRoles;
 import com.rentcar.domain.User;
+import com.rentcar.exception.NoSuchEntityException;
 import com.rentcar.repository.RoleRepository;
 import com.rentcar.repository.UserRepository;
 import com.rentcar.service.UserService;
@@ -35,6 +36,27 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         return user;
+    }
+
+    @Override
+    public User softDelete1(String login) {
+        User user = userRepository.findByCredentialsLogin(login).get();
+
+        user.setIsDeleted(true);
+        userRepository.save(user);
+
+        return user;
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public User findById(Long id) {
+        return userRepository.findById(id).orElseThrow(() ->
+                new NoSuchEntityException(String.format("User with this id \"%s\" not found", id)));
     }
 
     @Transactional
