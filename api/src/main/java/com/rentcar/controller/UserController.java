@@ -34,7 +34,7 @@ public class UserController {
     @GetMapping("/findAllUser")
     public ResponseEntity<Object> findAllUser() {
 
-        return new ResponseEntity<>(Collections.singletonMap("result", repository.findAll(PageRequest.of(0, 10))), HttpStatus.OK);
+        return new ResponseEntity<>(Collections.singletonMap("result", userService.findAll()), HttpStatus.OK);
     }
 
     @GetMapping("/findUserById/{id}")
