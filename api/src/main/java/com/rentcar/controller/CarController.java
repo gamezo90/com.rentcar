@@ -2,6 +2,8 @@ package com.rentcar.controller;
 
 
 import com.rentcar.repository.CarRepository;
+import com.rentcar.service.CarService;
+import com.rentcar.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,28 +19,30 @@ import java.util.Collections;
 @RequestMapping("/api/car")
 public class CarController {
 
-    private final CarRepository repository;
-
-    @GetMapping("/findAllCars")
-    public ResponseEntity<Object> findAllCars() {
-
-        return new ResponseEntity<>(
-                Collections.singletonMap("result", repository.findAll()),
-                HttpStatus.OK
-        );
-    }
+    private final CarService carService;
 
     @GetMapping("/findCarById")
     public ResponseEntity<Object> findCarById(@RequestParam("id") Long carId) {
 
         return new ResponseEntity<>(Collections.singletonMap("result",
-                repository.findById(carId)), HttpStatus.OK);
+                carService.findById(carId)), HttpStatus.OK);
     }
 
-    @GetMapping("/findCarsByUserId")
-    public ResponseEntity<Object> findCarsByUserId(@RequestParam("id") Long userId) {
+    @GetMapping("/findAllCars")
+    public ResponseEntity<Object> findAllCars() {
 
-        return new ResponseEntity<>(Collections.singletonMap("result",
-                repository.findCarsByUserId(userId)), HttpStatus.OK);
+        return new ResponseEntity<>(
+                Collections.singletonMap("result", carService.findAll()),
+                HttpStatus.OK
+        );
     }
+
+
+
+//    @GetMapping("/findCarsByUserId")
+//    public ResponseEntity<Object> findCarsByUserId(@RequestParam("id") Long userId) {
+//
+//        return new ResponseEntity<>(Collections.singletonMap("result",
+//                repository.findCarsByUserId(userId)), HttpStatus.OK);
+//    }
 }
