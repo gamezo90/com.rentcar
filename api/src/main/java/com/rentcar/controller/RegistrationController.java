@@ -1,7 +1,7 @@
 package com.rentcar.controller;
 
 import com.rentcar.controller.mappers.UserMapper;
-import com.rentcar.controller.requests.UserCreateRequest;
+import com.rentcar.controller.requests.UserRequests.UserCreateRequest;
 import com.rentcar.controller.response.UserResponse;
 import com.rentcar.domain.User;
 import com.rentcar.service.UserService;
@@ -13,8 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Collections;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor

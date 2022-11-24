@@ -1,7 +1,7 @@
 package com.rentcar.controller.mappers;
 
-import com.rentcar.controller.requests.UserCreateRequest;
-import com.rentcar.controller.requests.UserUpdateRequest;
+import com.rentcar.controller.requests.UserRequests.UserCreateRequest;
+import com.rentcar.controller.requests.UserRequests.UserUpdateRequest;
 import com.rentcar.controller.response.UserResponse;
 import com.rentcar.domain.User;
 import org.mapstruct.Mapper;

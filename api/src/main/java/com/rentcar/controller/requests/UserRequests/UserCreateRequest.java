@@ -1,4 +1,4 @@
-package com.rentcar.controller.requests;
+package com.rentcar.controller.requests.UserRequests;
 
 import com.rentcar.domain.Gender;
 import io.swagger.annotations.ApiModel;

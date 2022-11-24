@@ -1,4 +1,4 @@
-package com.rentcar.controller.requests;
+package com.rentcar.controller.requests.CarsRequests;
 
 import lombok.Data;
 
