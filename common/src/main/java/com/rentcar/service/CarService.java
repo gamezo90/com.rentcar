@@ -1,7 +1,6 @@
 package com.rentcar.service;
 
 import com.rentcar.domain.Car;
-import com.rentcar.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
