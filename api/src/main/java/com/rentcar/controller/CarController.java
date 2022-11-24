@@ -37,12 +37,10 @@ public class CarController {
         );
     }
 
+    @GetMapping("/findCarByUserLogin")
+    public ResponseEntity<Object> findCarUserByLogin(@RequestParam("user_login") String login) {
 
+        return new ResponseEntity<>(Collections.singletonMap("result", carService.findByUserLogin(login)), HttpStatus.OK);
+    }
 
-//    @GetMapping("/findCarsByUserId")
-//    public ResponseEntity<Object> findCarsByUserId(@RequestParam("id") Long userId) {
-//
-//        return new ResponseEntity<>(Collections.singletonMap("result",
-//                repository.findCarsByUserId(userId)), HttpStatus.OK);
-//    }
 }
