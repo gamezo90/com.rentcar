@@ -26,15 +26,10 @@ public class UserController {
 
     private final UserRepository repository;
 
-    private final RoleRepository roleRepository;
-
-    private final ConversionService converter;
-
     private final UserMapper userMapper;
 
     private final UserService userService;
 
-    private final UserServiceImpl userService1;
 
     @GetMapping("/findAllUser")
     public ResponseEntity<Object> findAllUser() {
@@ -45,14 +40,14 @@ public class UserController {
     @GetMapping("/findUserById/{id}")
     public ResponseEntity<Map<String, Object>> findUserById(@PathVariable String id) {
         Long userId = Long.parseLong(id);
-        UserResponse user = userMapper.toResponse(repository.findById(userId).get());
+        UserResponse user = userMapper.toResponse(userService.findById(userId));
         return new ResponseEntity<>(Collections.singletonMap("user", user), HttpStatus.OK);
     }
 
     @GetMapping("/findUserByLogin")
     public ResponseEntity<Object> findUserByLogin(@RequestParam("user_login") String login) {
 
-        return new ResponseEntity<>(Collections.singletonMap("result", repository.findByCredentialsLogin(login)), HttpStatus.OK);
+        return new ResponseEntity<>(Collections.singletonMap("result", userService.findByLogin(login)), HttpStatus.OK);
     }
 
     @PatchMapping("/softDeleteUserByLogin/{login}")
@@ -66,7 +61,7 @@ public class UserController {
     @PatchMapping("/banUserByLogin/{login}")
     public ResponseEntity<Object> banUserByLogin(@PathVariable("login") String login) {
 
-        User user = userService1.banByLogin(login);
+        User user = userService.banByLogin(login);
 
         return new ResponseEntity<>(Collections.singletonMap(user, userMapper.toResponse(user)), HttpStatus.OK);
     }

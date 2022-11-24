@@ -48,6 +48,14 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public User findByLogin(String login) {
+            return userRepository.findByCredentialsLogin(login).orElseThrow(
+                            () ->
+                                    new EntityNotFoundException(
+                                            String.format("The user with login: %s not found", login)));
+    }
+
 
     @Transactional
     @Override

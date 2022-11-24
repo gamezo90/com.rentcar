@@ -13,4 +13,6 @@ public interface UserService {
     User softDelete(String login);
 
     User banByLogin(String login);
+
+    User findByLogin(String login);
 }
