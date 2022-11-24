@@ -41,6 +41,7 @@ public class CarServiceImpl implements CarService {
 
         car.setCreationDate(new Timestamp(new Date().getTime()));
         car.setModificationDate(new Timestamp(new Date().getTime()));
+        car.setIsBanned(false);
         carRepository.save(car);
 
         return carRepository.findById(car.getId()).orElseThrow(IllegalArgumentException::new);

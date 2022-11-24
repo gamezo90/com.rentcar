@@ -1,17 +1,23 @@
 package com.rentcar.controller;
 
 
+import com.rentcar.controller.mappers.CarMapper;
+import com.rentcar.controller.requests.CarsRequests.CarCreateRequest;
+import com.rentcar.controller.requests.UserRequests.UserCreateRequest;
+import com.rentcar.controller.response.CarsResponse;
+import com.rentcar.controller.response.UserResponse;
+import com.rentcar.domain.Car;
+import com.rentcar.domain.User;
 import com.rentcar.repository.CarRepository;
 import com.rentcar.service.CarService;
 import com.rentcar.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Collections;
 
 @RestController
@@ -20,6 +26,8 @@ import java.util.Collections;
 public class CarController {
 
     private final CarService carService;
+
+    private final CarMapper carMapper;
 
     @GetMapping("/findCarById")
     public ResponseEntity<Object> findCarById(@RequestParam("id") Long carId) {
@@ -43,4 +51,11 @@ public class CarController {
         return new ResponseEntity<>(Collections.singletonMap("result", carService.findByUserLogin(login)), HttpStatus.OK);
     }
 
+    @PostMapping("/createCar")
+    @Transactional
+    public ResponseEntity<Object> addCar(@Valid @RequestBody CarCreateRequest createRequest) {
+        Car newCar = carMapper.carConvertCreateRequest(createRequest);
+        CarsResponse response = carMapper.toResponse(carService.create(newCar));
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
 }
