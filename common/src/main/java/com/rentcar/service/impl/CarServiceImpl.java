@@ -1,7 +1,10 @@
 package com.rentcar.service.impl;
 
 import com.rentcar.domain.Car;
+import com.rentcar.domain.User;
+import com.rentcar.exception.NoSuchEntityException;
 import com.rentcar.repository.CarRepository;
+import com.rentcar.repository.UserRepository;
 import com.rentcar.service.CarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,33 +18,39 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CarServiceImpl implements CarService {
-    private final CarRepository itemRepository;
+
+    private final CarRepository carRepository;
+
+    private final UserRepository userRepository;
+    @Override
+    public Car findById(Long id) {
+        return carRepository.findById(id).orElseThrow(() ->
+                new NoSuchEntityException(String.format("Car with this id \"%s\" not found", id)));
+    }
 
     @Override
     public List<Car> findAll() {
-        return itemRepository.findAll();
+        return carRepository.findAll();
     }
 
     @Override
-    public Page<Car> findAll(Pageable pageable) {
-        return itemRepository.findAll(pageable);
-    }
-
-    @Transactional
-    @Override
-    public Car create(Car car, Long subCategoryId) {
-//        car.setSubCategory(subCategoryRepository.findById(subCategoryId).orElseThrow(EntityNotFoundException::new));
-        return itemRepository.save(car);
+    public Car findByUserLogin(String login) {
+        return null;
+    //    return carRepository.findByUserCredentials_Login(login);
     }
 
     @Override
-    public Car findById(Long itemId) {
-        return itemRepository.findById(itemId).orElseThrow(EntityNotFoundException::new);
+    public Car create(Car car) {
+        return null;
     }
 
-    @Transactional
     @Override
-    public Car update(Car object) {
-        return itemRepository.save(object);
+    public Car update(Car carToUpdate) {
+        return null;
+    }
+
+    @Override
+    public Car banById(Long id) {
+        return null;
     }
 }

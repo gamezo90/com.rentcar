@@ -19,4 +19,6 @@ public interface CarService {
 
     Car update(Car carToUpdate);
 
+    Car banById(Long id);
+
 }
