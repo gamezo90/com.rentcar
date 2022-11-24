@@ -26,48 +26,24 @@ public class UserServiceImpl implements UserService {
 
     private final BCryptPasswordEncoder passwordEncoder;
 
-    @Transactional
-    @Override
-    public User softDelete(String login) {
-
-        User user = userRepository.findByCredentialsLogin(login).get();
-
-        user.setIsDeleted(true);
-        userRepository.save(user);
-
-        return user;
-    }
-
-    @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
-
     @Override
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() ->
                 new NoSuchEntityException(String.format("User with this id \"%s\" not found", id)));
     }
 
-    @Transactional
-    public User banByLogin(String login) {
-
-        User user = userRepository.findByCredentialsLogin(login).get();
-
-        user.setIsBanned(true);
-        userRepository.save(user);
-
-        return user;
+    @Override
+    public User findByLogin(String login) {
+        return userRepository.findByCredentialsLogin(login).orElseThrow(
+                () ->
+                        new EntityNotFoundException(
+                                String.format("The user with login: %s not found", login)));
     }
 
     @Override
-    public User findByLogin(String login) {
-            return userRepository.findByCredentialsLogin(login).orElseThrow(
-                            () ->
-                                    new EntityNotFoundException(
-                                            String.format("The user with login: %s not found", login)));
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
-
 
     @Transactional
     @Override
@@ -99,4 +75,26 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(userToUpdate.getId()).orElseThrow(EntityNotFoundException::new);
     }
 
+    @Transactional
+    @Override
+    public User softDelete(String login) {
+
+        User user = userRepository.findByCredentialsLogin(login).get();
+
+        user.setIsDeleted(true);
+        userRepository.save(user);
+
+        return user;
+    }
+
+    @Transactional
+    public User banByLogin(String login) {
+
+        User user = userRepository.findByCredentialsLogin(login).get();
+
+        user.setIsBanned(true);
+        userRepository.save(user);
+
+        return user;
+    }
 }

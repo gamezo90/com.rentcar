@@ -68,7 +68,7 @@ public class UserController {
 
     @PutMapping(value = "/updateUser/{login}")
     public ResponseEntity<Object> updateUser(@RequestParam("user_login") String login, @Valid @RequestBody UserUpdateRequest request) {
-        User updatedUser = userMapper.convertUpdateRequest(request, repository.findByCredentialsLogin(login).get());
+        User updatedUser = userMapper.convertUpdateRequest(request, userService.findByLogin(login));
         UserResponse userResponse = userMapper.toResponse(userService.update(updatedUser));
         return new ResponseEntity<>(Collections.singletonMap("user", userResponse), HttpStatus.OK);
     }

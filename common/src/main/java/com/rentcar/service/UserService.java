@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface UserService {
 
-    List<User> findAll();
-
     User findById(Long id);
+
+    User findByLogin(String login);
+
+    List<User> findAll();
 
     User create(User user);
 
@@ -17,6 +19,4 @@ public interface UserService {
     User softDelete(String login);
 
     User banByLogin(String login);
-
-    User findByLogin(String login);
 }
