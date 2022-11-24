@@ -53,7 +53,6 @@ public class UserServiceImpl implements UserService {
         user.setModificationDate(new Timestamp(new Date().getTime()));
         user.setIsDeleted(false);
         user.setIsBanned(false);
-        user.setCreationDate(new Timestamp(new Date().getTime()));
         user.getCredentials().setPassword(passwordEncoder.encode(user.getCredentials().getPassword()));
         Role roleUser = roleRepository.findByRoleName(SystemRoles.ROLE_USER);
 
