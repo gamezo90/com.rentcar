@@ -1,7 +1,6 @@
 package com.rentcar.controller;
 
 import com.rentcar.controller.mappers.UserMapper;
-import com.rentcar.controller.requests.BlockRequest;
 import com.rentcar.controller.requests.UserUpdateRequest;
 import com.rentcar.controller.response.UserResponse;
 import com.rentcar.domain.User;
@@ -64,10 +63,10 @@ public class UserController {
         return new ResponseEntity<>(Collections.singletonMap(user, userMapper.toResponse(user)), HttpStatus.OK);
     }
 
-    @PatchMapping("/softDeleteUserByLogin1111111/{login}")
-    public ResponseEntity<Object> block(@PathVariable("login") String login) {
+    @PatchMapping("/banUserByLogin/{login}")
+    public ResponseEntity<Object> banUserByLogin(@PathVariable("login") String login) {
 
-        User user = userService1.block(login);
+        User user = userService1.banByLogin(login);
 
         return new ResponseEntity<>(Collections.singletonMap(user, userMapper.toResponse(user)), HttpStatus.OK);
     }

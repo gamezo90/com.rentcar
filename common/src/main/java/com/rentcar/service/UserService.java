@@ -11,4 +11,6 @@ public interface UserService {
     User update(User userToUpdate);
 
     User softDelete(String login);
+
+    User banByLogin(String login);
 }

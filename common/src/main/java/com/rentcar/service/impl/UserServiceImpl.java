@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public User block(String login) {
+    public User banByLogin(String login) {
 
         User user = userRepository.findByCredentialsLogin(login).get();
 
