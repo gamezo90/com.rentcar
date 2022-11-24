@@ -1,13 +1,13 @@
 package com.rentcar.controller;
 
 import com.rentcar.controller.mappers.UserMapper;
-import com.rentcar.controller.requests.BlockRequest;
 import com.rentcar.controller.requests.UserUpdateRequest;
 import com.rentcar.controller.response.UserResponse;
 import com.rentcar.domain.User;
 import com.rentcar.repository.RoleRepository;
 import com.rentcar.repository.UserRepository;
 import com.rentcar.service.UserService;
+import com.rentcar.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +34,8 @@ public class UserController {
 
     private final UserService userService;
 
+    private final UserServiceImpl userService1;
+
     @GetMapping("/findAllUser")
     public ResponseEntity<Object> findAllUser() {
 
@@ -53,15 +55,18 @@ public class UserController {
         return new ResponseEntity<>(Collections.singletonMap("result", repository.findByCredentialsLogin(login)), HttpStatus.OK);
     }
 
-    @PatchMapping("/softDeleteUserById/{id}")
-    public ResponseEntity<Object> softDeleteUserById(@PathVariable("id") String login, @RequestBody BlockRequest request) {
+    @PatchMapping("/softDeleteUserByLogin/{login}")
+    public ResponseEntity<Object> softDeleteUserByLogin(@PathVariable("login") String login) {
 
+        User user = userService.softDelete(login);
 
-        long userId = Long.parseLong(id);
-   //     Boolean isDeleted = request.getIsDeleted();
-        Boolean isDeleted = true;
+        return new ResponseEntity<>(Collections.singletonMap(user, userMapper.toResponse(user)), HttpStatus.OK);
+    }
 
-        User user = userService.softDelete(userId, isDeleted);
+    @PatchMapping("/banUserByLogin/{login}")
+    public ResponseEntity<Object> banUserByLogin(@PathVariable("login") String login) {
+
+        User user = userService1.banByLogin(login);
 
         return new ResponseEntity<>(Collections.singletonMap(user, userMapper.toResponse(user)), HttpStatus.OK);
     }

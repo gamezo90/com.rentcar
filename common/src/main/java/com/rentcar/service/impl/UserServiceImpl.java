@@ -28,11 +28,11 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User softDelete(Long id, Boolean isDeleted) {
+    public User softDelete(String login) {
 
-        User user = userRepository.findById(id).get();
+        User user = userRepository.findByCredentialsLogin(login).get();
 
-        user.setIsDeleted(isDeleted);
+        user.setIsDeleted(true);
         userRepository.save(user);
 
         return user;
@@ -58,6 +58,18 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).orElseThrow(() ->
                 new NoSuchEntityException(String.format("User with this id \"%s\" not found", id)));
     }
+
+    @Transactional
+    public User banByLogin(String login) {
+
+        User user = userRepository.findByCredentialsLogin(login).get();
+
+        user.setIsBanned(true);
+        userRepository.save(user);
+
+        return user;
+    }
+
 
     @Transactional
     @Override
