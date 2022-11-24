@@ -22,10 +22,6 @@ public class CarServiceImpl implements CarService {
         return itemRepository.findAll();
     }
 
-    @Override
-    public Page<Car> findAll(Pageable pageable) {
-        return itemRepository.findAll(pageable);
-    }
 
     @Transactional
     @Override

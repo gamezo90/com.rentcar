@@ -1,6 +1,7 @@
 package com.rentcar.service;
 
 import com.rentcar.domain.Car;
+import com.rentcar.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -10,12 +11,11 @@ public interface CarService {
 
     List<Car> findAll();
 
-    Page<Car> findAll(Pageable pageable);
+    Car findById(Long id);
 
-    Car create(Car item, Long subCategoryId);
+    Car create(Car car);
 
-    Car findById(Long itemId);
+    Car update(Car car);
 
-    Car update(Car object);
-
+    Car banById(Long id);
 }
