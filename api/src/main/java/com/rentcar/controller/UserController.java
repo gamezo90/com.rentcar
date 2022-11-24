@@ -39,13 +39,13 @@ public class UserController {
     @GetMapping("/findAllUser")
     public ResponseEntity<Object> findAllUser() {
 
-        return new ResponseEntity<>(Collections.singletonMap("result", repository.findAll(PageRequest.of(0, 10))), HttpStatus.OK);
+        return new ResponseEntity<>(Collections.singletonMap("result", userService.findAll()), HttpStatus.OK);
     }
 
     @GetMapping("/findUserById/{id}")
     public ResponseEntity<Map<String, Object>> findUserById(@PathVariable String id) {
         Long userId = Long.parseLong(id);
-        UserResponse user = userMapper.toResponse(repository.findById(userId).get());
+        UserResponse user = userMapper.toResponse(userService.findById(userId));
         return new ResponseEntity<>(Collections.singletonMap("user", user), HttpStatus.OK);
     }
 

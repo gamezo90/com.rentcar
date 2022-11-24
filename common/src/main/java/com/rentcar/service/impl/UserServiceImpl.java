@@ -39,16 +39,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User softDelete1(String login) {
-        User user = userRepository.findByCredentialsLogin(login).get();
-
-        user.setIsDeleted(true);
-        userRepository.save(user);
-
-        return user;
-    }
-
-    @Override
     public List<User> findAll() {
         return userRepository.findAll();
     }
