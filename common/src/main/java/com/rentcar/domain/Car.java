@@ -71,6 +71,9 @@ public class Car {
     @JsonIgnore
     private Timestamp modificationDate;
 
+    @Column(name = "is_banned")
+    private Boolean isBanned;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonBackReference

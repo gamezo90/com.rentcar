@@ -19,7 +19,6 @@ public class CarServiceImpl implements CarService {
 
     private final CarRepository carRepository;
 
-    private final UserRepository userRepository;
     @Override
     public Car findById(Long id) {
         return carRepository.findById(id).orElseThrow(() ->
@@ -57,6 +56,12 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public Car banById(Long id) {
-        return null;
+        Car car = carRepository.findById(id).orElseThrow(() ->
+                new NoSuchEntityException(String.format("Car with this id \"%s\" not found", id)));;
+
+        car.setIsBanned(true);
+        carRepository.save(car);
+
+        return car;
     }
 }
