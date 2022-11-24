@@ -37,12 +37,4 @@ public class CarController {
         );
     }
 
-
-
-//    @GetMapping("/findCarsByUserId")
-//    public ResponseEntity<Object> findCarsByUserId(@RequestParam("id") Long userId) {
-//
-//        return new ResponseEntity<>(Collections.singletonMap("result",
-//                repository.findCarsByUserId(userId)), HttpStatus.OK);
-//    }
 }
