@@ -1,17 +1,22 @@
 package com.rentcar.service.impl;
 
 import com.rentcar.domain.Car;
+import com.rentcar.domain.Role;
+import com.rentcar.domain.SystemRoles;
+import com.rentcar.domain.User;
 import com.rentcar.exception.NoSuchEntityException;
 import com.rentcar.repository.CarRepository;
 import com.rentcar.repository.UserRepository;
 import com.rentcar.service.CarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -36,11 +41,13 @@ public class CarServiceImpl implements CarService {
         return carRepository.findByUserCredentialsLogin(login);
     }
 
+    @Transactional
     @Override
     public Car create(Car car) {
 
         car.setCreationDate(new Timestamp(new Date().getTime()));
         car.setModificationDate(new Timestamp(new Date().getTime()));
+        car.setIsBanned(false);
         carRepository.save(car);
 
         return carRepository.findById(car.getId()).orElseThrow(IllegalArgumentException::new);
