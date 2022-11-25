@@ -50,7 +50,8 @@ create table if not exists rentcar.users
     birthday          timestamp(6) default CURRENT_TIMESTAMP(6)             not null,
     gender            varchar(15),
     user_login        varchar,
-    user_password     varchar
+    user_password     varchar,
+    user_email        varchar
 );
 
 alter table rentcar.users
