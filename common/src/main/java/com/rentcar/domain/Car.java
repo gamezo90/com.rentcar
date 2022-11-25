@@ -37,7 +37,7 @@ public class Car {
     private String model;
 
     @Column(name = "year_of_manufacture")
-    private Timestamp yearOfManufacture;
+    private Integer yearOfManufacture;
 
     @Column(name = "engine_volume")
     private Float engineVolume;
