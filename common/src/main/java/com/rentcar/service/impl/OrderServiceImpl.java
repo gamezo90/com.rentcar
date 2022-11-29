@@ -7,6 +7,8 @@ import com.rentcar.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -39,7 +41,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order create(Order order) {
-        return null;
+        order.setCreationDate(new Timestamp(new Date().getTime()));
+        order.setModificationDate(new Timestamp(new Date().getTime()));
+
+        return orderRepository.findById(order.getId()).orElseThrow(IllegalArgumentException::new);
     }
 
     @Override

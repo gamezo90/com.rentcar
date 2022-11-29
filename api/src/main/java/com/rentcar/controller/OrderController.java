@@ -1,17 +1,20 @@
 package com.rentcar.controller;
 
-import com.rentcar.repository.OrderRepository;
-import com.rentcar.repository.UserRepository;
+import com.rentcar.controller.mappers.OrderMapper;
+import com.rentcar.controller.requests.CarsRequests.CarCreateRequest;
+import com.rentcar.controller.requests.OrdersRequests.OrderCreateRequest;
+import com.rentcar.controller.response.CarsResponse;
+import com.rentcar.controller.response.OrderResponce;
+import com.rentcar.domain.Car;
+import com.rentcar.domain.Order;
 import com.rentcar.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Collections;
 
 @RestController
@@ -20,6 +23,9 @@ import java.util.Collections;
 public class OrderController {
 
     private final OrderService repository;
+
+    private final OrderMapper orderMapper;
+
 
     @GetMapping("/findAllOrders")
     public ResponseEntity<Object> findAllOrders() {
@@ -47,5 +53,13 @@ public class OrderController {
 
         return new ResponseEntity<>(Collections.singletonMap("result",
                 repository.findOrdersByUserId(userId)), HttpStatus.OK);
+    }
+
+    @PostMapping("/createOrder")
+    @Transactional
+    public ResponseEntity<Object> addOrder(@Valid @RequestBody OrderCreateRequest createRequest) {
+        Order newOrder = orderMapper.orderConvertCreateRequest(createRequest);
+        OrderResponce response = orderMapper.toResponse(repository.create(newOrder));
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }
