@@ -2,6 +2,7 @@ package com.rentcar.controller;
 
 import com.rentcar.repository.OrderRepository;
 import com.rentcar.repository.UserRepository;
+import com.rentcar.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ import java.util.Collections;
 @RequestMapping("/api/orders")
 public class OrderController {
 
-    private final OrderRepository repository;
+    private final OrderService repository;
 
     @GetMapping("/findAllOrders")
     public ResponseEntity<Object> findAllOrders() {

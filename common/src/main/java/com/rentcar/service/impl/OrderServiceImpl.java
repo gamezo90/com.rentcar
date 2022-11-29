@@ -6,15 +6,42 @@ import com.rentcar.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
 
-    @Override
-    public void create(Order order) {
 
-        orderRepository.save(order);
+    @Override
+    public List<Order> findAll() {
+        return null;
+    }
+
+    @Override
+    public Order findById(Long id) {
+        return null;
+    }
+
+    @Override
+    public Order findOrdersByCarId(Long id) {
+        return null;
+    }
+
+    @Override
+    public Order findOrdersByUserId(Long id) {
+        return null;
+    }
+
+    @Override
+    public Order create(Order order) {
+        return null;
+    }
+
+    @Override
+    public Order update(Order order) {
+        return null;
     }
 }
