@@ -67,4 +67,12 @@ public class CarController {
         CarsResponse carsResponse = carMapper.toResponse(carService.update(updatedCar));
         return new ResponseEntity<>(Collections.singletonMap("cars", carsResponse), HttpStatus.OK);
     }
+
+    @PatchMapping("/banCarById/{id}")
+    public ResponseEntity<Object> banCarById(@PathVariable("id") Long id) {
+
+        Car car = carService.banById(id);
+
+        return new ResponseEntity<>(Collections.singletonMap(car, carMapper.toResponse(car)), HttpStatus.OK);
+    }
 }
