@@ -61,14 +61,4 @@ public class CarServiceImpl implements CarService {
         return carRepository.findById(carToUpdate.getId()).orElseThrow(EntityNotFoundException::new);
     }
 
-    @Override
-    public Car banById(Long id) {
-        Car car = carRepository.findById(id).orElseThrow(() ->
-                new NoSuchEntityException(String.format("Car with this id \"%s\" not found", id)));;
-
-        car.setIsBanned(true);
-        carRepository.save(car);
-
-        return car;
-    }
 }
