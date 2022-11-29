@@ -3,7 +3,9 @@ package com.rentcar.controller;
 
 import com.rentcar.controller.mappers.CarMapper;
 import com.rentcar.controller.requests.CarsRequests.CarCreateRequest;
+import com.rentcar.controller.requests.CarsRequests.CarUpdateRequest;
 import com.rentcar.controller.requests.UserRequests.UserCreateRequest;
+import com.rentcar.controller.requests.UserRequests.UserUpdateRequest;
 import com.rentcar.controller.response.CarsResponse;
 import com.rentcar.controller.response.UserResponse;
 import com.rentcar.domain.Car;
@@ -57,5 +59,12 @@ public class CarController {
         Car newCar = carMapper.carConvertCreateRequest(createRequest);
         CarsResponse response = carMapper.toResponse(carService.create(newCar));
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PutMapping(value = "/updateCar/{id}")
+    public ResponseEntity<Object> updateCar(@RequestParam("id") Long id, @Valid @RequestBody CarUpdateRequest carUpdateRequest) {
+        Car updatedCar = carMapper.convertUpdateRequest(carUpdateRequest, carService.findById(id));
+        CarsResponse carsResponse = carMapper.toResponse(carService.update(updatedCar));
+        return new ResponseEntity<>(Collections.singletonMap("cars", carsResponse), HttpStatus.OK);
     }
 }
