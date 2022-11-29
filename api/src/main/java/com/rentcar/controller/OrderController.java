@@ -24,7 +24,7 @@ public class OrderController {
     public ResponseEntity<Object> findAllOrders() {
 
         return new ResponseEntity<>(Collections.singletonMap("result",
-                repository.findAll(PageRequest.of(0, 10))), HttpStatus.OK);
+                repository.findAll()), HttpStatus.OK);
     }
 
     @GetMapping("/findOrderById")
