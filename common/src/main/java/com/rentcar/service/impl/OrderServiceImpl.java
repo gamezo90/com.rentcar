@@ -1,6 +1,7 @@
 package com.rentcar.service.impl;
 
 import com.rentcar.domain.Order;
+import com.rentcar.exception.NoSuchEntityException;
 import com.rentcar.repository.OrderRepository;
 import com.rentcar.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -17,22 +18,23 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> findAll() {
-        return null;
+        return orderRepository.findAll();
     }
 
     @Override
     public Order findById(Long id) {
-        return null;
+        return orderRepository.findById(id).orElseThrow(() ->
+                new NoSuchEntityException(String.format("Order with this id \"%s\" not found", id)));
     }
 
     @Override
-    public Order findOrdersByCarId(Long id) {
-        return null;
+    public List<Order> findOrdersByCarId(Long id) {
+        return orderRepository.findOrdersByCarId(id);
     }
 
     @Override
-    public Order findOrdersByUserId(Long id) {
-        return null;
+    public List<Order> findOrdersByUserId(Long id) {
+        return orderRepository.findOrdersByUserId(id);
     }
 
     @Override

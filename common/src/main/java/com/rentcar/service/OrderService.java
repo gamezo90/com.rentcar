@@ -11,9 +11,9 @@ public interface OrderService {
 
     Order findById(Long id);
 
-    Order findOrdersByCarId(Long id);
+    List<Order> findOrdersByCarId(Long id);
 
-    Order findOrdersByUserId(Long id);
+    List<Order> findOrdersByUserId(Long id);
 
     Order create(Order order);
 
