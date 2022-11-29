@@ -60,7 +60,7 @@ public class Car {
     @Column(name = "registration_Number")
     private String registrationNumber;
 
-    @Column(name = "user_id", insertable = false, updatable = false)
+    @Column(name = "user_id")
     private Long userId;
 
     @Column(name = "is_banned")
@@ -75,7 +75,7 @@ public class Car {
     private Timestamp modificationDate;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     @JsonBackReference
     private User user;
 
