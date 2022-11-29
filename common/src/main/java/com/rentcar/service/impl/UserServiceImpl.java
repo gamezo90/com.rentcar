@@ -49,6 +49,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User create(User user) {
 
+        addRoles(user, roleRepository.findByRoleName(SystemRoles.valueOf("ROLE_USER")));
         user.setCreationDate(new Timestamp(new Date().getTime()));
         user.setModificationDate(new Timestamp(new Date().getTime()));
         user.setIsDeleted(false);
@@ -95,5 +96,14 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         return user;
+    }
+
+    @Override
+    public User addRoles(User user, Role role) {
+            Set<Role> roles = new HashSet<>();
+            roles.add(role);
+            user.setRoles(roles);
+            role.getUsers().add(user);
+            return user;
     }
 }
