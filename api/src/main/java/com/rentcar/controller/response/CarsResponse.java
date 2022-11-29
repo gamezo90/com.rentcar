@@ -9,6 +9,6 @@ public class CarsResponse {
 
     private Long id;
 
-    private String userId;
+    private Long userId;
 
 }
