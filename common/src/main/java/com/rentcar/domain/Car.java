@@ -36,32 +36,35 @@ public class Car {
     @Column
     private String model;
 
-    @Column(name = "year_of_manufacture")
-    private Timestamp yearOfManufacture;
-
     @Column(name = "engine_volume")
     private Float engineVolume;
 
     @Column
-    private String color;
-
-    @Column
     private Boolean conditioner;
 
-    @Column(name = "registration_Number")
-    private String registrationNumber;
+    @Column(name = "year_of_manufacture")
+    private Integer yearOfManufacture;
 
     @Column
-    private Double price;
-
-    @Column(name = "user_id", insertable = false, updatable = false)
-    private Long userId;
+    private String color;
 
     @Column
     private String photo;
 
     @Column
     private String region;
+
+    @Column
+    private Double price;
+
+    @Column(name = "registration_Number")
+    private String registrationNumber;
+
+    @Column(name = "user_id", insertable = false, updatable = false)
+    private Long userId;
+
+    @Column(name = "is_banned")
+    private Boolean isBanned;
 
     @Column(name = " creation_date")
     @JsonIgnore
@@ -70,9 +73,6 @@ public class Car {
     @Column(name = "modification_date")
     @JsonIgnore
     private Timestamp modificationDate;
-
-    @Column(name = "is_banned")
-    private Boolean isBanned;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

@@ -11,7 +11,7 @@ public class CarCreateRequest {
 
     private String model;
 
-    private Timestamp yearOfManufacture;
+    private Integer yearOfManufacture;
 
     private Float engineVolume;
 

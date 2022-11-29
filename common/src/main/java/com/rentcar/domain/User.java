@@ -54,28 +54,16 @@ public class User {
     @Column
     private String surname;
 
-    @Column(name = "creation_date")
-    @JsonIgnore
-    private Timestamp creationDate;
-
-    @Column(name = "modification_date")
-    @JsonIgnore
-    private Timestamp modificationDate;
-
-    @Column(name = "is_banned")
-    @JsonIgnore
-    private Boolean isBanned;
-
-    @Column(name = "is_deleted")
-    @JsonIgnore
-    private Boolean isDeleted;
-
     @Column
     private String region;
 
     @Column
     @JsonIgnore
     private Timestamp birthday;
+
+    @Column(name = "gender")
+    @Enumerated(EnumType.STRING)
+    private Gender gender = Gender.NOT_SELECTED;
 
     @Embedded
     @AttributeOverrides({
@@ -85,9 +73,21 @@ public class User {
     })
     private Credentials credentials;
 
-    @Column(name = "gender")
-    @Enumerated(EnumType.STRING)
-    private Gender gender = Gender.NOT_SELECTED;
+    @Column(name = "is_banned")
+    @JsonIgnore
+    private Boolean isBanned;
+
+    @Column(name = "is_deleted")
+    @JsonIgnore
+    private Boolean isDeleted;
+
+    @Column(name = "creation_date")
+    @JsonIgnore
+    private Timestamp creationDate;
+
+    @Column(name = "modification_date")
+    @JsonIgnore
+    private Timestamp modificationDate;
 
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
