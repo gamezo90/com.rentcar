@@ -49,6 +49,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order update(Order order) {
-        return null;
+        order.setModificationDate(new Timestamp(new Date().getTime()));
+        orderRepository.save(order);
+        return orderRepository.findById(order.getId()).orElseThrow(IllegalArgumentException::new);
     }
 }

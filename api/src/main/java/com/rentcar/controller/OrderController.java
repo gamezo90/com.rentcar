@@ -62,4 +62,12 @@ public class OrderController {
         OrderResponce response = orderMapper.toResponse(repository.create(newOrder));
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+    @PutMapping("/updateOrder")
+    @Transactional
+    public ResponseEntity<Object> updateOrder(@Valid @RequestBody OrderUpdateRequest updateRequest) {
+        Order newOrder = orderMapper.OrderUpdateRequest(updateRequest);
+        OrderResponce response = orderMapper.toResponse(repository.update(newOrder));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
