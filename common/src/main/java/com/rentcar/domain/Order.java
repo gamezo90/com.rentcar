@@ -31,10 +31,10 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id", insertable = false, updatable = false)
+    @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "car_id", insertable = false, updatable = false)
+    @Column(name = "car_id")
     private Long carId;
 
     @Column(name = " creation_date")
@@ -49,12 +49,12 @@ public class Order {
     private Timestamp expirationDate;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     @JsonBackReference
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "car_id")
+    @JoinColumn(name = "car_id", insertable = false, updatable = false)
     @JsonBackReference
     private Car car;
 }

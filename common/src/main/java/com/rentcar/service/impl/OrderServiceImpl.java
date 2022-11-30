@@ -43,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
     public Order create(Order order) {
         order.setCreationDate(new Timestamp(new Date().getTime()));
         order.setModificationDate(new Timestamp(new Date().getTime()));
-
+        orderRepository.save(order);
         return orderRepository.findById(order.getId()).orElseThrow(IllegalArgumentException::new);
     }
 
