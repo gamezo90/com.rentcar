@@ -1,9 +1,7 @@
 package com.rentcar.configuration;
 
-import com.rentcar.controller.mappers.CarMapper;
-import com.rentcar.controller.mappers.OrderMapper;
-import com.rentcar.controller.mappers.RoleMapper;
-import com.rentcar.controller.mappers.UserMapper;
+import com.rentcar.controller.mappers.*;
+import com.rentcar.domain.Discount;
 import org.mapstruct.factory.Mappers;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,4 +29,8 @@ public class MapStructConfig {
         return Mappers.getMapper(OrderMapper.class);
     }
 
+    @Bean
+    public DiscountMapper discountMapper() {
+        return Mappers.getMapper(DiscountMapper.class);
+    }
 }

@@ -1,11 +1,19 @@
 package com.rentcar.service.impl;
 
 import com.rentcar.domain.Discount;
-import com.rentcar.service.DiscountSystem;
+import com.rentcar.domain.Order;
+import com.rentcar.repository.DiscountRepository;
+import com.rentcar.service.DiscountService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public class DiscountServiceImpl implements DiscountSystem {
+@Service
+@RequiredArgsConstructor
+public class DiscountServiceImpl implements DiscountService {
+
+    private final DiscountRepository discountRepository;
     @Override
     public Discount findByUserId(Long id) {
         return null;
@@ -17,8 +25,8 @@ public class DiscountServiceImpl implements DiscountSystem {
     }
 
     @Override
-    public List<Discount> findAll() {
-        return null;
+    public List<Order> findAll() {
+        return discountRepository.findAll();
     }
 
     @Override

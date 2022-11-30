@@ -1,17 +1,17 @@
 package com.rentcar.service;
 
-import com.rentcar.domain.Role;
+import com.rentcar.domain.Order;
 import com.rentcar.domain.Discount;
 
 import java.util.List;
 
-public interface DiscountSystem {
+public interface DiscountService {
 
     Discount findByUserId(Long id);
 
     Discount findByUserLogin(String login);
 
-    List<Discount> findAll();
+    List<Order> findAll();
 
     Discount create(Discount discount);
 
