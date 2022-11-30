@@ -4,6 +4,7 @@ import com.rentcar.domain.Discount;
 import com.rentcar.domain.Order;
 import com.rentcar.exception.NoSuchEntityException;
 import com.rentcar.repository.DiscountRepository;
+import com.rentcar.service.DiscountService;
 import com.rentcar.service.DiscountSystem;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
-public class DiscountServiceImpl implements DiscountSystem {
+public class DiscountServiceImpl implements DiscountService {
 
     private final DiscountRepository discountRepository;
     @Override

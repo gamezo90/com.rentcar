@@ -11,7 +11,7 @@ public interface DiscountService {
 
     Discount findByUserLogin(String login);
 
-    List<Order> findAll();
+    List<Discount> findAll();
 
     Discount create(Discount discount);
 
