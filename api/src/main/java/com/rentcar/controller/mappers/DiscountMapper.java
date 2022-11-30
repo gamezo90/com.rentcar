@@ -8,8 +8,10 @@ import com.rentcar.controller.response.CarsResponse;
 import com.rentcar.controller.response.DiscountResponse;
 import com.rentcar.domain.Car;
 import com.rentcar.domain.Discount;
+import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
+@Mapper
 public interface DiscountMapper {
 
     DiscountResponse toResponse(Discount discount);

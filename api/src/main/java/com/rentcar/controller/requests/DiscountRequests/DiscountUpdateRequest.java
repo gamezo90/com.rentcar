@@ -7,4 +7,6 @@ import java.sql.Timestamp;
 public class DiscountUpdateRequest {
 
     private Timestamp expirationDate;
+
+    private Float discountSize;
 }
