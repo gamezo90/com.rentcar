@@ -106,4 +106,14 @@ public class UserServiceImpl implements UserService {
             role.getUsers().add(user);
             return user;
     }
+
+    @Override
+    public User addRoleToUser(Long userId) {
+        return null;
+    }
+
+    @Override
+    public User removeUserRole(Long userId) {
+        return null;
+    }
 }
