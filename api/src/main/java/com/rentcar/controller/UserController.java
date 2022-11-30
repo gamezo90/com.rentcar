@@ -75,11 +75,15 @@ public class UserController {
 
     @PatchMapping("/addRoleToUserByLogin/{login}")
     public ResponseEntity<Object> addRoleToUserByLogin(@PathVariable("login")String login, String role) {
-
         User user = userService.addRoleToUser(userService.findByLogin(login), roleRepository.findByRoleName(SystemRoles.valueOf(role)));
-
-
         return new ResponseEntity<>(Collections.singletonMap(user, userMapper.toResponse(user)), HttpStatus.OK);
     }
+
+    @PatchMapping("/removeUserRole/{login}")
+    public ResponseEntity<Object> removeUserRole(@PathVariable("login")String login, String role) {
+        User user = userService.removeUserRole(userService.findByLogin(login), roleRepository.findByRoleName(SystemRoles.valueOf(role)));
+        return new ResponseEntity<>(Collections.singletonMap(user, userMapper.toResponse(user)), HttpStatus.OK);
+    }
+
 
 }

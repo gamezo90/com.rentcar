@@ -110,7 +110,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User removeUserRole(User user, Role role) {
-        return null;
+        Set<Role> roles = new HashSet<>();
+        roles.add(role);
+        user.setRoles(roles);
+        role.getUsers().add(user);
+        roleRepository.delete(role);
+        userRepository.save(user);
+        return user;
     }
 
 }
