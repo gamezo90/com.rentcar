@@ -1,13 +1,11 @@
 package com.rentcar.controller.response;
 
-import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
-import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 
 @Data
-public class OrderResponce {
+public class OrderResponse {
 
     private Long id;
 
