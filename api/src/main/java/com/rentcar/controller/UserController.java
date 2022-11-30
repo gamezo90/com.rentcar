@@ -3,7 +3,10 @@ package com.rentcar.controller;
 import com.rentcar.controller.mappers.UserMapper;
 import com.rentcar.controller.requests.UserRequests.UserUpdateRequest;
 import com.rentcar.controller.response.UserResponse;
+import com.rentcar.domain.Role;
+import com.rentcar.domain.SystemRoles;
 import com.rentcar.domain.User;
+import com.rentcar.repository.RoleRepository;
 import com.rentcar.repository.UserRepository;
 import com.rentcar.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +23,12 @@ import java.util.Map;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final UserRepository repository;
+    private final RoleRepository roleRepository;
 
     private final UserMapper userMapper;
 
     private final UserService userService;
+
 
 
     @GetMapping("/findAllUser")
@@ -72,7 +76,8 @@ public class UserController {
     @PatchMapping("/addRoleToUserByLogin/{login}")
     public ResponseEntity<Object> addRoleToUserByLogin(@PathVariable("login")String login, String role) {
 
-        User user = userService.addRoleToUser(login, role);
+        User user = userService.addRoleToUser(userService.findByLogin(login), roleRepository.findByRoleName(SystemRoles.valueOf(role)));
+
 
         return new ResponseEntity<>(Collections.singletonMap(user, userMapper.toResponse(user)), HttpStatus.OK);
     }

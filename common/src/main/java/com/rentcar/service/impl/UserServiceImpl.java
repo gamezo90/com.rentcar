@@ -104,6 +104,7 @@ public class UserServiceImpl implements UserService {
             roles.add(role);
             user.setRoles(roles);
             role.getUsers().add(user);
+            userRepository.save(user);
             return user;
     }
 
