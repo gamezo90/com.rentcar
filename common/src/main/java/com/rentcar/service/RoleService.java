@@ -14,7 +14,4 @@ public interface RoleService {
 
     Role findRoleById(Long roleId);
 
-    Role create(Role role);
-
-    Long delete(Long id);
 }

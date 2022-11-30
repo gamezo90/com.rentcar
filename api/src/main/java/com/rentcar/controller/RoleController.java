@@ -41,4 +41,5 @@ public class RoleController {
         return new ResponseEntity<>(Collections.singletonMap("result",
                 repository.findRolesByUserId(userId)), HttpStatus.OK);
     }
+
 }

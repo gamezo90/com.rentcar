@@ -36,16 +36,4 @@ public class RoleServiceImpl implements RoleService {
                                         String.format("The role with id:%d not found", roleId)));
     }
 
-    @Transactional
-    @Override
-    public Role create(Role role) {
-        return roleRepository.save(role);
-    }
-
-    @Transactional
-    @Override
-    public Long delete(Long id) {
-        roleRepository.deleteById(id);
-        return id;
-    }
 }
