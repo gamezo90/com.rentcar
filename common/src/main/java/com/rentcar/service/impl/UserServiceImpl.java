@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User create(User user) {
 
-        addRoles(user, roleRepository.findByRoleName(SystemRoles.valueOf("ROLE_USER")));
+        addRoleToUser(user, roleRepository.findByRoleName(SystemRoles.valueOf("ROLE_USER")));
         user.setCreationDate(new Timestamp(new Date().getTime()));
         user.setModificationDate(new Timestamp(new Date().getTime()));
         user.setIsDeleted(false);
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User addRoles(User user, Role role) {
+    public User addRoleToUser(User user, Role role) {
             Set<Role> roles = new HashSet<>();
             roles.add(role);
             user.setRoles(roles);
@@ -108,12 +108,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User addRoleToUser(Long userId) {
+    public User removeUserRole(User user, Role role) {
         return null;
     }
 
-    @Override
-    public User removeUserRole(Long userId) {
-        return null;
-    }
 }

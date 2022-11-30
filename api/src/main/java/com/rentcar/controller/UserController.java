@@ -69,4 +69,12 @@ public class UserController {
         return new ResponseEntity<>(Collections.singletonMap("user", userResponse), HttpStatus.OK);
     }
 
+    @PatchMapping("/addRoleToUserByLogin/{login}")
+    public ResponseEntity<Object> addRoleToUserByLogin(@PathVariable("login")String login, String role) {
+
+        User user = userService.addRoleToUser(login, role);
+
+        return new ResponseEntity<>(Collections.singletonMap(user, userMapper.toResponse(user)), HttpStatus.OK);
+    }
+
 }

@@ -21,9 +21,7 @@ public interface UserService {
 
     User banByLogin(String login);
 
-    User addRoles(User user, Role role);
+    User addRoleToUser(User user, Role role);
 
-    User addRoleToUser(Long userId);
-
-    User removeUserRole(Long userId);
+    User removeUserRole(User user, Role role);
 }
