@@ -49,14 +49,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User create(User user) {
 
-        addRole(user, roleRepository.findByRoleName(SystemRoles.valueOf("ROLE_USER")));
         user.setCreationDate(new Timestamp(new Date().getTime()));
         user.setModificationDate(new Timestamp(new Date().getTime()));
         user.setIsDeleted(false);
         user.setIsBanned(false);
         user.getCredentials().setPassword(passwordEncoder.encode(user.getCredentials().getPassword()));
-        userRepository.save(user);
-
+        addRoleToUser(user, roleRepository.findByRoleName(SystemRoles.valueOf("ROLE_USER")));
         return userRepository.findById(user.getId()).orElseThrow(IllegalArgumentException::new);
     }
 
@@ -74,23 +72,17 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User softDelete(String login) {
-
         User user = userRepository.findByCredentialsLogin(login).get();
-
         user.setIsDeleted(true);
         userRepository.save(user);
-
         return user;
     }
 
     @Transactional
     public User banByLogin(String login) {
-
         User user = userRepository.findByCredentialsLogin(login).get();
-
         user.setIsBanned(true);
         userRepository.save(user);
-
         return user;
     }
 
@@ -104,16 +96,8 @@ public class UserServiceImpl implements UserService {
             return user;
     }
 
-    private void addRole(User user, Role role) {
-        Set<Role> rolesList = new HashSet<>();
-        rolesList.add(role);
-        user.setRoles(rolesList);
-        role.getUsers().add(user);
-    }
-
     @Override
     public User removeUserRole(User user, Role role) {
-
         role.getUsers().remove(user);
         userRepository.save(user);
         return user;
