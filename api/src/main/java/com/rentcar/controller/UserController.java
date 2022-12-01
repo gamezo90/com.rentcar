@@ -8,6 +8,7 @@ import com.rentcar.domain.SystemRoles;
 import com.rentcar.domain.User;
 import com.rentcar.repository.RoleRepository;
 import com.rentcar.repository.UserRepository;
+import com.rentcar.service.RoleService;
 import com.rentcar.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,12 +24,11 @@ import java.util.Map;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final RoleRepository roleRepository;
-
     private final UserMapper userMapper;
 
     private final UserService userService;
 
+    private final RoleService roleService;
 
 
     @GetMapping("/findAllUser")
@@ -75,13 +75,13 @@ public class UserController {
 
     @PatchMapping("/addRoleToUserByLogin/{login}")
     public ResponseEntity<Object> addRoleToUserByLogin(@PathVariable("login")String login, String role) {
-        User user = userService.addRoleToUser(userService.findByLogin(login), roleRepository.findByRoleName(SystemRoles.valueOf(role)));
+        User user = userService.addRoleToUser(userService.findByLogin(login), roleService.findByRoleName(role));
         return new ResponseEntity<>(Collections.singletonMap(user, userMapper.toResponse(user)), HttpStatus.OK);
     }
 
     @PatchMapping("/removeUserRole/{login}")
     public ResponseEntity<Object> removeUserRole(@PathVariable("login")String login, String role) {
-        User user = userService.removeUserRole(userService.findByLogin(login), roleRepository.findByRoleName(SystemRoles.valueOf(role)));
+        User user = userService.removeUserRole(userService.findByLogin(login), roleService.findByRoleName(role));
         return new ResponseEntity<>(Collections.singletonMap(user, userMapper.toResponse(user)), HttpStatus.OK);
     }
 

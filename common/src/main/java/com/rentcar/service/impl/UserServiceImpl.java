@@ -118,14 +118,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public User removeUserRole(User user, Role role) {
 
-//        Role roleUser = roleRepository.findByRoleName(role.getRoleName());
-
-        Set<Role> rolesList = user.getRoles();
-        rolesList.remove(role);
-        user.setRoles(rolesList);
+        role.getUsers().remove(user);
         userRepository.save(user);
-
-
         return user;
     }
 

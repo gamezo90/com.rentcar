@@ -1,6 +1,7 @@
 package com.rentcar.service.impl;
 
 import com.rentcar.domain.Role;
+import com.rentcar.domain.SystemRoles;
 import com.rentcar.repository.RoleRepository;
 import com.rentcar.service.RoleService;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,11 @@ public class RoleServiceImpl implements RoleService {
                         () ->
                                 new EntityNotFoundException(
                                         String.format("The role with id:%d not found", roleId)));
+    }
+
+    @Override
+    public Role findByRoleName(String roleName) {
+        return roleRepository.findByRoleName(SystemRoles.valueOf(roleName));
     }
 
 }
