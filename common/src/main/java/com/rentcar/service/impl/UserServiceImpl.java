@@ -55,10 +55,6 @@ public class UserServiceImpl implements UserService {
         user.setIsDeleted(false);
         user.setIsBanned(false);
         user.getCredentials().setPassword(passwordEncoder.encode(user.getCredentials().getPassword()));
-        Role roleUser = roleRepository.findByRoleName(SystemRoles.ROLE_USER);
-
-        user.setRoles(Set.of(roleUser));
-
         userRepository.save(user);
 
         return userRepository.findById(user.getId()).orElseThrow(IllegalArgumentException::new);
