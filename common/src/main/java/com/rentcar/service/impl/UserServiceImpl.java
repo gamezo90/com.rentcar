@@ -3,7 +3,6 @@ package com.rentcar.service.impl;
 import com.rentcar.domain.Role;
 import com.rentcar.domain.SystemRoles;
 import com.rentcar.domain.User;
-import com.rentcar.exception.NoSuchEntityException;
 import com.rentcar.repository.RoleRepository;
 import com.rentcar.repository.UserRepository;
 import com.rentcar.service.UserService;
@@ -29,15 +28,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() ->
-                new NoSuchEntityException(String.format("User with this id \"%s\" not found", id)));
+                new EntityNotFoundException(String.format("User with this id %s not found", id)));
     }
 
     @Override
     public User findByLogin(String login) {
-        return userRepository.findByCredentialsLogin(login).orElseThrow(
-                () ->
-                        new EntityNotFoundException(
-                                String.format("The user with login: %s not found", login)));
+        return userRepository.findByCredentialsLogin(login).orElseThrow(() ->
+                new EntityNotFoundException(String.format("The user with login: %s not found", login)));
     }
 
     @Override
@@ -67,12 +64,15 @@ public class UserServiceImpl implements UserService {
                 .setPassword(passwordEncoder.encode(userToUpdate.getCredentials().getPassword()));
         userRepository.save(userToUpdate);
         return userRepository.findById(userToUpdate.getId()).orElseThrow(EntityNotFoundException::new);
+
+    //   return userRepository.findByCredentialsLogin(userToUpdate.getCredentials().getLogin()).orElseThrow(EntityNotFoundException::new);
     }
 
     @Transactional
     @Override
     public User softDelete(String login) {
-        User user = userRepository.findByCredentialsLogin(login).get();
+        User user = userRepository.findByCredentialsLogin(login).orElseThrow(() ->
+                new EntityNotFoundException(String.format("The user with login: %s not found", login)));;
         user.setIsDeleted(true);
         userRepository.save(user);
         return user;
@@ -80,7 +80,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public User banByLogin(String login) {
-        User user = userRepository.findByCredentialsLogin(login).get();
+        User user = userRepository.findByCredentialsLogin(login).orElseThrow(() ->
+                new EntityNotFoundException(String.format("The user with login: %s not found", login)));
         user.setIsBanned(true);
         userRepository.save(user);
         return user;

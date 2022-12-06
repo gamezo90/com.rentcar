@@ -1,7 +1,6 @@
 package com.rentcar.service.impl;
 
 import com.rentcar.domain.Car;
-import com.rentcar.exception.NoSuchEntityException;
 import com.rentcar.repository.CarRepository;
 import com.rentcar.service.CarService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public Car findById(Long id) {
         return carRepository.findById(id).orElseThrow(() ->
-                new NoSuchEntityException(String.format("Car with this id \"%s\" not found", id)));
+                new EntityNotFoundException(String.format("Car with this id \"%s\" not found", id)));
     }
 
     @Override
@@ -60,7 +59,7 @@ public class CarServiceImpl implements CarService {
     public Car banById(Long id) {
 
         Car car = carRepository.findById(id).orElseThrow(() ->
-                new NoSuchEntityException(String.format("Car with this id \"%s\" not found", id)));
+                new EntityNotFoundException(String.format("Car with this id \"%s\" not found", id)));
 
         car.setIsBanned(true);
         carRepository.save(car);

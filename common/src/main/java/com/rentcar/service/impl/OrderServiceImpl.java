@@ -1,12 +1,12 @@
 package com.rentcar.service.impl;
 
 import com.rentcar.domain.Order;
-import com.rentcar.exception.NoSuchEntityException;
 import com.rentcar.repository.OrderRepository;
 import com.rentcar.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -26,7 +26,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order findById(Long id) {
         return orderRepository.findById(id).orElseThrow(() ->
-                new NoSuchEntityException(String.format("Order with this id \"%s\" not found", id)));
+                new EntityNotFoundException(String.format("Order with this id \"%s\" not found", id)));
     }
 
     @Override

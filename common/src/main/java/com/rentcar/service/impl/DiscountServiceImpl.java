@@ -1,8 +1,6 @@
 package com.rentcar.service.impl;
 
 import com.rentcar.domain.Discount;
-import com.rentcar.domain.Order;
-import com.rentcar.exception.NoSuchEntityException;
 import com.rentcar.repository.DiscountRepository;
 import com.rentcar.service.DiscountService;
 import lombok.RequiredArgsConstructor;

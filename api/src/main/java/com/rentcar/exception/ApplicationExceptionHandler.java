@@ -21,10 +21,7 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class ApplicationExceptionHandler {
 
-  //TODO: add AccessDeniedException
-
   @ExceptionHandler({
-    NoSuchEntityException.class,
     EmptyResultDataAccessException.class,
     NoSuchElementException.class,
     EntityNotFoundException.class
@@ -38,11 +35,13 @@ public class ApplicationExceptionHandler {
             .errorMessage(e.getMessage())
             .e(e.getClass().toString())
             .build();
-    log.warn("error: {}, id: {}, error code: {}",error.getErrorMessage(), error.getExceptionId(),error.getErrorCode());
+    log.warn("error: {}, id: {}, error code: {}",error.getErrorMessage(), error.getExceptionId(), error.getErrorCode());
     return new ResponseEntity<>(Collections.singletonMap("error", error), HttpStatus.NOT_FOUND);
   }
 
-  @ExceptionHandler({NumberFormatException.class})
+  @ExceptionHandler({
+          NumberFormatException.class,
+          IllegalArgumentException.class})
   public ResponseEntity<Object> handlerNumberFormatException(Exception e) {
 
     ErrorContainer error =
