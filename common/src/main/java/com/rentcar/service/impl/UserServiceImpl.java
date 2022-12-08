@@ -39,6 +39,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAll() {
+
+        if (userRepository.findAll().isEmpty()) {
+            throw new EntityNotFoundException(String.format("Users not found"));
+        }
         return userRepository.findAll();
     }
 
