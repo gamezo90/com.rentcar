@@ -24,7 +24,9 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<Role> findRolesByUserId(Long userId) {
-
+        if (roleRepository.findRolesByUserId(userId).isEmpty()) {
+            throw new EntityNotFoundException(String.format("The user with id: %d not found", userId));
+        }
         return roleRepository.findRolesByUserId(userId);
     }
 
@@ -39,7 +41,7 @@ public class RoleServiceImpl implements RoleService {
         try {
             return  roleRepository.findByRoleName(SystemRoles.valueOf(roleName));
         } catch (IllegalArgumentException e) {
-           throw new IllegalArgumentException(String.format("The role with name: %s not found", roleName));
+            throw new IllegalArgumentException(String.format("The role with name: %s not found", roleName));
         }
     }
 
