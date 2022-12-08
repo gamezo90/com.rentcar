@@ -18,8 +18,11 @@ public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository ;
 
     @Override
-    public Page<Role> findAll(Pageable page) {
-        return roleRepository.findAll(page);
+    public List<Role> findAll() {
+        if (roleRepository.findAll().isEmpty()) {
+            throw new EntityNotFoundException(String.format("Roles not found"));
+        }
+        return roleRepository.findAll();
     }
 
     @Override

@@ -23,8 +23,7 @@ public class RoleController {
     @GetMapping("/findAllRoles")
     public ResponseEntity<Object> findAllRoles() {
 
-        return new ResponseEntity<>(Collections.singletonMap("result",
-                repository.findAll(PageRequest.of(0, 10))), HttpStatus.OK);
+        return new ResponseEntity<>(Collections.singletonMap("result", repository.findAll()), HttpStatus.OK);
     }
 
     @GetMapping("/findRoleById")

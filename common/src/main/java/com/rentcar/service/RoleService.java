@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface RoleService {
 
-    Page<Role> findAll(Pageable page);
+    List<Role> findAll();
 
     List<Role> findRolesByUserId(Long userId);
 
