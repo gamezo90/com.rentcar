@@ -10,7 +10,7 @@ public interface RoleService {
 
     Page<Role> findAll(Pageable page);
 
-    List<Role> findRolesByUserId(Long roleId);
+    List<Role> findRolesByUserId(Long userId);
 
     Role findRoleById(Long roleId);
 
