@@ -39,7 +39,7 @@ public class RoleServiceImpl implements RoleService {
         try {
             return  roleRepository.findByRoleName(SystemRoles.valueOf(roleName));
         } catch (IllegalArgumentException e) {
-           throw new IllegalArgumentException(String.format("The role with name: %d not found", roleName));
+           throw new IllegalArgumentException(String.format("The role with name: %s not found", roleName));
         }
     }
 

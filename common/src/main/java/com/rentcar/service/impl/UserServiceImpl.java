@@ -89,12 +89,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User addRoleToUser(User user, Role role) {
-            Set<Role> roles =  user.getRoles();
-            roles.add(role);
-            user.setRoles(roles);
-            role.getUsers().add(user);
-            userRepository.save(user);
-            return user;
+        Set<Role> roles = new HashSet<>();
+        if (user.getRoles() != null) {
+            roles.addAll(user.getRoles());
+        }
+        roles.add(role);
+        user.setRoles(roles);
+        role.getUsers().add(user);
+        userRepository.save(user);
+        return user;
     }
 
     @Override
