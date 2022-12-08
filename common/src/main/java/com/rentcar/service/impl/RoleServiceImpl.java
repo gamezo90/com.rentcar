@@ -31,19 +31,16 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role findRoleById(Long roleId) {
         return roleRepository.findById(roleId).orElseThrow(() ->
-                new EntityNotFoundException(String.format("The role with id:%d not found", roleId)));
+                new EntityNotFoundException(String.format("The role with id: %d not found", roleId)));
     }
 
     @Override
-    public Role findByRoleName(String roleName) {
-
-    //    Role role = null;
+    public Role findRoleByName(String roleName) {
         try {
             return  roleRepository.findByRoleName(SystemRoles.valueOf(roleName));
         } catch (IllegalArgumentException e) {
-           throw new IllegalArgumentException(String.format("The rolekjhjhkjhk with  not found"));
+           throw new IllegalArgumentException(String.format("The role with name: %d not found", roleName));
         }
-  //      return Role;
     }
 
 }
