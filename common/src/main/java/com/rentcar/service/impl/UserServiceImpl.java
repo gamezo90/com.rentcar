@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.sql.Timestamp;
 import java.util.*;
@@ -56,6 +57,7 @@ public class UserServiceImpl implements UserService {
         user.setIsDeleted(false);
         user.setIsBanned(false);
         user.getCredentials().setPassword(passwordEncoder.encode(user.getCredentials().getPassword()));
+        checkUserLoginAndEmailForNotExistInDB(user);
         addRoleToUser(user, roleRepository.findByRoleName(SystemRoles.valueOf("ROLE_USER")));
         return userRepository.findById(user.getId()).orElseThrow(IllegalArgumentException::new);
     }
@@ -67,7 +69,9 @@ public class UserServiceImpl implements UserService {
         userToUpdate
                 .getCredentials()
                 .setPassword(passwordEncoder.encode(userToUpdate.getCredentials().getPassword()));
+        checkUserLoginAndEmailForNotExistInDB(userToUpdate);
         userRepository.save(userToUpdate);
+        checkUserLoginAndEmailForNotExistInDB(userToUpdate);
         return userRepository.findById(userToUpdate.getId()).orElseThrow(EntityNotFoundException::new);
 
     //   return userRepository.findByCredentialsLogin(userToUpdate.getCredentials().getLogin()).orElseThrow(EntityNotFoundException::new);
@@ -101,11 +105,7 @@ public class UserServiceImpl implements UserService {
         roles.add(role);
         user.setRoles(roles);
         role.getUsers().add(user);
-        try {
-            userRepository.save(user);
-        } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityViolationException(String.format("Login or email already exists"));
-        }
+        userRepository.save(user);
         return user;
     }
 
@@ -114,6 +114,33 @@ public class UserServiceImpl implements UserService {
         role.getUsers().remove(user);
         userRepository.save(user);
         return user;
+    }
+
+    private void checkUserLoginAndEmailForNotExistInDB(User user) {
+
+        String userLogin = user.getCredentials().getLogin();
+        Optional<User> userByLogin = userRepository.findByCredentialsLogin(userLogin);
+
+        if (userByLogin.isPresent() && checkUsersIdForMismatch(userByLogin.get(), user)) {
+            throw new EntityExistsException(
+                    String.format("User with this login %s already exists", userLogin));
+        }
+
+        String userEmail = user.getCredentials().getEmail();
+        Optional<User> userByEmail = userRepository.findByCredentialsEmail(userEmail);
+
+        if (userByEmail.isPresent() && checkUsersIdForMismatch(userByEmail.get(), user)) {
+
+            throw new EntityExistsException(
+                    String.format("User with this email %s already exists", userEmail));
+        }
+
+   //     return true;
+    }
+
+    private boolean checkUsersIdForMismatch(User user1, User user2) {
+
+        return !user1.getId().equals(user2.getId());
     }
 
 }
