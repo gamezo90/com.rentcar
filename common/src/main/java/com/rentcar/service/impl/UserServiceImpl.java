@@ -69,8 +69,8 @@ public class UserServiceImpl implements UserService {
         userToUpdate
                 .getCredentials()
                 .setPassword(passwordEncoder.encode(userToUpdate.getCredentials().getPassword()));
-        checkUserLoginAndEmailForNotExistInDB(userToUpdate);
         userRepository.save(userToUpdate);
+  //!!!!!!      findByLogin(userToUpdate.getCredentials().getLogin());
         checkUserLoginAndEmailForNotExistInDB(userToUpdate);
         return userRepository.findById(userToUpdate.getId()).orElseThrow(EntityNotFoundException::new);
 
@@ -135,7 +135,6 @@ public class UserServiceImpl implements UserService {
                     String.format("User with this email %s already exists", userEmail));
         }
 
-   //     return true;
     }
 
     private boolean checkUsersIdForMismatch(User user1, User user2) {
