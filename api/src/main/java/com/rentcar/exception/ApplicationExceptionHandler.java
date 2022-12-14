@@ -77,7 +77,7 @@ public class ApplicationExceptionHandler {
         ErrorContainer.builder()
             .exceptionId(UUIDGenerator.generateUUID())
             .errorCode(1)
-            .errorMessage("Data integrity violation")
+            .errorMessage(e.getMessage())
             .e(e.getClass().toString())
             .build();
 
