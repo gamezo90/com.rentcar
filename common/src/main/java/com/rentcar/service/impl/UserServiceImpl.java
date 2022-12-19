@@ -115,25 +115,17 @@ public class UserServiceImpl implements UserService {
         String userLogin = user.getCredentials().getLogin();
         Optional<User> userByLogin = userRepository.findByCredentialsLogin(userLogin);
 
-        if (userByLogin.isPresent() && checkUsersIdForMismatch(userByLogin.get(), user)) {
+        if (userByLogin.isPresent() && !userByLogin.get().equals(user)) {
             throw new EntityExistsException(
-                    String.format("User with this login %s already exists", userLogin));
+                    String.format("User with login %s already exists", userLogin));
         }
 
         String userEmail = user.getCredentials().getEmail();
         Optional<User> userByEmail = userRepository.findByCredentialsEmail(userEmail);
 
-        if (userByEmail.isPresent() && checkUsersIdForMismatch(userByEmail.get(), user)) {
-
+        if (userByEmail.isPresent() && !userByEmail.get().equals(user)) {
             throw new EntityExistsException(
-                    String.format("User with this email %s already exists", userEmail));
+                    String.format("User with email %s already exists", userEmail));
         }
-
     }
-
-    private boolean checkUsersIdForMismatch(User user1, User user2) {
-
-        return !user1.getId().equals(user2.getId());
-    }
-
 }
