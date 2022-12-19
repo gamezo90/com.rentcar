@@ -27,6 +27,7 @@ public class RegistrationController {
   @Transactional
   public ResponseEntity<Object> addUser(@Valid @RequestBody UserCreateRequest createRequest) {
     User newUser = userMapper.convertCreateRequest(createRequest);
+    userService.checkUserLoginAndEmailForNotExistInDB(newUser);
     UserResponse response = userMapper.toResponse(userService.create(newUser));
     return new ResponseEntity<>(response, HttpStatus.CREATED);
   }

@@ -41,7 +41,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAll() {
-
         if (userRepository.findAll().isEmpty()) {
             throw new EntityNotFoundException(String.format("Users not found"));
         }
@@ -51,13 +50,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User create(User user) {
-
         user.setCreationDate(new Timestamp(new Date().getTime()));
         user.setModificationDate(new Timestamp(new Date().getTime()));
         user.setIsDeleted(false);
         user.setIsBanned(false);
         user.getCredentials().setPassword(passwordEncoder.encode(user.getCredentials().getPassword()));
-        checkUserLoginAndEmailForNotExistInDB(user);
         addRoleToUser(user, roleRepository.findByRoleName(SystemRoles.valueOf("ROLE_USER")));
         return userRepository.findById(user.getId()).orElseThrow(IllegalArgumentException::new);
     }
@@ -70,11 +67,8 @@ public class UserServiceImpl implements UserService {
                 .getCredentials()
                 .setPassword(passwordEncoder.encode(userToUpdate.getCredentials().getPassword()));
         userRepository.save(userToUpdate);
-  //!!!!!!      findByLogin(userToUpdate.getCredentials().getLogin());
-        checkUserLoginAndEmailForNotExistInDB(userToUpdate);
         return userRepository.findById(userToUpdate.getId()).orElseThrow(EntityNotFoundException::new);
 
-    //   return userRepository.findByCredentialsLogin(userToUpdate.getCredentials().getLogin()).orElseThrow(EntityNotFoundException::new);
     }
 
     @Transactional
@@ -116,7 +110,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    private void checkUserLoginAndEmailForNotExistInDB(User user) {
+    public void checkUserLoginAndEmailForNotExistInDB(User user) {
 
         String userLogin = user.getCredentials().getLogin();
         Optional<User> userByLogin = userRepository.findByCredentialsLogin(userLogin);

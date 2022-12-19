@@ -24,4 +24,5 @@ public interface UserService {
     User addRoleToUser(User user, Role role);
 
     User removeUserRole(User user, Role role);
+    void checkUserLoginAndEmailForNotExistInDB(User user);
 }
