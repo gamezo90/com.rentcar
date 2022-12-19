@@ -6,6 +6,7 @@ import com.rentcar.service.DiscountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -16,16 +17,28 @@ public class DiscountServiceImpl implements DiscountService {
     private final DiscountRepository discountRepository;
     @Override
     public Discount findByUserId(Long id) {
+        if (discountRepository.findByUserId(id) == null) {
+            throw new EntityNotFoundException(String.format("Discount for User with id %s not found", id));
+        }
         return discountRepository.findByUserId(id);
     }
 
+
     @Override
     public Discount findByUserLogin(String login) {
+        if (discountRepository.findByUserCredentialsLogin(login) == null) {
+            throw new EntityNotFoundException(String.format("Discount for User with login %s not found", login));
+        }
         return discountRepository.findByUserCredentialsLogin(login);
     }
 
+
     @Override
     public List<Discount> findAll() {
+
+        if (discountRepository.findAll().isEmpty()) {
+            throw new EntityNotFoundException(String.format("Discounts not found"));
+        }
         return discountRepository.findAll();
     }
 
