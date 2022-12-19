@@ -20,22 +20,31 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> findAll() {
+        if (orderRepository.findAll().isEmpty()) {
+            throw new EntityNotFoundException(String.format("Orders not found"));
+        }
         return orderRepository.findAll();
     }
 
     @Override
     public Order findById(Long id) {
         return orderRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException(String.format("Order with this id \"%s\" not found", id)));
+                new EntityNotFoundException(String.format("Order with this id %s not found", id)));
     }
 
     @Override
     public List<Order> findOrdersByCarId(Long id) {
+        if (orderRepository.findAll().isEmpty()) {
+            throw new EntityNotFoundException(String.format("Order not found"));
+        }
         return orderRepository.findOrdersByCarId(id);
     }
 
     @Override
     public List<Order> findOrdersByUserId(Long id) {
+        if (orderRepository.findAll().isEmpty()) {
+            throw new EntityNotFoundException(String.format("Order not found"));
+        }
         return orderRepository.findOrdersByUserId(id);
     }
 
