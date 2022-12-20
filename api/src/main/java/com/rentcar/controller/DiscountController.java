@@ -6,6 +6,7 @@ import com.rentcar.controller.requests.DiscountRequests.DiscountUpdateRequest;
 import com.rentcar.controller.response.DiscountResponse;
 import com.rentcar.domain.Discount;
 import com.rentcar.service.DiscountService;
+import com.rentcar.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,8 @@ public class DiscountController {
     private final DiscountMapper discountMapper;
 
     private final DiscountService discountService;
+
+    private final UserService userService;
 
     @GetMapping("/findDiscountByUserId")
     public ResponseEntity<Object> findByUserId(@RequestParam("id") Long userId) {
@@ -45,7 +48,7 @@ public class DiscountController {
     public ResponseEntity<Object> addDiscount(@Valid @RequestBody DiscountCreateRequest createRequest) {
         Discount newDiscount = discountMapper.discountConvertCreateRequest(createRequest);
         discountService.checkUserDiscountAlreadyExists(newDiscount.getUserId());
-        discountService.checkUserIdForNotExist(newDiscount.getUserId());
+        userService.findById(newDiscount.getUserId());
         DiscountResponse response = discountMapper.toResponse(discountService.create(newDiscount));
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
