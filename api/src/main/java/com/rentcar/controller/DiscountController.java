@@ -44,6 +44,8 @@ public class DiscountController {
     @Transactional
     public ResponseEntity<Object> addDiscount(@Valid @RequestBody DiscountCreateRequest createRequest) {
         Discount newDiscount = discountMapper.discountConvertCreateRequest(createRequest);
+        discountService.checkUserDiscountAlreadyExists(newDiscount.getUserId());
+        discountService.checkUserIdForNotExist(newDiscount.getUserId());
         DiscountResponse response = discountMapper.toResponse(discountService.create(newDiscount));
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
