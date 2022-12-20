@@ -69,10 +69,6 @@ public class DiscountServiceImpl implements DiscountService {
         return discountRepository.findById(discountToUpdate.getId()).orElseThrow(IllegalArgumentException::new);
     }
 
-    public void checkUserIdForNotExist(Long userId) {
-        userService.findById(userId);
-      }
-
     public void checkUserDiscountAlreadyExists(Long userId) {
         if (userRepository.findById(userId).isPresent()){
             throw new EntityExistsException(

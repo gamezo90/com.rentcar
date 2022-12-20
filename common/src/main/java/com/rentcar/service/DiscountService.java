@@ -18,8 +18,6 @@ public interface DiscountService {
 
     Discount update(Discount discountToUpdate);
 
-    void checkUserIdForNotExist(Long userId);
-
     void checkUserDiscountAlreadyExists(Long userId);
 
 }
