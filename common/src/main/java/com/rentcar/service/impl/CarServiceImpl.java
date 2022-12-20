@@ -22,8 +22,6 @@ public class CarServiceImpl implements CarService {
 
     private final CarRepository carRepository;
 
-    private final UserService userService;
-
     @Override
     public Car findById(Long id) {
         return carRepository.findById(id).orElseThrow(() ->

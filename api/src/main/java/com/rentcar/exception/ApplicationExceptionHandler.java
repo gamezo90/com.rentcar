@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -22,8 +23,6 @@ import java.util.stream.Collectors;
 public class ApplicationExceptionHandler {
 
   @ExceptionHandler({
-    EmptyResultDataAccessException.class,
-    NoSuchElementException.class,
     EntityNotFoundException.class
   })
   public ResponseEntity<Object> handlerEntityNotFoundException(Exception e) {
@@ -31,89 +30,105 @@ public class ApplicationExceptionHandler {
     ErrorContainer error =
         ErrorContainer.builder()
             .exceptionId(UUIDGenerator.generateUUID())
-            .errorCode(2)
+            .errorCode(10)
             .errorMessage(e.getMessage())
             .e(e.getClass().toString())
             .build();
     log.warn("error: {}, id: {}, error code: {}",error.getErrorMessage(), error.getExceptionId(), error.getErrorCode());
     return new ResponseEntity<>(Collections.singletonMap("error", error), HttpStatus.NOT_FOUND);
   }
-
   @ExceptionHandler({
-          NumberFormatException.class,
-          IllegalArgumentException.class})
-  public ResponseEntity<Object> handlerNumberFormatException(Exception e) {
+          EntityExistsException.class
+  })
+  public ResponseEntity<Object> handlerEntityExistsException(Exception e) {
 
     ErrorContainer error =
-        ErrorContainer.builder()
-            .exceptionId(UUIDGenerator.generateUUID())
-            .errorCode(3)
-            .errorMessage(e.getMessage())
-            .e(e.getClass().toString())
-            .build();
-
-    return new ResponseEntity<>(Collections.singletonMap("error", error), HttpStatus.BAD_REQUEST);
+            ErrorContainer.builder()
+                    .exceptionId(UUIDGenerator.generateUUID())
+                    .errorCode(20)
+                    .errorMessage(e.getMessage())
+                    .e(e.getClass().toString())
+                    .build();
+    log.warn("error: {}, id: {}, error code: {}",error.getErrorMessage(), error.getExceptionId(), error.getErrorCode());
+    return new ResponseEntity<>(Collections.singletonMap("error", error), HttpStatus.CONFLICT);
   }
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<Object> handlerException(Exception e) {
 
     ErrorContainer error =
-        ErrorContainer.builder()
-            .exceptionId(UUIDGenerator.generateUUID())
-            .errorCode(1)
-            .errorMessage(String.format("General error %s",e.getMessage()))
-            .e(e.getClass().toString())
-            .build();
+            ErrorContainer.builder()
+                    .exceptionId(UUIDGenerator.generateUUID())
+                    .errorCode(1)
+                    .errorMessage(String.format("General error %s",e.getMessage()))
+                    .e(e.getClass().toString())
+                    .build();
 
-    return new ResponseEntity<>(
-        Collections.singletonMap("error", error), HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>(Collections.singletonMap("error", error), HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
-  @ExceptionHandler(DataIntegrityViolationException.class)
-  public ResponseEntity<Object> handlerDataIntegrityViolationException(Exception e) {
+//  @ExceptionHandler({
+//          NumberFormatException.class,
+//          IllegalArgumentException.class})
+//  public ResponseEntity<Object> handlerNumberFormatException(Exception e) {
+//
+//    ErrorContainer error =
+//        ErrorContainer.builder()
+//            .exceptionId(UUIDGenerator.generateUUID())
+//            .errorCode(3)
+//            .errorMessage(e.getMessage())
+//            .e(e.getClass().toString())
+//            .build();
+//
+//    return new ResponseEntity<>(Collections.singletonMap("error", error), HttpStatus.BAD_REQUEST);
+//  }
+//
 
-    ErrorContainer error =
-        ErrorContainer.builder()
-            .exceptionId(UUIDGenerator.generateUUID())
-            .errorCode(1)
-            .errorMessage(e.getMessage())
-            .e(e.getClass().toString())
-            .build();
 
-    return new ResponseEntity<>(Collections.singletonMap("error", error), HttpStatus.CONFLICT);
-  }
-
-  @ExceptionHandler(ConstraintViolationException.class)
-  public ResponseEntity<Object> handlerConstraintViolationException(
-      ConstraintViolationException e) {
-
-    Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
-    Set<String> messages = new HashSet<>(constraintViolations.size());
-    messages.addAll(
-        constraintViolations.stream()
-            .map(
-                constraintViolation ->
-                    String.format(
-                        "%s value '%s' %s",
-                        constraintViolation.getPropertyPath(),
-                        constraintViolation.getInvalidValue(),
-                        constraintViolation.getMessage()))
-            .collect(Collectors.toList()));
-
-    return new ResponseEntity<>(
-        Collections.singletonMap("error", messages), HttpStatus.BAD_REQUEST);
-  }
-
-  @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<Object> handlerMethodArgumentNotValidException(
-      MethodArgumentNotValidException e) {
-
-    Map<String, String> messages = new HashMap<>();
-    for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
-      messages.put(fieldError.getField(), fieldError.getDefaultMessage());
-    }
-    return new ResponseEntity<>(
-        Collections.singletonMap("error", messages), HttpStatus.BAD_REQUEST);
-  }
+//  @ExceptionHandler(DataIntegrityViolationException.class)
+//  public ResponseEntity<Object> handlerDataIntegrityViolationException(Exception e) {
+//
+//    ErrorContainer error =
+//        ErrorContainer.builder()
+//            .exceptionId(UUIDGenerator.generateUUID())
+//            .errorCode(1)
+//            .errorMessage(e.getMessage())
+//            .e(e.getClass().toString())
+//            .build();
+//
+//    return new ResponseEntity<>(Collections.singletonMap("error", error), HttpStatus.CONFLICT);
+//  }
+//
+//  @ExceptionHandler(ConstraintViolationException.class)
+//  public ResponseEntity<Object> handlerConstraintViolationException(
+//      ConstraintViolationException e) {
+//
+//    Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
+//    Set<String> messages = new HashSet<>(constraintViolations.size());
+//    messages.addAll(
+//        constraintViolations.stream()
+//            .map(
+//                constraintViolation ->
+//                    String.format(
+//                        "%s value '%s' %s",
+//                        constraintViolation.getPropertyPath(),
+//                        constraintViolation.getInvalidValue(),
+//                        constraintViolation.getMessage()))
+//            .collect(Collectors.toList()));
+//
+//    return new ResponseEntity<>(
+//        Collections.singletonMap("error", messages), HttpStatus.BAD_REQUEST);
+//  }
+//
+//  @ExceptionHandler(MethodArgumentNotValidException.class)
+//  public ResponseEntity<Object> handlerMethodArgumentNotValidException(
+//      MethodArgumentNotValidException e) {
+//
+//    Map<String, String> messages = new HashMap<>();
+//    for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
+//      messages.put(fieldError.getField(), fieldError.getDefaultMessage());
+//    }
+//    return new ResponseEntity<>(
+//        Collections.singletonMap("error", messages), HttpStatus.BAD_REQUEST);
+//  }
 }
