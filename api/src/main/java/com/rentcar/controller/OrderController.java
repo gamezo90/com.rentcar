@@ -57,6 +57,7 @@ public class OrderController {
     @Transactional
     public ResponseEntity<Object> addOrder(@Valid @RequestBody OrderCreateRequest createRequest) {
         Order newOrder = orderMapper.orderConvertCreateRequest(createRequest);
+        orderService.checkUserAndCarExists(newOrder.getUserId(), newOrder.getCarId());
         OrderResponse response = orderMapper.toResponse(orderService.create(newOrder));
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
