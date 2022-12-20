@@ -49,7 +49,7 @@ public class CarController {
 
     @GetMapping("/findCarByUserLogin")
     public ResponseEntity<Object> findCarUserByLogin(@RequestParam("user_login") String login) {
-
+        carService.checkCarWithUserLoginExist(login);
         return new ResponseEntity<>(Collections.singletonMap("result", carService.findByUserLogin(login)), HttpStatus.OK);
     }
 

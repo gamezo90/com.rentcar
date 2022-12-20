@@ -20,4 +20,6 @@ public interface CarService {
 
     Car banById(Long id);
 
+    void checkCarWithUserLoginExist(String userLogin);
+
 }
