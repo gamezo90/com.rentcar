@@ -4,6 +4,7 @@ import com.rentcar.domain.Car;
 import com.rentcar.domain.User;
 import com.rentcar.repository.CarRepository;
 import com.rentcar.service.CarService;
+import com.rentcar.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,8 @@ import java.util.Optional;
 public class CarServiceImpl implements CarService {
 
     private final CarRepository carRepository;
+
+    private final UserService userService;
 
     @Override
     public Car findById(Long id) {
@@ -78,6 +81,11 @@ public class CarServiceImpl implements CarService {
             throw new EntityNotFoundException(
                     String.format("Car with userLogin %s not found", userLogin));
         }
+    }
+
+    public void checkUserWithIdExist(Long userId) {
+        userService.findById(userId);
+
     }
 
 }

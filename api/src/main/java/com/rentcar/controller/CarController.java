@@ -57,6 +57,7 @@ public class CarController {
     @Transactional
     public ResponseEntity<Object> addCar(@Valid @RequestBody CarCreateRequest createRequest) {
         Car newCar = carMapper.carConvertCreateRequest(createRequest);
+        carService.checkUserWithIdExist(newCar.getUserId());
         CarsResponse response = carMapper.toResponse(carService.create(newCar));
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
