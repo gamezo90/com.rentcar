@@ -1,21 +1,31 @@
 package com.rentcar.service.impl;
 
 import com.rentcar.domain.Order;
+import com.rentcar.domain.User;
+import com.rentcar.repository.CarRepository;
 import com.rentcar.repository.OrderRepository;
+import com.rentcar.service.CarService;
 import com.rentcar.service.OrderService;
+import com.rentcar.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+
+    private final UserService userService;
+
+    private final CarService carService;
 
 
     @Override
@@ -61,5 +71,10 @@ public class OrderServiceImpl implements OrderService {
         order.setModificationDate(new Timestamp(new Date().getTime()));
         orderRepository.save(order);
         return orderRepository.findById(order.getId()).orElseThrow(IllegalArgumentException::new);
+    }
+
+    public void checkUserAndCarExists(Long userId, Long carId) {
+        userService.findById(userId);
+        carService.findById(carId);
     }
 }

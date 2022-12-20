@@ -19,4 +19,6 @@ public interface OrderService {
 
     Order update(Order order);
 
+    void checkUserAndCarExists(Long userId, Long carId);
+
 }
