@@ -31,6 +31,8 @@ public class CarController {
 
     private final CarMapper carMapper;
 
+    private final UserService userService;
+
     @GetMapping("/findCarById")
     public ResponseEntity<Object> findCarById(@RequestParam("id") Long carId) {
 
@@ -57,7 +59,7 @@ public class CarController {
     @Transactional
     public ResponseEntity<Object> addCar(@Valid @RequestBody CarCreateRequest createRequest) {
         Car newCar = carMapper.carConvertCreateRequest(createRequest);
-        carService.checkUserWithIdExist(newCar.getUserId());
+        userService.findById(newCar.getUserId());
         CarsResponse response = carMapper.toResponse(carService.create(newCar));
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }

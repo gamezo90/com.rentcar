@@ -83,9 +83,4 @@ public class CarServiceImpl implements CarService {
         }
     }
 
-    public void checkUserWithIdExist(Long userId) {
-        userService.findById(userId);
-
-    }
-
 }

@@ -5,7 +5,9 @@ import com.rentcar.controller.requests.OrdersRequests.OrderCreateRequest;
 import com.rentcar.controller.requests.OrdersRequests.OrderUpdateRequest;
 import com.rentcar.controller.response.OrderResponse;
 import com.rentcar.domain.Order;
+import com.rentcar.service.CarService;
 import com.rentcar.service.OrderService;
+import com.rentcar.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,10 @@ public class OrderController {
     private final OrderService orderService;
 
     private final OrderMapper orderMapper;
+
+    private final UserService userService;
+
+    private final CarService carService;
 
 
     @GetMapping("/findAllOrders")
@@ -57,7 +63,8 @@ public class OrderController {
     @Transactional
     public ResponseEntity<Object> addOrder(@Valid @RequestBody OrderCreateRequest createRequest) {
         Order newOrder = orderMapper.orderConvertCreateRequest(createRequest);
-        orderService.checkUserAndCarExists(newOrder.getUserId(), newOrder.getCarId());
+        userService.findById(newOrder.getUserId());
+        carService.findById(newOrder.getCarId());
         OrderResponse response = orderMapper.toResponse(orderService.create(newOrder));
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }

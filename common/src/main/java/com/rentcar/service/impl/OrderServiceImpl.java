@@ -73,8 +73,4 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findById(order.getId()).orElseThrow(IllegalArgumentException::new);
     }
 
-    public void checkUserAndCarExists(Long userId, Long carId) {
-        userService.findById(userId);
-        carService.findById(carId);
-    }
 }

@@ -22,6 +22,4 @@ public interface CarService {
 
     void checkCarWithUserLoginExist(String userLogin);
 
-    void checkUserWithIdExist(Long userId);
-
 }
