@@ -59,11 +59,11 @@ public class ApplicationExceptionHandler {
     ErrorContainer error =
             ErrorContainer.builder()
                     .exceptionId(UUIDGenerator.generateUUID())
-                    .errorCode(1)
+                    .errorCode(30)
                     .errorMessage(String.format("General error %s",e.getMessage()))
                     .e(e.getClass().toString())
                     .build();
-
+    log.warn("error: {}, id: {}, error code: {}",error.getErrorMessage(), error.getExceptionId(), error.getErrorCode());
     return new ResponseEntity<>(Collections.singletonMap("error", error), HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
