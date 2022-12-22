@@ -21,9 +21,7 @@ import java.sql.Timestamp;
         "orders", "users"
 })
 @Table(name = "cars")
-@Cacheable("cars")
-@javax.persistence.Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cacheable
 public class Car {
 
     @Id

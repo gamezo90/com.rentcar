@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +20,7 @@ import java.sql.Timestamp;
 @Data
 @Entity
 @Table(name = "discount_system")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cacheable
 public class Discount {
 
     @Id

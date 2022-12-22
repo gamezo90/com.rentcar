@@ -28,9 +28,7 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = { "users" })
 @ToString(exclude = { "users"})
 @Table(name = "roles")
-@Cacheable("roles")
-@javax.persistence.Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cacheable
 public class Role {
 
     @Id

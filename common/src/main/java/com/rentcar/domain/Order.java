@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,9 +23,7 @@ import java.sql.Timestamp;
 @EqualsAndHashCode(exclude = { "user", "car"})
 @ToString(exclude = { "user", "car"})
 @Table(name = "order_history")
-@org.springframework.cache.annotation.Cacheable("order_history")
-@javax.persistence.Cacheable
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cacheable
 public class Order {
 
     @Id

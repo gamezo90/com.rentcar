@@ -9,10 +9,10 @@ import lombok.ToString;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NamedQuery;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
-import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -39,8 +39,6 @@ import java.util.Set;
         "roles", "orders","cars","discountSystem"
 })
 @Table(name = "users")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@NamedQuery(name = "m_users_multiple_ids_search", query = "select u from User u where u.id = :userIds")
 @Cacheable
 public class User {
 
