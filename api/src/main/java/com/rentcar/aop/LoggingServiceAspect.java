@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class LoggingServiceAspect {
 
-    @Pointcut("within(com.rentcar.service..*)")
+    @Pointcut("within(com.rentcar.service..* || com.rentcar.controller..* || com.rentcar.security..*)")
     private void aroundServicePointcut() {
     }
 
