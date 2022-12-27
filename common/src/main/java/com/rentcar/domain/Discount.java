@@ -20,7 +20,6 @@ import java.sql.Timestamp;
 @Data
 @Entity
 @Table(name = "discount_system")
-@Cacheable
 public class Discount {
 
     @Id

@@ -21,7 +21,6 @@ import java.sql.Timestamp;
         "orders", "users"
 })
 @Table(name = "cars")
-@Cacheable
 public class Car {
 
     @Id

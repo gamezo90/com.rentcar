@@ -7,6 +7,8 @@ import com.rentcar.repository.RoleRepository;
 import com.rentcar.repository.UserRepository;
 import com.rentcar.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,19 +28,22 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
 
     private final BCryptPasswordEncoder passwordEncoder;
-
+    @Cacheable(value = "users", key = "#id")
     @Override
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException(String.format("User with this id %s not found", id)));
     }
 
+    @Cacheable(value = "users", key = "#login")
     @Override
     public User findByLogin(String login) {
         return userRepository.findByCredentialsLogin(login).orElseThrow(() ->
                 new EntityNotFoundException(String.format("The user with login: %s not found", login)));
     }
 
+    @Transactional
+    @Cacheable(value = "users")
     @Override
     public List<User> findAll() {
         if (userRepository.findAll().isEmpty()) {
@@ -48,6 +53,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
+    @CachePut(value = "users", key = "#user.id")
     @Override
     public User create(User user) {
         user.setCreationDate(new Timestamp(new Date().getTime()));
@@ -60,6 +66,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
+    @CachePut(value = "users", key = "#userToUpdate.id")
     @Override
     public User update(User userToUpdate) {
         userToUpdate.setModificationDate(new Timestamp(new Date().getTime()));
@@ -72,6 +79,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
+    @CachePut(value = "users", key = "#login")
     @Override
     public User softDelete(String login) {
         User user = userRepository.findByCredentialsLogin(login).orElseThrow(() ->
@@ -82,6 +90,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
+    @CachePut(value = "users", key = "#login")
     public User banByLogin(String login) {
         User user = userRepository.findByCredentialsLogin(login).orElseThrow(() ->
                 new EntityNotFoundException(String.format("The user with login: %s not found", login)));
@@ -90,6 +99,8 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Transactional
+    @CachePut(value = "users", key = "#user.id")
     @Override
     public User addRoleToUser(User user, Role role) {
         Set<Role> roles = new HashSet<>();
@@ -103,6 +114,8 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Transactional
+    @CachePut(value = "users", key = "#user.id")
     @Override
     public User removeUserRole(User user, Role role) {
         role.getUsers().remove(user);

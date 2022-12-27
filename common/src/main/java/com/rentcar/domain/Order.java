@@ -23,7 +23,6 @@ import java.sql.Timestamp;
 @EqualsAndHashCode(exclude = { "user", "car"})
 @ToString(exclude = { "user", "car"})
 @Table(name = "order_history")
-@Cacheable
 public class Order {
 
     @Id
