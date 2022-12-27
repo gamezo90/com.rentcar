@@ -39,7 +39,7 @@ import java.util.Set;
         "roles", "orders","cars","discountSystem"
 })
 @Table(name = "users")
-@Cacheable
+@Cacheable("users")
 public class User {
 
     @Id
