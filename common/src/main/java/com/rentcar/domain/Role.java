@@ -28,7 +28,6 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = { "users" })
 @ToString(exclude = { "users"})
 @Table(name = "roles")
-@Cacheable
 public class Role {
 
     @Id
