@@ -7,6 +7,9 @@ import com.rentcar.repository.UserRepository;
 import com.rentcar.service.DiscountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -33,7 +36,6 @@ public class DiscountServiceImpl implements DiscountService {
         return discountRepository.findByUserId(id);
     }
 
-
     @Override
     public Discount findByUserLogin(String login) {
         if (discountRepository.findByUserCredentialsLogin(login) == null) {
@@ -52,6 +54,7 @@ public class DiscountServiceImpl implements DiscountService {
         return discountRepository.findAll();
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, timeout = 100, rollbackFor = Exception.class)
     @Override
     public Discount create(Discount discount) {
         discount.setCreationDate(new Timestamp(new Date().getTime()));
@@ -62,6 +65,7 @@ public class DiscountServiceImpl implements DiscountService {
 
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, timeout = 100, rollbackFor = Exception.class)
     @Override
     public Discount update(Discount discountToUpdate) {
         discountToUpdate.setModificationDate(new Timestamp(new Date().getTime()));

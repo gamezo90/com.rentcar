@@ -12,6 +12,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityExistsException;
@@ -41,7 +43,6 @@ public class UserServiceImpl implements UserService {
                 new EntityNotFoundException(String.format("The user with login: %s not found", login)));
     }
 
-    @Transactional
     @Override
     public List<User> findAll() {
         if (userRepository.findAll().isEmpty()) {
@@ -50,7 +51,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, timeout = 100, rollbackFor = Exception.class)
     @Override
     public User create(User user) {
         user.setCreationDate(new Timestamp(new Date().getTime()));
@@ -62,6 +63,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(user.getId()).orElseThrow(IllegalArgumentException::new);
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, timeout = 100, rollbackFor = Exception.class)
     @Override
     public User update(User userToUpdate) {
         userToUpdate.setModificationDate(new Timestamp(new Date().getTime()));
@@ -73,7 +75,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, timeout = 100, rollbackFor = Exception.class)
     @Override
     public User softDelete(String login) {
         User user = userRepository.findByCredentialsLogin(login).orElseThrow(() ->
@@ -83,7 +85,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, timeout = 100, rollbackFor = Exception.class)
     @Override
     public User banByLogin(String login) {
         User user = userRepository.findByCredentialsLogin(login).orElseThrow(() ->
@@ -93,7 +95,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, timeout = 100, rollbackFor = Exception.class)
     @Override
     public User addRoleToUser(User user, Role role) {
         Set<Role> roles = new HashSet<>();
@@ -107,7 +109,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, timeout = 100, rollbackFor = Exception.class)
     @Override
     public User removeUserRole(User user, Role role) {
         role.getUsers().remove(user);

@@ -9,6 +9,9 @@ import com.rentcar.service.OrderService;
 import com.rentcar.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -58,6 +61,7 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findOrdersByUserId(id);
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, timeout = 100, rollbackFor = Exception.class)
     @Override
     public Order create(Order order) {
         order.setCreationDate(new Timestamp(new Date().getTime()));
@@ -66,6 +70,7 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findById(order.getId()).orElseThrow(IllegalArgumentException::new);
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, timeout = 100, rollbackFor = Exception.class)
     @Override
     public Order update(Order order) {
         order.setModificationDate(new Timestamp(new Date().getTime()));
