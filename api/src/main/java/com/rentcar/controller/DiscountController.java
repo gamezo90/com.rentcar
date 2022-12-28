@@ -44,7 +44,6 @@ public class DiscountController {
     }
 
     @PostMapping("/createDiscount")
-    @Transactional
     public ResponseEntity<Object> addDiscount(@Valid @RequestBody DiscountCreateRequest createRequest) {
         Discount newDiscount = discountMapper.discountConvertCreateRequest(createRequest);
         discountService.checkUserDiscountAlreadyExists(newDiscount.getUserId());

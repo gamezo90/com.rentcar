@@ -60,7 +60,6 @@ public class OrderController {
     }
 
     @PostMapping("/createOrder")
-    @Transactional
     public ResponseEntity<Object> addOrder(@Valid @RequestBody OrderCreateRequest createRequest) {
         Order newOrder = orderMapper.orderConvertCreateRequest(createRequest);
         userService.findById(newOrder.getUserId());
@@ -70,7 +69,6 @@ public class OrderController {
     }
 
     @PutMapping("/updateOrder")
-    @Transactional
     public ResponseEntity<Object> updateCar(@RequestParam("id") Long id, @Valid @RequestBody OrderUpdateRequest orderUpdateRequest) {
         Order updatedOrder = orderMapper.convertUpdateRequest(orderUpdateRequest, orderService.findById(id));
         OrderResponse orderResponse = orderMapper.toResponse(orderService.update(updatedOrder));

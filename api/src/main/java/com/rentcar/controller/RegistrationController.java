@@ -19,12 +19,11 @@ import javax.validation.Valid;
 @RequestMapping("/api/registration")
 public class RegistrationController {
 
-  @Autowired private UserService userService;
+   private final UserService userService;
 
-  @Autowired private UserMapper userMapper;
+   private final UserMapper userMapper;
 
   @PostMapping("/createUser")
-  @Transactional
   public ResponseEntity<Object> addUser(@Valid @RequestBody UserCreateRequest createRequest) {
     User newUser = userMapper.convertCreateRequest(createRequest);
     userService.checkUserLoginAndEmailForNotExistInDB(newUser);
