@@ -39,7 +39,6 @@ import java.util.Set;
         "roles", "orders","cars","discountSystem"
 })
 @Table(name = "users")
-@Cacheable("users")
 public class User {
 
     @Id
@@ -87,22 +86,18 @@ public class User {
     @JsonIgnore
     private Timestamp modificationDate;
 
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<Role> roles;
 
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     private Set<Order> orders;
 
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     private Discount discountSystem;
 
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     private Set<Car> cars;
