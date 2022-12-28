@@ -5,6 +5,7 @@ import com.rentcar.domain.SystemRoles;
 import com.rentcar.repository.RoleRepository;
 import com.rentcar.service.RoleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
+@Cacheable("roles")
 public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository ;
 
