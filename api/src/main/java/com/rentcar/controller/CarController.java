@@ -56,7 +56,6 @@ public class CarController {
     }
 
     @PostMapping("/createCar")
-    @Transactional
     public ResponseEntity<Object> addCar(@Valid @RequestBody CarCreateRequest createRequest) {
         Car newCar = carMapper.carConvertCreateRequest(createRequest);
         userService.findById(newCar.getUserId());
