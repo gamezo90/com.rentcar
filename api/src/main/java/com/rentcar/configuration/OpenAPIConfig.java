@@ -16,7 +16,7 @@ public class OpenAPIConfig {
 
     private Info apiInfo() {
         return new Info()
-                .title("Rent-platform API")
+                .title("com.rentcar API")
                 .description("API for working with rent-platform")
                 .version("0.1")
                 .contact(apiContact())
@@ -31,8 +31,8 @@ public class OpenAPIConfig {
 
     private Contact apiContact() {
         return new Contact()
-                .name("Zagorny Vladimir")
-                .email("zagvladimir88@gmail.com");
+                .name("Anonymous")
+                .email("Anonymous@gmail.com");
     }
 }
 
