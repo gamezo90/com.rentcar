@@ -4,13 +4,8 @@ package com.rentcar.controller;
 import com.rentcar.controller.mappers.CarMapper;
 import com.rentcar.controller.requests.CarsRequests.CarCreateRequest;
 import com.rentcar.controller.requests.CarsRequests.CarUpdateRequest;
-import com.rentcar.controller.requests.UserRequests.UserCreateRequest;
-import com.rentcar.controller.requests.UserRequests.UserUpdateRequest;
 import com.rentcar.controller.response.CarsResponse;
-import com.rentcar.controller.response.UserResponse;
 import com.rentcar.domain.Car;
-import com.rentcar.domain.User;
-import com.rentcar.repository.CarRepository;
 import com.rentcar.service.CarService;
 import com.rentcar.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,7 +16,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -39,6 +33,7 @@ public class CarController {
 
     private final UserService userService;
 
+    @Operation(summary = "Find car by id")
     @GetMapping("/findCarById")
     public ResponseEntity<Object> findCarById(@RequestParam("id") Long carId) {
 
@@ -46,6 +41,7 @@ public class CarController {
                 carService.findById(carId)), HttpStatus.OK);
     }
 
+    @Operation(summary = "Find all cars")
     @GetMapping("/findAllCars")
     public ResponseEntity<Object> findAllCars() {
 
@@ -55,31 +51,14 @@ public class CarController {
         );
     }
 
-    @GetMapping("/findCarByUserLogin")
-    public ResponseEntity<Object> findCarUserByLogin(@RequestParam("user_login") String login) {
+    @Operation(summary = "Find cars by user login")
+    @GetMapping("/findCarsByUserLogin")
+    public ResponseEntity<Object> findCarsByUserLogin(@RequestParam("user_login") String login) {
         carService.checkCarWithUserLoginExist(login);
         return new ResponseEntity<>(Collections.singletonMap("result", carService.findByUserLogin(login)), HttpStatus.OK);
     }
 
-    @Operation(
-            summary = "Adding a car",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "201",
-                            description = "Car adding successfully",
-                            content =
-                            @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = CarsResponse.class))),
-                    @ApiResponse(
-                            responseCode = "409",
-                            description = "Car not adding, Conflict",
-                            content = @Content),
-                    @ApiResponse(
-                            responseCode = "500",
-                            description = "Car not adding, Illegal Arguments",
-                            content = @Content)
-            })
+    @Operation(summary = "Adding a car")
     @PostMapping("/createCar")
     public ResponseEntity<Object> addCar(@Valid @RequestBody CarCreateRequest createRequest) {
         Car newCar = carMapper.carConvertCreateRequest(createRequest);
@@ -88,6 +67,7 @@ public class CarController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Update the car")
     @PutMapping(value = "/updateCar/{id}")
     public ResponseEntity<Object> updateCar(@RequestParam("id") Long id, @Valid @RequestBody CarUpdateRequest carUpdateRequest) {
         Car updatedCar = carMapper.convertUpdateRequest(carUpdateRequest, carService.findById(id));
@@ -95,6 +75,7 @@ public class CarController {
         return new ResponseEntity<>(Collections.singletonMap("cars", carsResponse), HttpStatus.OK);
     }
 
+    @Operation(summary = "Ban car by id")
     @PatchMapping("/banCarById/{id}")
     public ResponseEntity<Object> banCarById(@PathVariable("id") Long id) {
 

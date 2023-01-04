@@ -7,6 +7,8 @@ import com.rentcar.controller.response.DiscountResponse;
 import com.rentcar.domain.Discount;
 import com.rentcar.service.DiscountService;
 import com.rentcar.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.Collections;
 
+@Tag(name = "Discount controller")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/discount")
@@ -27,6 +30,7 @@ public class DiscountController {
 
     private final UserService userService;
 
+    @Operation(summary = "Find discounts by user id")
     @GetMapping("/findDiscountByUserId")
     public ResponseEntity<Object> findByUserId(@RequestParam("id") Long userId) {
 
@@ -34,6 +38,7 @@ public class DiscountController {
                 discountService.findByUserId(userId)), HttpStatus.OK);
     }
 
+    @Operation(summary = "Find all discounts")
     @GetMapping("/findAllDiscounts")
     public ResponseEntity<Object> findAllDiscounts() {
 
@@ -43,6 +48,7 @@ public class DiscountController {
         );
     }
 
+    @Operation(summary = "Adding discount")
     @PostMapping("/createDiscount")
     public ResponseEntity<Object> addDiscount(@Valid @RequestBody DiscountCreateRequest createRequest) {
         Discount newDiscount = discountMapper.discountConvertCreateRequest(createRequest);

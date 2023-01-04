@@ -35,10 +35,11 @@ public class UserController {
     }
 
     @GetMapping("/findUserById/{id}")
-    public ResponseEntity<Map<String, Object>> findUserById(@PathVariable String id) {
-        Long userId = Long.parseLong(id);
-        UserResponse user = userMapper.toResponse(userService.findById(userId));
-        return new ResponseEntity<>(Collections.singletonMap("user", user), HttpStatus.OK);
+
+        public ResponseEntity<Object> findUserById(@RequestParam("id") Long userId) {
+
+        UserResponse userResponse = userMapper.toResponse(userService.findById(userId));
+        return new ResponseEntity<>(Collections.singletonMap("user", userResponse), HttpStatus.OK);
     }
 
     @GetMapping("/findUserByLogin")
