@@ -16,11 +16,11 @@ public class OrderCreateRequest {
     @Positive
     private Long userId;
 
-    @Schema(defaultValue = "9", type = "Long" , description = "User id")
+    @Schema(defaultValue = "9", type = "Long" , description = "Car id")
     @Positive
     private Long carId;
 
-    @Schema(defaultValue = "1672330409", type = "Timestamp" , description = "Car yearOfManufacture")
+    @Schema(defaultValue = "1672330409000", type = "Timestamp" , description = "Expiration date")
     @Past
     private Timestamp expirationDate;
 

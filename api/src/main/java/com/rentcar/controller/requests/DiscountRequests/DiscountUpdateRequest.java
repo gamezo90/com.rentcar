@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 @Data
 public class DiscountUpdateRequest {
 
-    @Schema(defaultValue = "1672330409", type = "Timestamp" , description = "Car yearOfManufacture")
+    @Schema(defaultValue = "1672330409000", type = "Timestamp" , description = "Expiration date")
     @Past
     private Timestamp expirationDate;
 
