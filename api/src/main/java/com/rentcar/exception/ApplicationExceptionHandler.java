@@ -67,6 +67,18 @@ public class ApplicationExceptionHandler {
     return new ResponseEntity<>(Collections.singletonMap("error", error), HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<Object> handlerMethodArgumentNotValidException(
+          MethodArgumentNotValidException e) {
+
+    Map<String, String> messages = new HashMap<>();
+    for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
+      messages.put(fieldError.getField(), fieldError.getDefaultMessage());
+    }
+    return new ResponseEntity<>(
+            Collections.singletonMap("error", messages), HttpStatus.BAD_REQUEST);
+  }
+
 //  @ExceptionHandler({
 //          NumberFormatException.class,
 //          IllegalArgumentException.class})

@@ -13,6 +13,11 @@ import com.rentcar.domain.User;
 import com.rentcar.repository.CarRepository;
 import com.rentcar.service.CarService;
 import com.rentcar.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Collections;
 
+@Tag(name = "Car controller")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/car")
@@ -55,6 +61,25 @@ public class CarController {
         return new ResponseEntity<>(Collections.singletonMap("result", carService.findByUserLogin(login)), HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Registered a new User",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "User registered successfully",
+                            content =
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = CarsResponse.class))),
+                    @ApiResponse(
+                            responseCode = "409",
+                            description = "User not registered, Conflict",
+                            content = @Content),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "User not registered, Illegal Arguments",
+                            content = @Content)
+            })
     @PostMapping("/createCar")
     public ResponseEntity<Object> addCar(@Valid @RequestBody CarCreateRequest createRequest) {
         Car newCar = carMapper.carConvertCreateRequest(createRequest);

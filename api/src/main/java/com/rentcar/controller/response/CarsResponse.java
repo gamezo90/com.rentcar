@@ -1,5 +1,6 @@
 package com.rentcar.controller.response;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
