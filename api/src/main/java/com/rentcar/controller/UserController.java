@@ -6,6 +6,8 @@ import com.rentcar.controller.response.UserResponse;
 import com.rentcar.domain.User;
 import com.rentcar.service.RoleService;
 import com.rentcar.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
@@ -35,9 +37,7 @@ public class UserController {
     }
     @Operation(summary = "Find user by id")
     @GetMapping("/findUserById/{id}")
-
-        public ResponseEntity<Object> findUserById(@RequestParam("id") Long userId) {
-
+        public ResponseEntity<Object> findUserById(@RequestParam("userId") Long userId) {
         UserResponse userResponse = userMapper.toResponse(userService.findById(userId));
         return new ResponseEntity<>(Collections.singletonMap("user", userResponse), HttpStatus.OK);
     }
