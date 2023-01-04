@@ -11,6 +11,7 @@ import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 
 @Data
+@Schema(description = "User update request")
 public class UserUpdateRequest {
 
     @Schema(description = "User name", defaultValue = "name", type = "string")

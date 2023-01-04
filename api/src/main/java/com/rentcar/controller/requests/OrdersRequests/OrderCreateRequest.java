@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 
 @Data
+@Schema(description = "Order create request")
 public class OrderCreateRequest {
 
     @Schema(defaultValue = "9", type = "Long" , description = "User id")

@@ -12,6 +12,7 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Positive;
 import java.sql.Timestamp;
 @Data
+@Schema(description = "Discount create request")
 public class DiscountCreateRequest {
 
     @Schema(defaultValue = "9", type = "Long" , description = "User id")
