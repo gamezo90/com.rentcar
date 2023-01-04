@@ -37,11 +37,8 @@ public class UserController {
     }
     @Operation(summary = "Find user by id")
     @GetMapping("/findUserById/{id}")
-
-    public ResponseEntity<Object> findUserById(@RequestParam("id") Long userId) {
-
+        public ResponseEntity<Object> findUserById(@RequestParam("userId") Long userId) {
         UserResponse userResponse = userMapper.toResponse(userService.findById(userId));
-
         return new ResponseEntity<>(Collections.singletonMap("user", userResponse), HttpStatus.OK);
     }
     @Operation(summary = "Find user by login")
