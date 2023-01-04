@@ -7,6 +7,7 @@ import javax.validation.constraints.*;
 import java.sql.Timestamp;
 
 @Data
+@Schema(description = "Car create request")
 public class CarCreateRequest {
 
     @Schema(defaultValue = "BMW", type = "string" , description = "Car manufacturer")

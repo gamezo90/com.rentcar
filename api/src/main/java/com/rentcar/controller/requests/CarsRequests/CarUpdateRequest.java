@@ -8,6 +8,7 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 @Data
+@Schema(description = "Car update request")
 public class CarUpdateRequest {
 
     @Schema(defaultValue = "3.6", type = "Float" , description = "Car engine volume")
