@@ -89,14 +89,14 @@ public class ApplicationExceptionHandler {
 //    ErrorContainer error =
 //        ErrorContainer.builder()
 //            .exceptionId(UUIDGenerator.generateUUID())
-//            .errorCode(3)
+//            .errorCode(15)
 //            .errorMessage(e.getMessage())
 //            .e(e.getClass().toString())
 //            .build();
 //
 //    return new ResponseEntity<>(Collections.singletonMap("error", error), HttpStatus.BAD_REQUEST);
 //  }
-//
+
 
 
 //  @ExceptionHandler(DataIntegrityViolationException.class)
