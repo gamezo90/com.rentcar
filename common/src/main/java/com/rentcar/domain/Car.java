@@ -40,7 +40,7 @@ public class Car {
     private Boolean conditioner;
 
     @Column(name = "year_of_manufacture")
-    private Integer yearOfManufacture;
+    private Timestamp yearOfManufacture;
 
     @Column
     private String color;
