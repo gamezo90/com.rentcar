@@ -62,22 +62,22 @@ public class CarController {
     }
 
     @Operation(
-            summary = "Registered a new User",
+            summary = "Adding a car",
             responses = {
                     @ApiResponse(
                             responseCode = "201",
-                            description = "User registered successfully",
+                            description = "Car adding successfully",
                             content =
                             @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(implementation = CarsResponse.class))),
                     @ApiResponse(
                             responseCode = "409",
-                            description = "User not registered, Conflict",
+                            description = "Car not adding, Conflict",
                             content = @Content),
                     @ApiResponse(
                             responseCode = "500",
-                            description = "User not registered, Illegal Arguments",
+                            description = "Car not adding, Illegal Arguments",
                             content = @Content)
             })
     @PostMapping("/createCar")
