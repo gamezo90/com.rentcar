@@ -74,10 +74,9 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     public void checkUserDiscountAlreadyExists(Long userId) {
-        if (userRepository.findById(userId).isPresent()){
+        if (Optional.ofNullable(discountRepository.findByUserId(userId)).isPresent()){
             throw new EntityExistsException(
                     String.format("User discount with this id %s already exists", userId));
         }
-
     }
 }
