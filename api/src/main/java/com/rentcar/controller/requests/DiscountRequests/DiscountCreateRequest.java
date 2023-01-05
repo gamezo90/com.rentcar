@@ -17,18 +17,16 @@ import java.sql.Timestamp;
 public class DiscountCreateRequest {
 
     @Schema(defaultValue = "9", type = "Long" , description = "User id")
-    @Positive
-//    @Pattern(regexp = "[0-9]\\W", message = "User id must be integers")
-//    @Pattern(regexp = "^[A-Za-z][\\w ]$", message = "Country name must start with letter " +
-//            "and consist of A-Z, a-z, 0-9 and _ ")
-    private Long userId;
+ //   @Positive
+    @Pattern(regexp = "[0-9]\\W", message = "User id must be integers")
+    private String userId;
 
     @Schema(defaultValue = "9", type = "Float" , description = "Discount size")
-    @Positive
- //   @Pattern(regexp = "[0-9.]\\W", message = "User id must be integers")
-    private Float discountSize;
+    @Pattern(regexp = "^\\d+(?:[\\.]\\d+)?$", message = "User discount size must be positive floating point numbers")
+    private String discountSize;
 
     @Schema(defaultValue = "1672330409000", type = "Timestamp" , description = "Expiration date")
     @Past
     private Timestamp expirationDate;
+
 }
