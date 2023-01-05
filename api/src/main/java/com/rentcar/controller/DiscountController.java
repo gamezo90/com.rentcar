@@ -60,8 +60,8 @@ public class DiscountController {
 
     @Operation(summary = "Update discount")
     @PutMapping(value = "/updateDiscount/{id}")
-    public ResponseEntity<Object> updateDiscount(@RequestParam("id") Long id, @Valid @RequestBody DiscountUpdateRequest discountUpdateRequest) {
-        Discount updatedDiscount = discountMapper.convertUpdateRequest(discountUpdateRequest, discountService.findByUserId(id));
+    public ResponseEntity<Object> updateDiscount(@RequestParam("id") Long userId, @Valid @RequestBody DiscountUpdateRequest discountUpdateRequest) {
+        Discount updatedDiscount = discountMapper.convertUpdateRequest(discountUpdateRequest, discountService.findByUserId(userId));
         DiscountResponse discountResponse = discountMapper.toResponse(discountService.update(updatedDiscount));
         return new ResponseEntity<>(Collections.singletonMap("discount", discountResponse), HttpStatus.OK);
     }

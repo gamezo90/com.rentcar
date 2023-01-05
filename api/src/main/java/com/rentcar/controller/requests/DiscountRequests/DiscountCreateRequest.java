@@ -17,8 +17,7 @@ import java.sql.Timestamp;
 public class DiscountCreateRequest {
 
     @Schema(defaultValue = "9", type = "Long" , description = "User id")
- //   @Positive
-    @Pattern(regexp = "[0-9]\\W", message = "User id must be integers")
+    @Pattern(regexp = "^\\d+$", message = "User id must be positive integers")
     private String userId;
 
     @Schema(defaultValue = "9", type = "Float" , description = "Discount size")
