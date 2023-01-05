@@ -1,6 +1,7 @@
 package com.rentcar.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.Cache;
@@ -16,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -41,7 +43,8 @@ public class Discount {
     private Timestamp modificationDate;
 
     @Column(name = "expiration_date")
-    private Timestamp expirationDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
+    private LocalDate expirationDate;
 
     @OneToOne
     @JoinColumn(name = "user_id", insertable = false, updatable = false)

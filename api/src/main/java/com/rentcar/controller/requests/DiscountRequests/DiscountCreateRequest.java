@@ -8,10 +8,13 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+
 @Data
 @Schema(description = "Discount create request")
 public class DiscountCreateRequest {
@@ -24,8 +27,9 @@ public class DiscountCreateRequest {
     @Pattern(regexp = "^\\d+(?:[\\.]\\d+)?$", message = "User discount size must be positive floating point numbers")
     private String discountSize;
 
-    @Schema(defaultValue = "1672330409000", type = "Timestamp" , description = "Expiration date")
-    @Past
-    private Timestamp expirationDate;
+    @Schema(defaultValue = "01.08.2023", type = "Timestamp" , description = "Expiration date")
+//    @Future
+//   @Pattern(regexp = "^\\d{2}.\\d{2}\\.\\d{4}$", message = "User birth pattern dd.MM.yyyy and must be later 1900 ")
+    private String expirationDate;
 
 }
