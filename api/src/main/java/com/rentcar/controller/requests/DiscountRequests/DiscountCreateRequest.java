@@ -28,8 +28,7 @@ public class DiscountCreateRequest {
     private String discountSize;
 
     @Schema(defaultValue = "01.08.2023", type = "Timestamp" , description = "Expiration date")
-//    @Future
-//   @Pattern(regexp = "^\\d{2}.\\d{2}\\.\\d{4}$", message = "User birth pattern dd.MM.yyyy and must be later 1900 ")
+    @Pattern(regexp = "^\\d{2}.\\d{2}\\.\\d{4}$", message = "Expiration date pattern dd.MM.yyyy")
     private String expirationDate;
 
 }

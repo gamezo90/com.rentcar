@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -24,9 +25,7 @@ public class DiscountServiceImpl implements DiscountService {
 
     private final DiscountRepository discountRepository;
 
-    private final UserServiceImpl userService;
-
-    private final UserRepository userRepository;
+    public static final LocalDate localDate = LocalDate.now();
 
     @Override
     public Discount findByUserId(Long id) {
@@ -59,6 +58,11 @@ public class DiscountServiceImpl implements DiscountService {
     public Discount create(Discount discount) {
         discount.setCreationDate(new Timestamp(new Date().getTime()));
         discount.setModificationDate(new Timestamp(new Date().getTime()));
+        if(discount.getExpirationDate().isBefore(localDate)) {
+            throw new IllegalArgumentException(
+                    String.format("Expiration date must be future"));
+        }
+
         discountRepository.save(discount);
 
         return discountRepository.findById(discount.getId()).orElseThrow(IllegalArgumentException::new);
