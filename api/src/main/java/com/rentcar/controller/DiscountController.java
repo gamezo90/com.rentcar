@@ -32,7 +32,7 @@ public class DiscountController {
 
     @Operation(summary = "Find discounts by user id")
     @GetMapping("/findDiscountByUserId")
-    public ResponseEntity<Object> findByUserId(@RequestParam("id") Long userId) {
+    public ResponseEntity<Object> findByUserId(@RequestParam("userId") Long userId) {
 
         return new ResponseEntity<>(Collections.singletonMap("result",
                 discountService.findByUserId(userId)), HttpStatus.OK);
@@ -60,14 +60,14 @@ public class DiscountController {
 
     @Operation(summary = "Update discount")
     @PutMapping(value = "/updateDiscount/{id}")
-    public ResponseEntity<Object> updateDiscount(@RequestParam("id") Long userId, @Valid @RequestBody DiscountUpdateRequest discountUpdateRequest) {
+    public ResponseEntity<Object> updateDiscount(@RequestParam("userId") Long userId, @Valid @RequestBody DiscountUpdateRequest discountUpdateRequest) {
         Discount updatedDiscount = discountMapper.convertUpdateRequest(discountUpdateRequest, discountService.findByUserId(userId));
         DiscountResponse discountResponse = discountMapper.toResponse(discountService.update(updatedDiscount));
         return new ResponseEntity<>(Collections.singletonMap("discount", discountResponse), HttpStatus.OK);
     }
     @Operation(summary = "Find discount by user login")
     @GetMapping("/findDiscountByUserLogin")
-    public ResponseEntity<Object> findByUserLogin(@RequestParam("user_login") String login) {
+    public ResponseEntity<Object> findByUserLogin(@RequestParam("userLogin") String login) {
 
         return new ResponseEntity<>(Collections.singletonMap("result", discountService.findByUserLogin(login)), HttpStatus.OK);
     }

@@ -27,7 +27,7 @@ public class DiscountCreateRequest {
     @Pattern(regexp = "^\\d+(?:[\\.]\\d+)?$", message = "User discount size must be positive floating point numbers")
     private String discountSize;
 
-    @Schema(defaultValue = "01.08.2023", type = "Timestamp" , description = "Expiration date")
+    @Schema(defaultValue = "01.08.2023", type = "LocalDate" , description = "Expiration date")
     @Pattern(regexp = "^\\d{2}.\\d{2}\\.\\d{4}$", message = "Expiration date pattern dd.MM.yyyy")
     private String expirationDate;
 

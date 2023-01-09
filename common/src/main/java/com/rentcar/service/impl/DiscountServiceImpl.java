@@ -73,6 +73,10 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public Discount update(Discount discountToUpdate) {
         discountToUpdate.setModificationDate(new Timestamp(new Date().getTime()));
+        if(discountToUpdate.getExpirationDate().isBefore(localDate)) {
+            throw new IllegalArgumentException(
+                    String.format("Expiration date must be future"));
+        }
         discountRepository.save(discountToUpdate);
         return discountRepository.findById(discountToUpdate.getId()).orElseThrow(IllegalArgumentException::new);
     }

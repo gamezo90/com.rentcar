@@ -18,6 +18,7 @@ public interface DiscountMapper {
     @Mapping(target = "expirationDate", expression =
             "java(com.rentcar.controller.utils.DateConvertUtil.parseToLocalDate(discountCreateRequest.getExpirationDate()))")
     Discount discountConvertCreateRequest(DiscountCreateRequest discountCreateRequest);
-
+    @Mapping(target = "expirationDate", expression =
+            "java(com.rentcar.controller.utils.DateConvertUtil.parseToLocalDate(discountUpdateRequest.getExpirationDate()))")
     Discount convertUpdateRequest(DiscountUpdateRequest discountUpdateRequest, @MappingTarget Discount discount);
 }

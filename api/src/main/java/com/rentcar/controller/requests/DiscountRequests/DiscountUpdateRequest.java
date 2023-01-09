@@ -12,11 +12,9 @@ import java.sql.Timestamp;
 @Schema(description = "Discount update request")
 public class DiscountUpdateRequest {
 
-    @Schema(defaultValue = "1672330409000", type = "Timestamp" , description = "Expiration date")
-   @Future
-//    @Pattern(regexp = "^\\d{2}.\\d{2}\\.\\d{4}$",
-//            message = "User birth pattern dd.MM.yyyy and must be later 1900 ")
-    private Timestamp expirationDate;
+    @Schema(defaultValue = "01.08.2023", type = "LocalDate" , description = "Expiration date")
+    @Pattern(regexp = "^\\d{2}.\\d{2}\\.\\d{4}$", message = "Expiration date pattern dd.MM.yyyy")
+    private String expirationDate;
 
     @Schema(defaultValue = "9", type = "Float" , description = "Discount size")
     @Pattern(regexp = "^\\d+(?:[\\.]\\d+)?$", message = "User discount size must be positive floating point numbers")
