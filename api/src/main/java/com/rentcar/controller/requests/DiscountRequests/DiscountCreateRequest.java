@@ -24,7 +24,7 @@ public class DiscountCreateRequest {
     private String userId;
 
     @Schema(defaultValue = "9", type = "Float" , description = "Discount size")
-    @Pattern(regexp = "^\\d+(?:[\\.]\\d+)?$", message = "User discount size must be positive floating point numbers")
+    @Pattern(regexp = "^([\\d]?[\\d])([\\.]\\d{0,2})?$|^100$", message = "User discount size must be positive floating point numbers between 0 and 100")
     private String discountSize;
 
     @Schema(defaultValue = "01.08.2023", type = "LocalDate" , description = "Expiration date")
