@@ -9,12 +9,15 @@ import com.rentcar.controller.response.UserResponse;
 import com.rentcar.domain.Car;
 import com.rentcar.domain.Car;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 @Mapper
 public interface CarMapper {
     CarsResponse toResponse(Car car);
 
+    @Mapping(target = "yearOfManufacture", expression =
+            "java(com.rentcar.controller.utils.DateConvertUtil.parseToLocalDate(carCreateRequest.getYearOfManufacture()))")
     Car carConvertCreateRequest(CarCreateRequest carCreateRequest);
 
     Car convertUpdateRequest(CarUpdateRequest carUpdateRequest, @MappingTarget Car car);

@@ -1,6 +1,7 @@
 package com.rentcar.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -41,6 +42,7 @@ public class Car {
     private Boolean conditioner;
 
     @Column(name = "year_of_manufacture")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     private LocalDate yearOfManufacture;
 
     @Column
