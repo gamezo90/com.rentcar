@@ -30,6 +30,7 @@ public class CarCreateRequest {
 
     @Schema(defaultValue = "Red", type = "String" , description = "Car color")
     @Size(min = 2, max = 20)
+    @Pattern(regexp = "^([A-Za-z]([ -])?)*$", message = "Color must be string with space or dash")
     private String color;
 
     @Schema(defaultValue = "True", type = "String" , description = "Conditioner")
