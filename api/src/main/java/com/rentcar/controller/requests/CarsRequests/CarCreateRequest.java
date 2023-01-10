@@ -24,7 +24,7 @@ public class CarCreateRequest {
     private Timestamp yearOfManufacture;
 
     @Schema(defaultValue = "3.6", type = "String" , description = "Car engineVolume")
-    @Positive
+    @Pattern(regexp = "^\\d+(?:[\\.]\\d+)?$", message = "Engine volume must be positive floating point numbers")
     private String engineVolume;
 
     @Schema(defaultValue = "Red", type = "String" , description = "Car color")
