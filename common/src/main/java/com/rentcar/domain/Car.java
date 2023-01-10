@@ -11,6 +11,7 @@ import org.springframework.cache.annotation.Cacheable;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -40,7 +41,7 @@ public class Car {
     private Boolean conditioner;
 
     @Column(name = "year_of_manufacture")
-    private Timestamp yearOfManufacture;
+    private LocalDate yearOfManufacture;
 
     @Column
     private String color;

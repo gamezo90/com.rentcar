@@ -18,6 +18,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static com.rentcar.service.impl.DiscountServiceImpl.localDate;
+
 @Service
 @RequiredArgsConstructor
 public class CarServiceImpl implements CarService {
@@ -50,6 +52,10 @@ public class CarServiceImpl implements CarService {
         car.setCreationDate(new Timestamp(new Date().getTime()));
         car.setModificationDate(new Timestamp(new Date().getTime()));
         car.setIsBanned(false);
+        if(car.getYearOfManufacture().isAfter(localDate)) {
+            throw new IllegalArgumentException(
+                    String.format("Year of manufacture must be past"));
+        }
         carRepository.save(car);
         return carRepository.findById(car.getId()).orElseThrow(IllegalArgumentException::new);
     }
