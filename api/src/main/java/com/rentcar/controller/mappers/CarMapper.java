@@ -17,6 +17,8 @@ public interface CarMapper {
     CarsResponse toResponse(Car car);
     @Mapping(target = "yearOfManufacture", expression =
             "java(com.rentcar.controller.utils.DateConvertUtil.parseToLocalDate(carCreateRequest.getYearOfManufacture()))")
+    @Mapping(target = "conditioner", expression =
+            "java(com.rentcar.controller.utils.StringToBooleanConvertUtil.parseStringToBoolean(carCreateRequest.getConditioner()))")
     Car carConvertCreateRequest(CarCreateRequest carCreateRequest);
 
     Car convertUpdateRequest(CarUpdateRequest carUpdateRequest, @MappingTarget Car car);
