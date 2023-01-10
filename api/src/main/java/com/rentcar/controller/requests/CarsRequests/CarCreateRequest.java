@@ -34,7 +34,7 @@ public class CarCreateRequest {
     private String color;
 
     @Schema(defaultValue = "True", type = "String" , description = "Conditioner")
-    @Pattern(regexp = "\\byes\\b|\\bno\\b|\\bYes\\b|\\bNo\\b", message = "Conditioner pattern yes/Yes/no/No")
+//    @Pattern(regexp = "\\byes\\b|\\bno\\b|\\bYes\\b|\\bNo\\b", message = "Conditioner pattern yes/Yes/no/No")
     private String conditioner;
 
     @Schema(defaultValue = "9075IA", type = "String" , description = "Car registration number")
