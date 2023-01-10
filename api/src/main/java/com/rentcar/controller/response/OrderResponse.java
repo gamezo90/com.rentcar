@@ -3,6 +3,7 @@ package com.rentcar.controller.response;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Data
 public class OrderResponse {
@@ -13,6 +14,6 @@ public class OrderResponse {
 
     private Long carId;
 
-    private Timestamp expirationDate;
+    private LocalDate expirationDate;
 
 }

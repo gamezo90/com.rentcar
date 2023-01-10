@@ -1,6 +1,7 @@
 package com.rentcar.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -44,7 +46,8 @@ public class Order {
     private Timestamp modificationDate;
 
     @Column(name = "expiration_date")
-    private Timestamp expirationDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
+    private LocalDate expirationDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id", insertable = false, updatable = false)

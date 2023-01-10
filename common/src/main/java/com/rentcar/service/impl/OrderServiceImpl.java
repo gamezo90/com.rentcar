@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static com.rentcar.service.impl.DiscountServiceImpl.localDate;
+
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
@@ -66,6 +68,10 @@ public class OrderServiceImpl implements OrderService {
     public Order create(Order order) {
         order.setCreationDate(new Timestamp(new Date().getTime()));
         order.setModificationDate(new Timestamp(new Date().getTime()));
+        if(order.getExpirationDate().isBefore(localDate)) {
+            throw new IllegalArgumentException(
+                    String.format("Expiration date must be future"));
+        }
         orderRepository.save(order);
         return orderRepository.findById(order.getId()).orElseThrow(IllegalArgumentException::new);
     }
@@ -74,6 +80,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order update(Order order) {
         order.setModificationDate(new Timestamp(new Date().getTime()));
+        if(order.getExpirationDate().isBefore(localDate)) {
+            throw new IllegalArgumentException(
+                    String.format("Expiration date must be future"));
+        }
         orderRepository.save(order);
         return orderRepository.findById(order.getId()).orElseThrow(IllegalArgumentException::new);
     }
