@@ -17,6 +17,6 @@ public class DiscountUpdateRequest {
     private String expirationDate;
 
     @Schema(defaultValue = "9", type = "Float" , description = "Discount size")
-    @Pattern(regexp = "^\\d+(?:[\\.]\\d+)?$", message = "User discount size must be positive floating point numbers")
+    @Pattern(regexp = "^(0|[1-9]\\d*)([.,]\\d+)?^100$", message = "User discount size must be positive floating point numbers between 0 and 100")
     private String discountSize;
 }
