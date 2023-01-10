@@ -33,8 +33,7 @@ public class CarCreateRequest {
     @Pattern(regexp = "^([A-Za-z]([ -])?)*$", message = "Color must be string with space or dash")
     private String color;
 
-    @Schema(defaultValue = "True", type = "String" , description = "Conditioner")
-//    @Pattern(regexp = "\\byes\\b|\\bno\\b|\\bYes\\b|\\bNo\\b", message = "Conditioner pattern yes/Yes/no/No")
+    @Schema(defaultValue = "Yes", type = "String" , description = "Conditioner")
     private String conditioner;
 
     @Schema(defaultValue = "9075IA", type = "String" , description = "Car registration number")
