@@ -10,8 +10,9 @@ import java.sql.Timestamp;
 @Schema(description = "Car create request")
 public class CarCreateRequest {
 
-    @Schema(defaultValue = "BMW", type = "string" , description = "Car manufacturer")
+    @Schema(defaultValue = "BMW", type = "String" , description = "Car manufacturer")
     @Size(min = 2, max = 20)
+    @Pattern(regexp = "^[A-Za-z]+[ -]?[A-Za-z]+$", message = "Manufacturer must be String with one space or dash")
     private String manufacturer;
 
     @Schema(defaultValue = "X6", type = "String" , description = "Car model")
@@ -22,9 +23,9 @@ public class CarCreateRequest {
     @Past
     private Timestamp yearOfManufacture;
 
-    @Schema(defaultValue = "3.6", type = "Float" , description = "Car engineVolume")
+    @Schema(defaultValue = "3.6", type = "String" , description = "Car engineVolume")
     @Positive
-    private Float engineVolume;
+    private String engineVolume;
 
     @Schema(defaultValue = "Red", type = "String" , description = "Car color")
     @Size(min = 2, max = 20)
@@ -38,13 +39,13 @@ public class CarCreateRequest {
     @Size(min = 2, max = 10)
     private String registrationNumber;
 
-    @Schema(defaultValue = "500", type = "Double" , description = "Car price")
+    @Schema(defaultValue = "500", type = "String" , description = "Car price")
     @Positive
-    private Double price;
+    private String price;
 
-    @Schema(defaultValue = "9", type = "Long" , description = "User id")
+    @Schema(defaultValue = "9", type = "String" , description = "User id")
     @Positive
-    private Long userId;
+    private String userId;
 
     @Schema(defaultValue = "Some Photo", type = "String" , description = "Car photo")
     @Size(min = 2, max = 255)
