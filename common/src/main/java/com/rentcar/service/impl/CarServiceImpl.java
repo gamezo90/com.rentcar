@@ -65,6 +65,10 @@ public class CarServiceImpl implements CarService {
     public Car update(Car carToUpdate) {
 
         carToUpdate.setModificationDate(new Timestamp(new Date().getTime()));
+        if(carToUpdate.getYearOfManufacture().isAfter(localDate)) {
+            throw new IllegalArgumentException(
+                    String.format("Year of manufacture must be past"));
+        }
         carRepository.save(carToUpdate);
         return carRepository.findById(carToUpdate.getId()).orElseThrow(EntityNotFoundException::new);
     }

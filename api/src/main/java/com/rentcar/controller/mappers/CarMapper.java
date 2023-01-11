@@ -21,5 +21,7 @@ public interface CarMapper {
             "java(com.rentcar.controller.utils.StringToBooleanConvertUtil.parseStringToBoolean(carCreateRequest.getConditioner()))")
     Car carConvertCreateRequest(CarCreateRequest carCreateRequest);
 
+    @Mapping(target = "conditioner", expression =
+            "java(com.rentcar.controller.utils.StringToBooleanConvertUtil.parseStringToBoolean(carUpdateRequest.getConditioner()))")
     Car convertUpdateRequest(CarUpdateRequest carUpdateRequest, @MappingTarget Car car);
 }
