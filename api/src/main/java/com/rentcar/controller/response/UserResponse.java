@@ -3,6 +3,7 @@ package com.rentcar.controller.response;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Data
@@ -20,7 +21,7 @@ public class UserResponse {
 
     private String region;
 
-    private Timestamp birthday;
+    private LocalDate birthday;
 
     private String gender;
 

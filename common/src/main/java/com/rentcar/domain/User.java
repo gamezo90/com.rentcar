@@ -1,5 +1,6 @@
 package com.rentcar.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
@@ -23,6 +24,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Data
@@ -51,11 +53,12 @@ public class User {
 
     @Column
     @JsonIgnore
-    private Timestamp birthday;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
+    private LocalDate birthday;
 
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
-    private Gender gender = Gender.NOT_SELECTED;
+    private Gender gender;
 
     @Embedded
     @AttributeOverrides({

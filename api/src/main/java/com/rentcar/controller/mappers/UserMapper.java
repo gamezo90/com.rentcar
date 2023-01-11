@@ -17,6 +17,10 @@ public interface UserMapper {
     @Mapping(source = "login",target = "credentials.login")
     @Mapping(source = "password",target = "credentials.password")
     @Mapping(source = "email",target = "credentials.email")
+    @Mapping(target = "birthday", expression =
+            "java(com.rentcar.controller.utils.DateConvertUtil.parseToLocalDate(userCreateRequest.getBirthday()))")
+    @Mapping(target = "gender", expression =
+            "java(com.rentcar.controller.utils.StringToGenderConvertUtil.parseStringToGender(userCreateRequest.getGender()))")
     User convertCreateRequest(UserCreateRequest userCreateRequest);
 
     @Mapping(source = "password",target = "credentials.password")
