@@ -36,23 +36,25 @@ public class CarCreateRequest {
     @Schema(defaultValue = "Yes", type = "String" , description = "Conditioner")
     private String conditioner;
 
-    @Schema(defaultValue = "9075IA", type = "String" , description = "Car registration number")
-    @Size(min = 2, max = 10)
+    @Schema(defaultValue = "9075 IA-3", type = "String" , description = "Car registration number")
+    @Pattern(regexp = "^[0-9]{4}[ ][A-Z]{2}[-][1-7]|[A-Z]{2}[ ][0-9]{4}[-][1-7]$", message = "Registration number pattern 1234 AA-1 or AA 1234-1")
     private String registrationNumber;
 
     @Schema(defaultValue = "500", type = "String" , description = "Car price")
-    @Positive
+    @Pattern(regexp = "^\\d+(?:[\\.]\\d+)?$", message = "Price must be positive floating point numbers")
     private String price;
 
     @Schema(defaultValue = "9", type = "String" , description = "User id")
-    @Positive
+    @Pattern(regexp = "^\\d+$", message = "User id must be positive integers")
     private String userId;
 
+    //not realized
     @Schema(defaultValue = "Some Photo", type = "String" , description = "Car photo")
     @Size(min = 2, max = 255)
     private String photo;
 
     @Schema(defaultValue = "Gomel", type = "String" , description = "Car region")
+    @Pattern(regexp = "^[^ ][a-zA-Z]*[ ]?[a-zA-Z]*[ ]?[a-zA-Z]*$", message = "Region must be maximum three words")
     @Size(min = 2, max = 30)
     private String region;
 
