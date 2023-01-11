@@ -21,8 +21,5 @@ public interface UserMapper {
 
     @Mapping(source = "password",target = "credentials.password")
     @Mapping(source = "email",target = "credentials.email")
-    @Mapping(source = "userName",target = "userName")
-    @Mapping(source = "surname",target = "surname")
-    @Mapping(source = "region",target = "region")
     User convertUpdateRequest(UserUpdateRequest userUpdateRequest, @MappingTarget User user);
 }

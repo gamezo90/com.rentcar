@@ -10,7 +10,7 @@ public class UserResponse {
 
     private long id;
 
-    private String userName;
+    private String name;
 
     private String surname;
 

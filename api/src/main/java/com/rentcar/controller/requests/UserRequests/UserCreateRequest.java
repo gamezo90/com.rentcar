@@ -11,19 +11,20 @@ import java.sql.Timestamp;
 @Schema(description = "User create request")
 public class UserCreateRequest {
 
-    @Schema(description = "User name", defaultValue = "name", type = "string")
+    @Schema(description = "User name", defaultValue = "name", type = "String")
     @Size(min = 2, max = 20)
-    private String userName;
+    @Pattern(regexp = "^[A-Za-z]+$", message = "Color must be string with space or dash")
+    private String name;
 
-    @Schema(description = "User surname", defaultValue = "surname", type = "string")
+    @Schema(description = "User surname", defaultValue = "surname", type = "String")
     @Size(min = 2, max = 50)
     private String surname;
 
-    @Schema(description = "User region", defaultValue = "region", type = "string")
+    @Schema(description = "User region", defaultValue = "region", type = "String")
     @Size(min = 2, max = 30)
     private String region;
 
-    @Schema(description = "User birthday", defaultValue = "1672851614000", type = "Timestamp")
+    @Schema(description = "User birthday", defaultValue = "1672851614000", type = "String")
     @Past
     private Timestamp birthday;
 

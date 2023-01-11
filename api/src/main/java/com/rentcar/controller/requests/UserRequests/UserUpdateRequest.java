@@ -16,7 +16,7 @@ public class UserUpdateRequest {
 
     @Schema(description = "User name", defaultValue = "name", type = "string")
     @Size(min = 2, max = 20)
-    private String userName;
+    private String name;
 
     @Schema(description = "User surname", defaultValue = "surname", type = "string")
     @Size(min = 2, max = 50)
