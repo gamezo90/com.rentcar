@@ -37,7 +37,7 @@ public class CarCreateRequest {
     private String conditioner;
 
     @Schema(defaultValue = "9075 IA-3", type = "String" , description = "Car registration number")
-    @Pattern(regexp = "^\\d{4}[ ][A-Z]{2}[-][1-7]|[A-Z]{2}[ ]\\d{4}[-][1-7]", message = "Registration number pattern 1234 AA-1 or AA 1234-1")
+    @Pattern(regexp = "^\\d{4}[ ][A-Z]{2}-[1-7]|[A-Z]{2}\\s\\d{4}-[1-7]", message = "Registration number pattern 1234 AA-1 or AA 1234-1")
     private String registrationNumber;
 
     @Schema(defaultValue = "500", type = "String" , description = "Car price")
@@ -54,7 +54,7 @@ public class CarCreateRequest {
     private String photo;
 
     @Schema(defaultValue = "Gomel", type = "String" , description = "Car region")
-    @Pattern(regexp = "^[a-zA-Z]+[ ]?[a-zA-Z]+[ ]?[a-zA-Z]*$", message = "Region must be maximum three words")
+    @Pattern(regexp = "^[a-zA-Z]+\\s?[a-zA-Z]+\\s?[a-zA-Z]*$", message = "Region must be maximum three words")
     @Size(min = 2, max = 30)
     private String region;
 

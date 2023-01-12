@@ -22,7 +22,7 @@ public class UserCreateRequest {
     private String surname;
 
     @Schema(description = "Region", defaultValue = "region", type = "String")
-    @Pattern(regexp = "^[a-zA-Z]+[ ]?[a-zA-Z]+[ ]?[a-zA-Z]*$", message = "Region must be maximum three words")
+    @Pattern(regexp = "^[a-zA-Z]+\\s?[a-zA-Z]+\\s?[a-zA-Z]*$", message = "Region must be maximum three words")
     @Size(min = 2, max = 30)
     private String region;
 
@@ -34,11 +34,12 @@ public class UserCreateRequest {
     private String gender;
 
     @Schema(description = "Login", defaultValue = "login", type = "String")
-    @Pattern(regexp = "^([A-Za-z\\d][ ._-]?)+$", message = "Login must start from letter or number and do not contain repeating in a row space, ., _, -")
+    @Pattern(regexp = "^([A-Za-z\\d][ ._-]?)+$", message = "Login must start from letter or number and can contain not repetitive in a row space, ., _, -")
     @Size(min = 2, max = 20)
     private String login;
 
     @Schema(description = "Password", defaultValue = "password", type = "String")
+    @Pattern(regexp = "^\\S*[A-Z]\\S*$", message = "Password must contain at least one uppercase letter")
     @Size(min = 8, max = 30)
     private String password;
 

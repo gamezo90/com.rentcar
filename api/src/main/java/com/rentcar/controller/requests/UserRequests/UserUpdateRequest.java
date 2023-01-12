@@ -22,12 +22,13 @@ public class UserUpdateRequest {
     private String surname;
 
     @Schema(description = "Region", defaultValue = "region", type = "String")
-    @Pattern(regexp = "^[a-zA-Z]+[ ]?[a-zA-Z]+[ ]?[a-zA-Z]*$", message = "Region must be maximum three words")
+    @Pattern(regexp = "^[a-zA-Z]+\\s?[a-zA-Z]+\\s?[a-zA-Z]*$", message = "Region must be maximum three words")
     @Size(min = 2, max = 30)
     private String region;
 
     @Schema(description = "Password", defaultValue = "password", type = "String")
     @Size(min = 8, max = 30)
+    @Pattern(regexp = "^\\S*[A-Z]\\S*$", message = "Password must contain at least one uppercase letter")
     private String password;
 
     @Schema(description = "Email", defaultValue = "email@mail.rentcar", type = "String")
