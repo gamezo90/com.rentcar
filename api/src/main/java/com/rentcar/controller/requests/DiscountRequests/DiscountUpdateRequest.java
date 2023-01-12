@@ -2,12 +2,8 @@ package com.rentcar.controller.requests.DiscountRequests;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-
-import javax.validation.constraints.Future;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Positive;
-import java.sql.Timestamp;
+
 @Data
 @Schema(description = "Discount update request")
 public class DiscountUpdateRequest {

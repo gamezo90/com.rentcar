@@ -1,14 +1,8 @@
 package com.rentcar.controller.requests.OrdersRequests;
 
-import com.rentcar.domain.Gender;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
-import java.sql.Timestamp;
 
 @Data
 @Schema(description = "Order create request")

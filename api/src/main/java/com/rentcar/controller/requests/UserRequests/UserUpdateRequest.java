@@ -1,11 +1,8 @@
 package com.rentcar.controller.requests.UserRequests;
 
-import com.rentcar.domain.Gender;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-
 import javax.validation.constraints.*;
-import java.sql.Timestamp;
 
 @Data
 @Schema(description = "User update request")
