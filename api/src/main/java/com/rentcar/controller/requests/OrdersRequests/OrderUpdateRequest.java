@@ -11,6 +11,6 @@ import java.sql.Timestamp;
 public class OrderUpdateRequest {
 
     @Schema(defaultValue = "01.08.2023", type = "String" , description = "Expiration date")
-    @Pattern(regexp = "^\\d{2}.\\d{2}\\.\\d{4}$", message = "Expiration date pattern dd.MM.yyyy")
+    @Pattern(regexp = "^\\d{2}\\.\\d{2}\\.\\d{4}$", message = "Expiration date pattern dd.MM.yyyy")
     private String expirationDate;
 }

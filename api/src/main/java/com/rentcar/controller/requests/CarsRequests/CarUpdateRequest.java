@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 public class CarUpdateRequest {
 
     @Schema(defaultValue = "3.6", type = "String" , description = "Car engine volume")
-    @Pattern(regexp = "^\\d+(?:[\\.]\\d+)?$", message = "Engine volume must be positive floating point numbers")
+    @Pattern(regexp = "^\\d+(?:\\.\\d+)?$", message = "Engine volume must be positive floating point numbers")
     private String engineVolume;
 
     @Schema(defaultValue = "Yes", type = "String" , description = "Conditioner")
@@ -34,7 +34,7 @@ public class CarUpdateRequest {
     private String region;
 
     @Schema(defaultValue = "500", type = "String" , description = "Car price")
-    @Pattern(regexp = "^\\d+(?:[\\.]\\d+)?$", message = "Price must be positive floating point numbers")
+    @Pattern(regexp = "^\\d+(?:\\.\\d+)?$", message = "Price must be positive floating point numbers")
     private String price;
 
     @Schema(defaultValue = "9075IA", type = "String" , description = "Car registration number")

@@ -25,7 +25,7 @@ public class CarCreateRequest {
     private String yearOfManufacture;
 
     @Schema(defaultValue = "3.6", type = "String" , description = "Car engineVolume")
-    @Pattern(regexp = "^\\d+(?:[\\.]\\d+)?$", message = "Engine volume must be positive floating point numbers")
+    @Pattern(regexp = "^\\d+(?:\\.\\d+)?$", message = "Engine volume must be positive floating point numbers")
     private String engineVolume;
 
     @Schema(defaultValue = "Red", type = "String" , description = "Car color")
@@ -37,11 +37,11 @@ public class CarCreateRequest {
     private String conditioner;
 
     @Schema(defaultValue = "9075 IA-3", type = "String" , description = "Car registration number")
-    @Pattern(regexp = "^\\d{4}[ ][A-Z]{2}-[1-7]|[A-Z]{2}\\s\\d{4}-[1-7]", message = "Registration number pattern 1234 AA-1 or AA 1234-1")
+    @Pattern(regexp = "^\\d{4}\\s[A-Z]{2}-[1-7]|[A-Z]{2}\\s\\d{4}-[1-7]", message = "Registration number pattern 1234 AA-1 or AA 1234-1")
     private String registrationNumber;
 
     @Schema(defaultValue = "500", type = "String" , description = "Car price")
-    @Pattern(regexp = "^\\d+(?:[\\.]\\d+)?$", message = "Price must be positive floating point numbers")
+    @Pattern(regexp = "^\\d+(?:\\.\\d+)?$", message = "Price must be positive floating point numbers")
     private String price;
 
     @Schema(defaultValue = "9", type = "String" , description = "User id")

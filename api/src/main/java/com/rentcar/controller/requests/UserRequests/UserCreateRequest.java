@@ -27,14 +27,14 @@ public class UserCreateRequest {
     private String region;
 
     @Schema(description = "Birthday", defaultValue = "12.02.1986", type = "String")
-    @Pattern(regexp = "^\\d{2}.\\d{2}\\.\\d{4}$", message = "Birthday date pattern dd.MM.yyyy")
+    @Pattern(regexp = "^\\d{2}\\.\\d{2}\\.\\d{4}$", message = "Birthday date pattern dd.MM.yyyy")
     private String birthday;
 
     @Schema(description = "Gender pattern MALE or FEMALE, else set default NOT_SELECTED", defaultValue = "NOT_SELECTED", type = "String")
     private String gender;
 
     @Schema(description = "Login", defaultValue = "login", type = "String")
-    @Pattern(regexp = "^([A-Za-z\\d][ ._-]?)+$", message = "Login must start from letter or number and can contain not repetitive in a row space, ., _, -")
+    @Pattern(regexp = "^(\\w[ .-]?)+$", message = "Login must start from letter or number and can contain not repetitive in a row space, ., _, -")
     @Size(min = 2, max = 20)
     private String login;
 
