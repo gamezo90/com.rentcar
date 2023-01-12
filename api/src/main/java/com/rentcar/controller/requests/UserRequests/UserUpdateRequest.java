@@ -4,38 +4,33 @@ import com.rentcar.domain.Gender;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.sql.Timestamp;
 
 @Data
 @Schema(description = "User update request")
 public class UserUpdateRequest {
 
-    @Schema(description = "User name", defaultValue = "name", type = "string")
+    @Schema(description = "Name", defaultValue = "name", type = "String")
     @Size(min = 2, max = 20)
+    @Pattern(regexp = "^[A-Za-z]+$", message = "Name must be letters")
     private String name;
 
-    @Schema(description = "User surname", defaultValue = "surname", type = "string")
+    @Schema(description = "Surname", defaultValue = "surname", type = "String")
     @Size(min = 2, max = 50)
+    @Pattern(regexp = "^[A-Za-z]+$", message = "Surname must be letters")
     private String surname;
 
-    @Schema(description = "User region", defaultValue = "region", type = "string")
+    @Schema(description = "Region", defaultValue = "region", type = "String")
+    @Pattern(regexp = "^[a-zA-Z]+[ ]?[a-zA-Z]+[ ]?[a-zA-Z]*$", message = "Region must be maximum three words")
     @Size(min = 2, max = 30)
     private String region;
 
-    @Schema(description = "User gender", defaultValue = "NOT_SELECTED", type = "Gender")
-    @NotNull
-    private Gender gender;
-
-    @Schema(description = "User password", defaultValue = "password", type = "String")
-    @NotBlank
-    @Size(min = 2,max = 255)
+    @Schema(description = "Password", defaultValue = "password", type = "String")
+    @Size(min = 8, max = 30)
     private String password;
 
-    @Schema(description = "User email", defaultValue = "email@mail.rentcar", type = "String")
+    @Schema(description = "Email", defaultValue = "email@mail.rentcar", type = "String")
     @Email
     private String email;
 

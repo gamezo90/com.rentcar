@@ -9,5 +9,7 @@ public class DiscountResponse {
 
     private Long id;
 
+    private Long userId;
+
     private Float discountSize;
 }

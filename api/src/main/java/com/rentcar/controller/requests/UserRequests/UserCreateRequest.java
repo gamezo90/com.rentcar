@@ -26,7 +26,7 @@ public class UserCreateRequest {
     @Size(min = 2, max = 30)
     private String region;
 
-    @Schema(description = "Birthday", defaultValue = "12.2.1986", type = "String")
+    @Schema(description = "Birthday", defaultValue = "12.02.1986", type = "String")
     @Pattern(regexp = "^\\d{2}.\\d{2}\\.\\d{4}$", message = "Birthday date pattern dd.MM.yyyy")
     private String birthday;
 

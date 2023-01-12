@@ -10,8 +10,7 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(uses = {RoleMapper.class})
 public interface UserMapper {
-    @Mapping(source = "roles", target = "roles")
-    @Mapping(source = "cars", target = "cars")
+
     UserResponse toResponse(User user);
 
     @Mapping(source = "login",target = "credentials.login")
