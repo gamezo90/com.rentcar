@@ -1,15 +1,11 @@
 package com.rentcar.service.impl;
 
 import com.rentcar.domain.Role;
-import com.rentcar.domain.SystemRoles;
 import com.rentcar.repository.RoleRepository;
 import com.rentcar.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -44,7 +40,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role findRoleByName(String roleName) {
         try {
-            return  roleRepository.findByRoleName(SystemRoles.valueOf(roleName));
+            return  roleRepository.findByRoleName(roleName);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(String.format("The role with name: %s not found", roleName));
         }

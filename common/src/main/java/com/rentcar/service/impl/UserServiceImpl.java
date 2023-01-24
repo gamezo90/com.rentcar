@@ -1,15 +1,11 @@
 package com.rentcar.service.impl;
 
 import com.rentcar.domain.Role;
-import com.rentcar.domain.SystemRoles;
 import com.rentcar.domain.User;
 import com.rentcar.repository.RoleRepository;
 import com.rentcar.repository.UserRepository;
 import com.rentcar.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -59,7 +55,7 @@ public class UserServiceImpl implements UserService {
         user.setIsDeleted(false);
         user.setIsBanned(false);
         user.getCredentials().setPassword(passwordEncoder.encode(user.getCredentials().getPassword()));
-        addRoleToUser(user, roleRepository.findByRoleName(SystemRoles.valueOf("ROLE_USER")));
+        addRoleToUser(user, roleRepository.findByRoleName("ROLE_USER"));
         return userRepository.findById(user.getId()).orElseThrow(IllegalArgumentException::new);
     }
 

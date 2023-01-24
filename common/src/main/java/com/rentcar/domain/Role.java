@@ -35,8 +35,7 @@ public class Role {
     private Long id;
 
     @Column(name = "role_name")
-    @Enumerated(EnumType.STRING)
-    private SystemRoles roleName;
+    private String roleName;
 
     @Column(name = "creation_date")
     private Timestamp creationDate;
