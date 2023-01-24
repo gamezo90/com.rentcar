@@ -1,7 +1,6 @@
 package com.rentcar.security;
 
 import com.rentcar.domain.Role;
-import com.rentcar.domain.SystemRoles;
 import com.rentcar.domain.User;
 import com.rentcar.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +35,7 @@ public class UserSecurityService implements UserDetailsService {
                             user.getRoles()
                                     .stream()
                                     .map(Role::getRoleName)
-                                    .map(SystemRoles::name)
+                              //      .map(SystemRoles::name)
                                     .collect(Collectors.joining(","))
                     )
             );
