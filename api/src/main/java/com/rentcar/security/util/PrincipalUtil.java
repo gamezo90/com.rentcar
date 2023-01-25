@@ -1,5 +1,6 @@
 package com.rentcar.security.util;
 
+import com.rentcar.domain.Role;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -28,11 +29,11 @@ public class PrincipalUtil {
         return ((User) castedPrincipal).getAuthorities();
     }
 
-//    public static boolean isUserHaveAuthority(Principal principal, SystemRoles... roles) {
-//
-//        Collection<GrantedAuthority> authorities = getAuthorities(principal);
-//
-//        return authorities.stream().map(GrantedAuthority::getAuthority).anyMatch(authority ->
-//                Arrays.stream(roles).map(SystemRoles::name).anyMatch(roleName -> roleName.equals(authority)));
-//    }
+    public static boolean isUserHaveAuthority(Principal principal, Role... roles) {
+
+        Collection<GrantedAuthority> authorities = getAuthorities(principal);
+
+        return authorities.stream().map(GrantedAuthority::getAuthority).anyMatch(authority ->
+                Arrays.stream(roles).map(Role::getRoleName).anyMatch(roleName -> roleName.equals(authority)));
+    }
 }

@@ -33,7 +33,7 @@ jwt:
 spring:
   profiles: jwt-top-secret
 jwt:
-  secret: 111*%--+devsecret777**
+#  secret: 111*%--+devsecret777**
 
 ---
 
@@ -65,5 +65,5 @@ spring:
 server:
   port: 8081
 jwt:
-  secret: devsecret777**
+#  secret: devsecret777**
   expiration: 100000

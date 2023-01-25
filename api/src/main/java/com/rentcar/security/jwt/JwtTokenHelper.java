@@ -44,21 +44,6 @@ public class JwtTokenHelper {
                 .collect(Collectors.toList());
     }
 
-    //1.2 generateToken + 2 generateToken
-    private String generateToken(Map<String, Object> claims) {
-
-        final Date date = new Date();
-
-        return Jwts
-                .builder()
-                .setHeader(generateJWTHeaders())
-                .setClaims(claims)
-                .setIssuedAt(date)
-                .setExpiration(generateExpirationDate(date))
-                .signWith(ALGORITHM, jwtSecurityConfig.getSecret())
-                .compact();
-    }
-
     //1.2.1 generateToken
     private Map<String, Object> generateJWTHeaders() {
         Map<String, Object> jwtHeaders = new LinkedHashMap<>();
@@ -72,6 +57,21 @@ public class JwtTokenHelper {
     private Date generateExpirationDate(Date date) {
         Instant instant = date.toInstant();
         return Date.from(instant.plusSeconds(jwtSecurityConfig.getExpiration()));
+    }
+
+    //1.2 generateToken + 2 generateToken
+    private String generateToken(Map<String, Object> claims) {
+
+        final Date date = new Date();
+
+        return Jwts
+                .builder()
+                .setHeader(generateJWTHeaders())
+                .setClaims(claims)
+                .setIssuedAt(date)
+                .setExpiration(generateExpirationDate(date))
+                .signWith(ALGORITHM, jwtSecurityConfig.getSecret())
+                .compact();
     }
 
     //-------------------------------------------------------2 refreshToken

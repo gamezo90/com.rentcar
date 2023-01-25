@@ -35,7 +35,6 @@ public class UserSecurityService implements UserDetailsService {
                             user.getRoles()
                                     .stream()
                                     .map(Role::getRoleName)
-                              //      .map(SystemRoles::name)
                                     .collect(Collectors.joining(","))
                     )
             );

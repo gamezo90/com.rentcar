@@ -55,25 +55,17 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                /*For swagger access only*/
-                //.antMatchers("/v3/api-docs/**", "/configuration/ui/**", "/swagger-resources/**", "/configuration/security/**", "/swagger-ui/**", "/webjars/**").permitAll()
-                //.antMatchers("/v2/api-docs/**", "/configuration/ui/**", "/swagger-resources/**", "/configuration/security/**", "/swagger-ui/**", "/webjars/**").permitAll()
                 .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-             //   .antMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
-                .antMatchers("/actuator/**").permitAll()
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .antMatchers("/guest/**").permitAll()
-                .antMatchers("/registration/**").permitAll()
-                .antMatchers("/authentication/**").permitAll()
-                .antMatchers("/auth/**").permitAll()
-                .antMatchers("/rest/**").permitAll()
-                .antMatchers("/api/**").permitAll()
-                .antMatchers("/api/roles/**").permitAll()
-                .antMatchers("/api/car/**").permitAll()
+                .antMatchers("/api/users/**").permitAll()
                 .antMatchers("/api/orders/**").permitAll()
-                .antMatchers("/admin/**").hasAnyRole("ADMIN", "MODERATOR")
-                .anyRequest()
-                .authenticated();
+                .antMatchers("/api/discount/**").hasAnyRole("ADMIN", "MODERATOR")
+                .antMatchers("/api/car/**").permitAll()
+                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/registration/**").permitAll()
+                .antMatchers("/api/roles/**").permitAll()
+
+      //       .antMatchers("/admin/**").hasAnyRole("ADMIN", "MODERATOR")
+                .anyRequest().authenticated();
 
         // Custom JWT based authentication
         httpSecurity
