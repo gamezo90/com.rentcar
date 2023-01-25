@@ -8,6 +8,9 @@ import com.rentcar.domain.Discount;
 import com.rentcar.service.DiscountService;
 import com.rentcar.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -38,7 +41,10 @@ public class DiscountController {
                 discountService.findByUserId(userId)), HttpStatus.OK);
     }
 
-    @Operation(summary = "Find all discounts")
+    @Operation(summary = "Find all discounts", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
     @GetMapping("/findAllDiscounts")
     public ResponseEntity<Object> findAllDiscounts() {
 
