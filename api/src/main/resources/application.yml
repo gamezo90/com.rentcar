@@ -26,7 +26,7 @@ server:
   port: 8081
 jwt:
   secret: qwepuisdhfaksdjflsdfn12321___**
-  expiration: 600000
+  expiration: 6000000
 
 ---
 
