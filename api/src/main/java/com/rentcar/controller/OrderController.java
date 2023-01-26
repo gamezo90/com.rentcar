@@ -114,6 +114,7 @@ public class OrderController {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
                     schema = @Schema(defaultValue = "token", type = "string"))
     })
+    @PreAuthorize("#login == authentication.name")
     @GetMapping("/findDiscountByUserLogin")
     public ResponseEntity<Object> findByUserLogin(@RequestParam("userLogin") String login) {
 
