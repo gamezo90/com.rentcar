@@ -75,7 +75,7 @@ public class CarServiceImpl implements CarService {
 
     @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, timeout = 100, rollbackFor = Exception.class)
     @Override
-    public Car banByCarId(Long id) {
+    public Car softDeleteByCarId(Long id) {
 
         Car car = carRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException(String.format("Car with this id %s not found", id)));
