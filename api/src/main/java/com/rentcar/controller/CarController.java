@@ -9,9 +9,6 @@ import com.rentcar.domain.Car;
 import com.rentcar.service.CarService;
 import com.rentcar.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,12 +30,12 @@ public class CarController {
 
     private final UserService userService;
 
-    @Operation(summary = "Find car by id")
-    @GetMapping("/findCarById")
-    public ResponseEntity<Object> findCarById(@RequestParam("id") Long carId) {
+    @Operation(summary = "Find car by car id")
+    @GetMapping("/findCarByCarId")
+    public ResponseEntity<Object> findCarByCarId(@RequestParam("id") Long carId) {
 
         return new ResponseEntity<>(Collections.singletonMap("result",
-                carService.findById(carId)), HttpStatus.OK);
+                carService.findByCarId(carId)), HttpStatus.OK);
     }
 
     @Operation(summary = "Find all cars")
@@ -70,16 +67,16 @@ public class CarController {
     @Operation(summary = "Update the car")
     @PutMapping(value = "/updateCar/{id}")
     public ResponseEntity<Object> updateCar(@RequestParam("id") Long id, @Valid @RequestBody CarUpdateRequest carUpdateRequest) {
-        Car updatedCar = carMapper.convertUpdateRequest(carUpdateRequest, carService.findById(id));
+        Car updatedCar = carMapper.convertUpdateRequest(carUpdateRequest, carService.findByCarId(id));
         CarsResponse carsResponse = carMapper.toResponse(carService.update(updatedCar));
         return new ResponseEntity<>(Collections.singletonMap("cars", carsResponse), HttpStatus.OK);
     }
 
-    @Operation(summary = "Ban car by id")
-    @PatchMapping("/banCarById/{id}")
-    public ResponseEntity<Object> banCarById(@PathVariable("id") Long id) {
+    @Operation(summary = "Ban car by car id")
+    @PatchMapping("/banCarByCarId/{id}")
+    public ResponseEntity<Object> banCarByCarId(@PathVariable("id") Long id) {
 
-        Car car = carService.banById(id);
+        Car car = carService.banByCarId(id);
 
         return new ResponseEntity<>(Collections.singletonMap(car, carMapper.toResponse(car)), HttpStatus.OK);
     }

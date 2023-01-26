@@ -1,14 +1,12 @@
 package com.rentcar.service;
 
 import com.rentcar.domain.Car;
-import com.rentcar.domain.User;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 public interface CarService {
 
-    Car findById(Long id);
+    Car findByCarId(Long id);
 
     List<Car> findAll();
 
@@ -18,7 +16,7 @@ public interface CarService {
 
     Car update(Car carToUpdate);
 
-    Car banById(Long id);
+    Car banByCarId(Long id);
 
     void checkCarWithUserLoginExist(String userLogin);
 

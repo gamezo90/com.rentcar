@@ -27,7 +27,7 @@ public class CarServiceImpl implements CarService {
     private final CarRepository carRepository;
 
     @Override
-    public Car findById(Long id) {
+    public Car findByCarId(Long id) {
         return carRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException(String.format("Car with this id %s not found", id)));
     }
@@ -75,7 +75,7 @@ public class CarServiceImpl implements CarService {
 
     @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, timeout = 100, rollbackFor = Exception.class)
     @Override
-    public Car banById(Long id) {
+    public Car banByCarId(Long id) {
 
         Car car = carRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException(String.format("Car with this id %s not found", id)));
