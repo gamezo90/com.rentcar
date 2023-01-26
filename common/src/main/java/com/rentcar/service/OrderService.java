@@ -19,4 +19,6 @@ public interface OrderService {
 
     Order update(Order order);
 
+    List<Order> findByUserLogin(String login);
+
 }

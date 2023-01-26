@@ -9,10 +9,14 @@ import com.rentcar.service.CarService;
 import com.rentcar.service.OrderService;
 import com.rentcar.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -33,7 +37,11 @@ public class OrderController {
     private final CarService carService;
 
 
-    @Operation(summary = "Find all orders")
+    @Operation(summary = "Find all orders", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
+    @PreAuthorize(value = "hasAnyRole('ADMIN','MODERATOR')")
     @GetMapping("/findAllOrders")
     public ResponseEntity<Object> findAllOrders() {
 
@@ -41,7 +49,11 @@ public class OrderController {
                 orderService.findAll()), HttpStatus.OK);
     }
 
-    @Operation(summary = "Find order by id")
+    @Operation(summary = "Find order by id", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
+    @PreAuthorize(value = "hasAnyRole('ADMIN','MODERATOR')")
     @GetMapping("/findOrderById")
     public ResponseEntity<Object> findOrderById(@RequestParam("id") Long orderId) {
 
@@ -49,7 +61,11 @@ public class OrderController {
                 orderService.findById(orderId)), HttpStatus.OK);
     }
 
-    @Operation(summary = "Find orders by car id")
+    @Operation(summary = "Find orders by car id", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
+    @PreAuthorize(value = "hasAnyRole('ADMIN','MODERATOR')")
     @GetMapping("/findOrderByCarId")
     public ResponseEntity<Object> findOrdersByCarId(@RequestParam("id") Long carId) {
 
@@ -57,7 +73,11 @@ public class OrderController {
                 orderService.findOrdersByCarId(carId)), HttpStatus.OK);
     }
 
-    @Operation(summary = "Find orders by user id")
+    @Operation(summary = "Find orders by user id", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
+    @PreAuthorize(value = "hasAnyRole('ADMIN','MODERATOR')")
     @GetMapping("/findOrdersByUserId")
     public ResponseEntity<Object> findOrdersByUserId(@RequestParam("id") Long userId) {
 
@@ -65,7 +85,10 @@ public class OrderController {
                 orderService.findOrdersByUserId(userId)), HttpStatus.OK);
     }
 
-    @Operation(summary = "Adding order")
+    @Operation(summary =  "Adding order", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
     @PostMapping("/createOrder")
     public ResponseEntity<Object> addOrder(@Valid @RequestBody OrderCreateRequest createRequest) {
         Order newOrder = orderMapper.orderConvertCreateRequest(createRequest);
@@ -75,11 +98,27 @@ public class OrderController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Update order")
+    @Operation(summary = "Update order", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
+    @PreAuthorize(value = "hasAnyRole('ADMIN','USER')")
     @PutMapping("/updateOrder")
     public ResponseEntity<Object> updateCar(@RequestParam("id") Long id, @Valid @RequestBody OrderUpdateRequest orderUpdateRequest) {
         Order updatedOrder = orderMapper.convertUpdateRequest(orderUpdateRequest, orderService.findById(id));
         OrderResponse orderResponse = orderMapper.toResponse(orderService.update(updatedOrder));
         return new ResponseEntity<>(Collections.singletonMap("cars", orderResponse), HttpStatus.OK);
     }
+
+    @Operation(summary = "Find discount by user login", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
+    @GetMapping("/findDiscountByUserLogin")
+    public ResponseEntity<Object> findByUserLogin(@RequestParam("userLogin") String login) {
+
+        return new ResponseEntity<>(Collections.singletonMap("result", orderService.findByUserLogin(login)), HttpStatus.OK);
+    }
+
 }
+
