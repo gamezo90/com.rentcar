@@ -60,7 +60,6 @@ public class CarController {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
                     schema = @Schema(defaultValue = "token", type = "string"))
     })
-    @PreAuthorize(value = "hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
     @GetMapping("/findCarsByUserLogin")
     public ResponseEntity<Object> findCarsByUserLogin(@RequestParam("user_login") String login) {
         carService.checkCarWithUserLoginExist(login);
@@ -96,7 +95,6 @@ public class CarController {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
                     schema = @Schema(defaultValue = "token", type = "string"))
     })
-    @PreAuthorize(value = "hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
     @PatchMapping("/softDeleteByCarId/{id}")
     public ResponseEntity<Object> softDeleteByCarId(@PathVariable("id") Long id) {
 
