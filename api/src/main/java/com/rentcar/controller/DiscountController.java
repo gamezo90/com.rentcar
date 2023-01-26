@@ -34,7 +34,12 @@ public class DiscountController {
 
     private final UserService userService;
 
-    @Operation(summary = "Find discounts by user id")
+
+    @Operation(summary = "Find discounts by user id", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
+    @PreAuthorize(value = "hasAnyRole('ADMIN','MODERATOR')")
     @GetMapping("/findDiscountByUserId")
     public ResponseEntity<Object> findByUserId(@RequestParam("userId") Long userId) {
 
@@ -46,7 +51,7 @@ public class DiscountController {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
                     schema = @Schema(defaultValue = "token", type = "string"))
     })
-    @PreAuthorize(value = "hasRole('ADMIN')")
+    @PreAuthorize(value = "hasAnyRole('ADMIN','MODERATOR')")
     @GetMapping("/findAllDiscounts")
     public ResponseEntity<Object> findAllDiscounts() {
 
@@ -56,7 +61,11 @@ public class DiscountController {
         );
     }
 
-    @Operation(summary = "Adding discount")
+    @Operation(summary = "Adding discount", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
+    @PreAuthorize(value = "hasAnyRole('ADMIN','MODERATOR')")
     @PostMapping("/createDiscount")
     public ResponseEntity<Object> addDiscount(@Valid @RequestBody DiscountCreateRequest createRequest) {
         Discount newDiscount = discountMapper.discountConvertCreateRequest(createRequest);
@@ -66,14 +75,22 @@ public class DiscountController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Update discount")
+    @Operation(summary = "Update discount", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
+    @PreAuthorize(value = "hasAnyRole('ADMIN','MODERATOR')")
     @PutMapping(value = "/updateDiscount/{id}")
     public ResponseEntity<Object> updateDiscount(@RequestParam("userId") Long userId, @Valid @RequestBody DiscountUpdateRequest discountUpdateRequest) {
         Discount updatedDiscount = discountMapper.convertUpdateRequest(discountUpdateRequest, discountService.findByUserId(userId));
         DiscountResponse discountResponse = discountMapper.toResponse(discountService.update(updatedDiscount));
         return new ResponseEntity<>(Collections.singletonMap("discount", discountResponse), HttpStatus.OK);
     }
-    @Operation(summary = "Find discount by user login")
+
+    @Operation(summary = "Find discount by user login", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
     @GetMapping("/findDiscountByUserLogin")
     public ResponseEntity<Object> findByUserLogin(@RequestParam("userLogin") String login) {
 
