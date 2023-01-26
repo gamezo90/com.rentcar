@@ -50,7 +50,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> findOrdersByCarId(Long id) {
         if (orderRepository.findAll().isEmpty()) {
-            throw new EntityNotFoundException(String.format("Order not found"));
+            throw new EntityNotFoundException(String.format("Orders not found"));
         }
         return orderRepository.findOrdersByCarId(id);
     }
@@ -58,7 +58,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> findOrdersByUserId(Long id) {
         if (orderRepository.findAll().isEmpty()) {
-            throw new EntityNotFoundException(String.format("Order not found"));
+            throw new EntityNotFoundException(String.format("Orders not found"));
         }
         return orderRepository.findOrdersByUserId(id);
     }
@@ -88,4 +88,11 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findById(order.getId()).orElseThrow(IllegalArgumentException::new);
     }
 
+    @Override
+    public List<Order> findByUserLogin(String login) {
+        if (orderRepository.findByUserCredentialsLogin(login) == null) {
+            throw new EntityNotFoundException(String.format("Orders for User with login %s not found", login));
+        }
+        return orderRepository.findByUserCredentialsLogin(login);
+    }
 }
