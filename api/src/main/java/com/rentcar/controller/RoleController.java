@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +30,7 @@ public class RoleController {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
                     schema = @Schema(defaultValue = "token", type = "string"))
     })
+    @PreAuthorize(value = "hasRole('ADMIN')")
     @GetMapping("/findAllRoles")
     public ResponseEntity<Object> findAllRoles() {
 
@@ -39,6 +41,7 @@ public class RoleController {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
                     schema = @Schema(defaultValue = "token", type = "string"))
     })
+    @PreAuthorize(value = "hasRole('ADMIN')")
     @GetMapping("/findRoleById")
     public ResponseEntity<Object> findRoleById(@RequestParam("id") Long roleId) {
 
@@ -50,6 +53,7 @@ public class RoleController {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
                     schema = @Schema(defaultValue = "token", type = "string"))
     })
+    @PreAuthorize(value = "hasRole('ADMIN')")
     @GetMapping("/findRolesByUserId")
     public ResponseEntity<Object> findRolesByUserId(@RequestParam("id") Long userId) {
 
