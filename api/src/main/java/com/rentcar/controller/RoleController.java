@@ -3,6 +3,9 @@ package com.rentcar.controller;
 import com.rentcar.repository.RoleRepository;
 import com.rentcar.service.RoleService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -21,13 +24,21 @@ import java.util.Collections;
 public class RoleController {
 
     private final RoleService repository;
-    @Operation(summary = "Find all roles")
+
+    @Operation(summary = "Find all roles", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
     @GetMapping("/findAllRoles")
     public ResponseEntity<Object> findAllRoles() {
 
         return new ResponseEntity<>(Collections.singletonMap("result", repository.findAll()), HttpStatus.OK);
     }
-    @Operation(summary = "Find role by role id")
+
+    @Operation(summary = "Find role by role id", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
     @GetMapping("/findRoleById")
     public ResponseEntity<Object> findRoleById(@RequestParam("id") Long roleId) {
 
@@ -35,12 +46,14 @@ public class RoleController {
                 repository.findRoleById(roleId)), HttpStatus.OK);
     }
 
-    @Operation(summary = "Find roles by user id")
+    @Operation(summary = "Find roles by user id", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
     @GetMapping("/findRolesByUserId")
     public ResponseEntity<Object> findRolesByUserId(@RequestParam("id") Long userId) {
 
         return new ResponseEntity<>(Collections.singletonMap("result",
                 repository.findRolesByUserId(userId)), HttpStatus.OK);
     }
-
 }
