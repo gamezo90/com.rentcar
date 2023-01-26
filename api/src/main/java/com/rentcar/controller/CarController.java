@@ -9,10 +9,14 @@ import com.rentcar.domain.Car;
 import com.rentcar.service.CarService;
 import com.rentcar.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,7 +34,11 @@ public class CarController {
 
     private final UserService userService;
 
-    @Operation(summary = "Find car by car id")
+    @Operation(summary = "Find car by car id", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
+    @PreAuthorize(value = "hasAnyRole('MODERATOR', 'ADMIN')")
     @GetMapping("/findCarByCarId")
     public ResponseEntity<Object> findCarByCarId(@RequestParam("id") Long carId) {
 
@@ -48,14 +56,22 @@ public class CarController {
         );
     }
 
-    @Operation(summary = "Find cars by user login")
+    @Operation(summary = "Find cars by user login", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
+    @PreAuthorize(value = "hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
     @GetMapping("/findCarsByUserLogin")
     public ResponseEntity<Object> findCarsByUserLogin(@RequestParam("user_login") String login) {
         carService.checkCarWithUserLoginExist(login);
         return new ResponseEntity<>(Collections.singletonMap("result", carService.findByUserLogin(login)), HttpStatus.OK);
     }
 
-    @Operation(summary = "Adding a car")
+    @Operation(summary = "Adding a car", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
+    @PreAuthorize(value = "hasRole('USER')")
     @PostMapping("/createCar")
     public ResponseEntity<Object> addCar(@Valid @RequestBody CarCreateRequest createRequest) {
         Car newCar = carMapper.carConvertCreateRequest(createRequest);
@@ -64,7 +80,11 @@ public class CarController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Update the car")
+    @Operation(summary = "Update the car", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
+    @PreAuthorize(value = "hasRole('USER')")
     @PutMapping(value = "/updateCar/{id}")
     public ResponseEntity<Object> updateCar(@RequestParam("id") Long id, @Valid @RequestBody CarUpdateRequest carUpdateRequest) {
         Car updatedCar = carMapper.convertUpdateRequest(carUpdateRequest, carService.findByCarId(id));
@@ -72,11 +92,15 @@ public class CarController {
         return new ResponseEntity<>(Collections.singletonMap("cars", carsResponse), HttpStatus.OK);
     }
 
-    @Operation(summary = "Ban car by car id")
-    @PatchMapping("/banCarByCarId/{id}")
-    public ResponseEntity<Object> banCarByCarId(@PathVariable("id") Long id) {
+    @Operation(summary = "Soft delete by car id", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
+    @PreAuthorize(value = "hasAnyRole('USER', 'MODERATOR', 'ADMIN')")
+    @PatchMapping("/softDeleteByCarId/{id}")
+    public ResponseEntity<Object> softDeleteByCarId(@PathVariable("id") Long id) {
 
-        Car car = carService.banByCarId(id);
+        Car car = carService.softDeleteByCarId(id);
 
         return new ResponseEntity<>(Collections.singletonMap(car, carMapper.toResponse(car)), HttpStatus.OK);
     }

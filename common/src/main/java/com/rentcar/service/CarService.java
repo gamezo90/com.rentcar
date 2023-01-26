@@ -16,7 +16,7 @@ public interface CarService {
 
     Car update(Car carToUpdate);
 
-    Car banByCarId(Long id);
+    Car softDeleteByCarId(Long id);
 
     void checkCarWithUserLoginExist(String userLogin);
 
