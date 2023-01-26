@@ -56,16 +56,15 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                .antMatchers("/api/users/**").permitAll()
-                .antMatchers("/api/orders/**").permitAll()
-           //     .antMatchers("/api/discount/**").hasAnyRole("ADMIN", "MODERATOR")
-                .antMatchers("/api/discount/**").permitAll()
-                .antMatchers("/api/car/**").permitAll()
+                .antMatchers("/api/users/**").hasAnyRole("USER", "MODERATOR", "ADMIN")
+                .antMatchers("/api/orders/**").hasAnyRole("USER", "MODERATOR", "ADMIN")
+                .antMatchers("/api/discount/**").hasAnyRole("USER", "MODERATOR", "ADMIN")
+                .antMatchers("/api/car/findAllCars").permitAll()
+                .antMatchers("/api/car/findCarsByUserLogin").permitAll()
+                .antMatchers("/api/car/**").hasAnyRole("USER", "MODERATOR", "ADMIN")
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/registration/**").permitAll()
-                .antMatchers("/api/roles/**").permitAll()
-
-      //       .antMatchers("/admin/**").hasAnyRole("ADMIN", "MODERATOR")
+                .antMatchers("/api/roles/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
 
         // Custom JWT based authentication
