@@ -91,6 +91,7 @@ public class DiscountController {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
                     schema = @Schema(defaultValue = "token", type = "string"))
     })
+    @PreAuthorize("#login == authentication.name || hasAnyRole('ADMIN','MODERATOR')")
     @GetMapping("/findDiscountByUserLogin")
     public ResponseEntity<Object> findByUserLogin(@RequestParam("userLogin") String login) {
 
