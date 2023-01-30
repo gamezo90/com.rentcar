@@ -6,6 +6,7 @@ import com.rentcar.controller.requests.CarsRequests.CarCreateRequest;
 import com.rentcar.controller.requests.CarsRequests.CarUpdateRequest;
 import com.rentcar.controller.response.CarsResponse;
 import com.rentcar.domain.Car;
+import com.rentcar.exception.ForbiddenException;
 import com.rentcar.service.CarService;
 import com.rentcar.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,10 +18,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.Collections;
+import java.util.List;
 
 @Tag(name = "Car controller")
 @RestController
@@ -83,12 +87,19 @@ public class CarController {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
                     schema = @Schema(defaultValue = "token", type = "string"))
     })
-    @PreAuthorize(value = "hasRole('USER')")
+    @PreAuthorize(value = "#principal.getName() == authentication.name")
     @PutMapping(value = "/updateCar/{id}")
-    public ResponseEntity<Object> updateCar(@RequestParam("id") Long id, @Valid @RequestBody CarUpdateRequest carUpdateRequest) {
-        Car updatedCar = carMapper.convertUpdateRequest(carUpdateRequest, carService.findByCarId(id));
-        CarsResponse carsResponse = carMapper.toResponse(carService.update(updatedCar));
+    public ResponseEntity<Object> updateCar(@RequestParam("id") Long id, Principal principal, @Valid @RequestBody CarUpdateRequest carUpdateRequest) {
+        List<Car> listCar = carService.findByUserLogin(principal.getName());
+        Car car =carService.findByCarId(id);
+        if (listCar.contains(car) == true){
+            Car updatedCar = carMapper.convertUpdateRequest(carUpdateRequest, carService.findByCarId(id));
+            CarsResponse carsResponse = carMapper.toResponse(carService.update(updatedCar));
         return new ResponseEntity<>(Collections.singletonMap("cars", carsResponse), HttpStatus.OK);
+        }
+        else {
+            throw new ForbiddenException("User can change only his cars");
+        }
     }
 
     @Operation(summary = "Soft delete by car id", parameters = {

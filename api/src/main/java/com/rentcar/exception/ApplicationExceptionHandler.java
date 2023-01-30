@@ -95,6 +95,19 @@ public class ApplicationExceptionHandler {
     return new ResponseEntity<>(Collections.singletonMap("error", error), HttpStatus.BAD_REQUEST);
   }
 
+  @ExceptionHandler({ForbiddenException.class})
+  public ResponseEntity<Object> handleForbiddenException(ForbiddenException e) {
+
+    ErrorContainer error =
+            ErrorContainer.builder()
+                    .exceptionId(UUIDGenerator.generateUUID())
+                    .errorCode(25)
+                    .errorMessage(e.getMessage())
+                    .e(e.getClass().toString())
+                    .build();
+
+    return new ResponseEntity<>(Collections.singletonMap("error", error), HttpStatus.FORBIDDEN);
+  }
 
 
 //  @ExceptionHandler(DataIntegrityViolationException.class)
