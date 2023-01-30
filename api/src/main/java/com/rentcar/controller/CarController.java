@@ -93,7 +93,7 @@ public class CarController {
         if (carService.findByUserLogin(principal.getName()).contains(carService.findByCarId(id)) == true) {
             Car updatedCar = carMapper.convertUpdateRequest(carUpdateRequest, carService.findByCarId(id));
             CarsResponse carsResponse = carMapper.toResponse(carService.update(updatedCar));
-        return new ResponseEntity<>(Collections.singletonMap("cars", carsResponse), HttpStatus.OK);
+            return new ResponseEntity<>(Collections.singletonMap("cars", carsResponse), HttpStatus.OK);
         }
         else {
             throw new ForbiddenException("User can change only his cars");
@@ -104,11 +104,15 @@ public class CarController {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
                     schema = @Schema(defaultValue = "token", type = "string"))
     })
+    @PreAuthorize(value = "#principal.getName() == authentication.name")
     @PatchMapping("/softDeleteByCarId/{id}")
-    public ResponseEntity<Object> softDeleteByCarId(@PathVariable("id") Long id) {
-
-        Car car = carService.softDeleteByCarId(id);
-
-        return new ResponseEntity<>(Collections.singletonMap(car, carMapper.toResponse(car)), HttpStatus.OK);
+    public ResponseEntity<Object> softDeleteByCarId(@PathVariable("id") Long id, Principal principal) {
+        if (carService.findByUserLogin(principal.getName()).contains(carService.findByCarId(id)) == true) {
+            Car car = carService.softDeleteByCarId(id);
+            return new ResponseEntity<>(Collections.singletonMap(car, carMapper.toResponse(car)), HttpStatus.OK);
+        }
+        else {
+            throw new ForbiddenException("User can delete only his cars");
+        }
     }
 }
