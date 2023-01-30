@@ -109,7 +109,7 @@ public class CarController {
     public ResponseEntity<Object> softDeleteByCarId(@PathVariable("id") Long id, Principal principal) {
         if (carService.findByUserLogin(principal.getName()).contains(carService.findByCarId(id)) == true) {
             Car car = carService.softDeleteByCarId(id);
-            return new ResponseEntity<>(Collections.singletonMap(car, carMapper.toResponse(car)), HttpStatus.OK);
+            return new ResponseEntity<>(Collections.singletonMap("car", carMapper.toResponse(car)), HttpStatus.OK);
         }
         else {
             throw new ForbiddenException("User can delete only his cars");
