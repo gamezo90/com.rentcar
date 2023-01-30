@@ -90,9 +90,7 @@ public class CarController {
     @PreAuthorize(value = "#principal.getName() == authentication.name")
     @PutMapping(value = "/updateCar/{id}")
     public ResponseEntity<Object> updateCar(@RequestParam("id") Long id, Principal principal, @Valid @RequestBody CarUpdateRequest carUpdateRequest) {
-        List<Car> listCar = carService.findByUserLogin(principal.getName());
-        Car car =carService.findByCarId(id);
-        if (listCar.contains(car) == true){
+        if (carService.findByUserLogin(principal.getName()).contains(carService.findByCarId(id)) == true) {
             Car updatedCar = carMapper.convertUpdateRequest(carUpdateRequest, carService.findByCarId(id));
             CarsResponse carsResponse = carMapper.toResponse(carService.update(updatedCar));
         return new ResponseEntity<>(Collections.singletonMap("cars", carsResponse), HttpStatus.OK);
