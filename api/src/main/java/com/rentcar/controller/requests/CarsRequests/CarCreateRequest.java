@@ -43,10 +43,6 @@ public class CarCreateRequest {
     @Pattern(regexp = "^\\d+(?:\\.\\d+)?$", message = "Price must be positive floating point numbers")
     private String price;
 
-    @Schema(defaultValue = "9", type = "String" , description = "User id")
-    @Pattern(regexp = "^\\d+$", message = "User id must be positive integers")
-    private String userId;
-
     //not realized
     @Schema(defaultValue = "Some Photo", type = "String" , description = "Car photo")
     @Size(min = 2, max = 255)

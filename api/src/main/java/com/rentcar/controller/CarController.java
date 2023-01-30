@@ -70,11 +70,11 @@ public class CarController {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
                     schema = @Schema(defaultValue = "token", type = "string"))
     })
-    @PreAuthorize(value = "hasRole('USER')")
+    @PreAuthorize(value = "#login == authentication.name")
     @PostMapping("/createCar")
-    public ResponseEntity<Object> addCar(@Valid @RequestBody CarCreateRequest createRequest) {
+    public ResponseEntity<Object> addCar(@Valid @RequestBody CarCreateRequest createRequest, @RequestParam("login")String login) {
         Car newCar = carMapper.carConvertCreateRequest(createRequest);
-        userService.findById(newCar.getUserId());
+        newCar.setUserId(userService.findByLogin(login).getId());
         CarsResponse response = carMapper.toResponse(carService.create(newCar));
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
