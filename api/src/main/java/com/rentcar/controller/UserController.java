@@ -19,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.Collections;
 import java.util.Map;
 @Tag(name = "User controller")
@@ -97,10 +98,10 @@ public class UserController {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
                     schema = @Schema(defaultValue = "token", type = "string"))
     })
-    @PreAuthorize(value = "hasRole('USER')")
+    @PreAuthorize(value = "#principal.getName() == authentication.name")
     @PutMapping(value = "/updateUser/{login}")
-    public ResponseEntity<Object> updateUser(@RequestParam("user_login") String login, @Valid @RequestBody UserUpdateRequest request) {
-        User updatedUser = userMapper.convertUpdateRequest(request, userService.findByLogin(login));
+    public ResponseEntity<Object> updateUser(Principal principal, @Valid @RequestBody UserUpdateRequest request) {
+        User updatedUser = userMapper.convertUpdateRequest(request, userService.findByLogin(principal.getName()));
         userService.checkUserLoginAndEmailForNotExistInDB(updatedUser);
         UserResponse userResponse = userMapper.toResponse(userService.update(updatedUser));
         return new ResponseEntity<>(Collections.singletonMap("user", userResponse), HttpStatus.OK);
