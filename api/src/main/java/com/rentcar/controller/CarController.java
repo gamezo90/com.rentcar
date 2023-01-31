@@ -40,7 +40,7 @@ public class CarController {
 
     @Operation(summary = "Find car by car id", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "hasAnyRole('MODERATOR', 'ADMIN')")
     @GetMapping("/findCarByCarId")
@@ -62,7 +62,7 @@ public class CarController {
 
     @Operation(summary = "Find cars by user login", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @GetMapping("/findCarsByUserLogin")
     public ResponseEntity<Object> findCarsByUserLogin(@RequestParam("user_login") String login) {
@@ -72,7 +72,7 @@ public class CarController {
 
     @Operation(summary = "Adding a car", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "#principal.getName() == authentication.name")
     @PostMapping("/createCar")
@@ -85,7 +85,7 @@ public class CarController {
 
     @Operation(summary = "Update the car", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "#principal.getName() == authentication.name")
     @PutMapping(value = "/updateCar/{id}")
@@ -102,7 +102,7 @@ public class CarController {
 
     @Operation(summary = "Soft delete by car id", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "#principal.getName() == authentication.name")
     @PatchMapping("/softDeleteByCarId/{id}")

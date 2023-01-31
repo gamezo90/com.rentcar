@@ -28,7 +28,7 @@ public class RoleController {
 
     @Operation(summary = "Find all roles", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "hasRole('ADMIN')")
     @GetMapping("/findAllRoles")
@@ -39,7 +39,7 @@ public class RoleController {
 
     @Operation(summary = "Find role by role id", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "hasRole('ADMIN')")
     @GetMapping("/findRoleById")
@@ -51,7 +51,7 @@ public class RoleController {
 
     @Operation(summary = "Find roles by user id", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "hasRole('ADMIN')")
     @GetMapping("/findRolesByUserId")

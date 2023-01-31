@@ -42,7 +42,7 @@ public class OrderController {
 
     @Operation(summary = "Find all orders", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "hasAnyRole('ADMIN','MODERATOR')")
     @GetMapping("/findAllOrders")
@@ -54,7 +54,7 @@ public class OrderController {
 
     @Operation(summary = "Find order by id", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "hasAnyRole('ADMIN','MODERATOR')")
     @GetMapping("/findOrderById")
@@ -66,7 +66,7 @@ public class OrderController {
 
     @Operation(summary = "Find orders by car id", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "hasAnyRole('ADMIN','MODERATOR')")
     @GetMapping("/findOrderByCarId")
@@ -78,7 +78,7 @@ public class OrderController {
 
     @Operation(summary = "Find orders by user id", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "hasAnyRole('ADMIN','MODERATOR')")
     @GetMapping("/findOrdersByUserId")
@@ -90,7 +90,7 @@ public class OrderController {
 
     @Operation(summary =  "Adding order", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "#principal.getName() == authentication.name")
     @PostMapping("/createOrder")
@@ -104,7 +104,7 @@ public class OrderController {
 
     @Operation(summary = "Update order", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "#principal.getName() == authentication.name")
     @PutMapping("/updateOrder")
@@ -125,7 +125,7 @@ public class OrderController {
 
     @Operation(summary = "Update user order", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "hasRole('ADMIN')")
     @PutMapping("/updateUserOrder")
@@ -137,7 +137,7 @@ public class OrderController {
 
     @Operation(summary = "Find discount by user login", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize("#principal.getName() == authentication.name")
     @GetMapping("/findOrderByUserLogin")

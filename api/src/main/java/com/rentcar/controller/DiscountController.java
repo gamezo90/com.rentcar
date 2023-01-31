@@ -37,7 +37,7 @@ public class DiscountController {
 
     @Operation(summary = "Find discounts by user id", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "hasAnyRole('ADMIN','MODERATOR')")
     @GetMapping("/findDiscountByUserId")
@@ -49,7 +49,7 @@ public class DiscountController {
 
     @Operation(summary = "Find all discounts", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "hasAnyRole('ADMIN','MODERATOR')")
     @GetMapping("/findAllDiscounts")
@@ -63,7 +63,7 @@ public class DiscountController {
 
     @Operation(summary = "Adding discount", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "hasAnyRole('ADMIN','MODERATOR')")
     @PostMapping("/createDiscount")
@@ -77,7 +77,7 @@ public class DiscountController {
 
     @Operation(summary = "Update discount", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "hasAnyRole('ADMIN','MODERATOR')")
     @PutMapping(value = "/updateDiscount/{id}")
@@ -89,7 +89,7 @@ public class DiscountController {
 
     @Operation(summary = "Find discount by user login", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize("#login == authentication.name || hasAnyRole('ADMIN','MODERATOR')")
     @GetMapping("/findDiscountByUserLogin")

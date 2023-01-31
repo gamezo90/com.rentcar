@@ -37,7 +37,7 @@ public class UserController {
 
     @Operation(summary = "Find all users", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "hasAnyRole('MODERATOR', 'ADMIN')")
     @GetMapping("/findAllUsers")
@@ -48,7 +48,7 @@ public class UserController {
 
     @Operation(summary = "Find user by id", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "hasAnyRole('MODERATOR', 'ADMIN')")
     @GetMapping("/findUserById/{id}")
@@ -59,7 +59,7 @@ public class UserController {
 
     @Operation(summary = "Find user by login", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "hasAnyRole('MODERATOR', 'ADMIN')")
     @GetMapping("/findUserByLogin")
@@ -70,7 +70,7 @@ public class UserController {
 
     @Operation(summary = "Soft delete user by login", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "hasRole('ADMIN')")
     @PatchMapping("/softDeleteUserByLogin/{login}")
@@ -83,7 +83,7 @@ public class UserController {
 
     @Operation(summary = "Ban delete user by login", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "hasRole('ADMIN')")
     @PatchMapping("/banUserByLogin/{login}")
@@ -96,7 +96,7 @@ public class UserController {
 
     @Operation(summary = "Update user by login", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "#principal.getName() == authentication.name")
     @PutMapping(value = "/updateUser/{login}")
@@ -109,7 +109,7 @@ public class UserController {
 
     @Operation(summary = "Add role to user by login", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "hasRole('ADMIN')")
     @PatchMapping("/addRoleToUserByLogin/{login}")
@@ -120,7 +120,7 @@ public class UserController {
 
     @Operation(summary = "Remove user role", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
-                    schema = @Schema(defaultValue = "token", type = "string"))
+                    schema = @Schema(type = "string"))
     })
     @PreAuthorize(value = "hasRole('ADMIN')")
     @PatchMapping("/removeUserRole/{login}")
