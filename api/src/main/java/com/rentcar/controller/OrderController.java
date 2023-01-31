@@ -89,6 +89,7 @@ public class OrderController {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
                     schema = @Schema(defaultValue = "token", type = "string"))
     })
+    @PreAuthorize(value = "#principal.getName() == authentication.name")
     @PostMapping("/createOrder")
     public ResponseEntity<Object> addOrder(@Valid @RequestBody OrderCreateRequest createRequest) {
         Order newOrder = orderMapper.orderConvertCreateRequest(createRequest);
