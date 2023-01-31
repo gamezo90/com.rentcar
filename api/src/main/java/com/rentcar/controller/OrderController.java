@@ -104,7 +104,7 @@ public class OrderController {
     })
     @PreAuthorize(value = "hasAnyRole('ADMIN','USER')")
     @PutMapping("/updateOrder")
-    public ResponseEntity<Object> updateCar(@RequestParam("id") Long id, @Valid @RequestBody OrderUpdateRequest orderUpdateRequest) {
+    public ResponseEntity<Object> updateOrder(@RequestParam("id") Long id, @Valid @RequestBody OrderUpdateRequest orderUpdateRequest) {
         Order updatedOrder = orderMapper.convertUpdateRequest(orderUpdateRequest, orderService.findById(id));
         OrderResponse orderResponse = orderMapper.toResponse(orderService.update(updatedOrder));
         return new ResponseEntity<>(Collections.singletonMap("cars", orderResponse), HttpStatus.OK);

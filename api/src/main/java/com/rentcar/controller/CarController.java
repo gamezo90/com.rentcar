@@ -79,7 +79,6 @@ public class CarController {
     public ResponseEntity<Object> addCar(@Valid @RequestBody CarCreateRequest createRequest, Principal principal) {
         Car newCar = carMapper.carConvertCreateRequest(createRequest);
         newCar.setUserId(userService.findByLogin(principal.getName()).getId());
-   //     newCar.setUserId(userService.findByLogin(login).getId());
         CarsResponse response = carMapper.toResponse(carService.create(newCar));
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
