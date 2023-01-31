@@ -24,6 +24,8 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Collections;
 
+import static com.rentcar.service.impl.DiscountServiceImpl.localDate;
+
 @Tag(name = "Order controller")
 @RestController
 @RequiredArgsConstructor
@@ -37,7 +39,6 @@ public class OrderController {
     private final UserService userService;
 
     private final CarService carService;
-
 
     @Operation(summary = "Find all orders", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
@@ -108,7 +109,10 @@ public class OrderController {
     @PreAuthorize(value = "#principal.getName() == authentication.name")
     @PutMapping("/updateOrder")
     public ResponseEntity<Object> updateOrder(@RequestParam("id") Long id, @Valid @RequestBody OrderUpdateRequest orderUpdateRequest, Principal principal) {
-        if (orderService.findByUserLogin(principal.getName()).contains(orderService.findById(id)) == true){
+        if (orderService.findByUserLogin(principal.getName()).contains(orderService.findById(id)) == true) {
+            if (orderService.findById(id).getExpirationDate().isBefore(localDate)) {
+                throw new IllegalArgumentException("User can change only active orders");
+            }
             Order updatedOrder = orderMapper.convertUpdateRequest(orderUpdateRequest, orderService.findById(id));
             OrderResponse orderResponse = orderMapper.toResponse(orderService.update(updatedOrder));
             return new ResponseEntity<>(Collections.singletonMap("cars", orderResponse), HttpStatus.OK);
