@@ -20,6 +20,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.Collections;
 
 @Tag(name = "Order controller")
@@ -103,9 +104,9 @@ public class OrderController {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
                     schema = @Schema(defaultValue = "token", type = "string"))
     })
-    @PreAuthorize(value = "hasAnyRole('ADMIN','USER')")
+    @PreAuthorize(value = "#principal.getName() == authentication.name")
     @PutMapping("/updateOrder")
-    public ResponseEntity<Object> updateOrder(@RequestParam("id") Long id, @Valid @RequestBody OrderUpdateRequest orderUpdateRequest) {
+    public ResponseEntity<Object> updateOrder(@RequestParam("id") Long id, @Valid @RequestBody OrderUpdateRequest orderUpdateRequest, Principal principal) {
         Order updatedOrder = orderMapper.convertUpdateRequest(orderUpdateRequest, orderService.findById(id));
         OrderResponse orderResponse = orderMapper.toResponse(orderService.update(updatedOrder));
         return new ResponseEntity<>(Collections.singletonMap("cars", orderResponse), HttpStatus.OK);
@@ -116,7 +117,7 @@ public class OrderController {
                     schema = @Schema(defaultValue = "token", type = "string"))
     })
     @PreAuthorize("#login == authentication.name")
-    @GetMapping("/findDiscountByUserLogin")
+    @GetMapping("/findOrderByUserLogin")
     public ResponseEntity<Object> findByUserLogin(@RequestParam("userLogin") String login) {
 
         return new ResponseEntity<>(Collections.singletonMap("result", orderService.findByUserLogin(login)), HttpStatus.OK);
