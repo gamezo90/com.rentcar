@@ -112,15 +112,27 @@ public class OrderController {
         return new ResponseEntity<>(Collections.singletonMap("cars", orderResponse), HttpStatus.OK);
     }
 
+    @Operation(summary = "Update order", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(defaultValue = "token", type = "string"))
+    })
+    @PreAuthorize(value = "hasRole('ADMIN')")
+    @PutMapping("/updateUserOrder")
+    public ResponseEntity<Object> updateUserOrder(@RequestParam("id") Long id, @Valid @RequestBody OrderUpdateRequest orderUpdateRequest) {
+        Order updatedOrder = orderMapper.convertUpdateRequest(orderUpdateRequest, orderService.findById(id));
+        OrderResponse orderResponse = orderMapper.toResponse(orderService.update(updatedOrder));
+        return new ResponseEntity<>(Collections.singletonMap("cars", orderResponse), HttpStatus.OK);
+    }
+
     @Operation(summary = "Find discount by user login", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
                     schema = @Schema(defaultValue = "token", type = "string"))
     })
-    @PreAuthorize("#login == authentication.name")
+    @PreAuthorize("#principal.getName() == authentication.name")
     @GetMapping("/findOrderByUserLogin")
-    public ResponseEntity<Object> findByUserLogin(@RequestParam("userLogin") String login) {
+    public ResponseEntity<Object> findByUserLogin(Principal principal) {
 
-        return new ResponseEntity<>(Collections.singletonMap("result", orderService.findByUserLogin(login)), HttpStatus.OK);
+        return new ResponseEntity<>(Collections.singletonMap("result", orderService.findByUserLogin(principal.getName())), HttpStatus.OK);
     }
 
 }
