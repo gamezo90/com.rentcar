@@ -94,9 +94,9 @@ public class OrderController {
     })
     @PreAuthorize(value = "#principal.getName() == authentication.name")
     @PostMapping("/createOrder")
-    public ResponseEntity<Object> addOrder(@Valid @RequestBody OrderCreateRequest createRequest) {
+    public ResponseEntity<Object> addOrder(@Valid @RequestBody OrderCreateRequest createRequest, Principal principal) {
         Order newOrder = orderMapper.orderConvertCreateRequest(createRequest);
-        userService.findById(newOrder.getUserId());
+        newOrder.setUserId(userService.findByLogin(principal.getName()).getId());
         carService.findByCarId(newOrder.getCarId());
         OrderResponse response = orderMapper.toResponse(orderService.create(newOrder));
         return new ResponseEntity<>(response, HttpStatus.CREATED);
