@@ -8,9 +8,9 @@ import javax.validation.constraints.Pattern;
 @Schema(description = "Order create request")
 public class OrderCreateRequest {
 
-    @Schema(defaultValue = "9", type = "String" , description = "User id")
-    @Pattern(regexp = "^\\d+$", message = "User id must be positive integers")
-    private String userId;
+//    @Schema(defaultValue = "9", type = "String" , description = "User id")
+//    @Pattern(regexp = "^\\d+$", message = "User id must be positive integers")
+//    private String userId;
 
     @Schema(defaultValue = "9", type = "String" , description = "Car id")
     @Pattern(regexp = "^\\d+$", message = "Car id must be positive integers")
