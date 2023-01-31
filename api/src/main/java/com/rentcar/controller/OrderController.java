@@ -95,6 +95,11 @@ public class OrderController {
     @PreAuthorize(value = "#principal.getName() == authentication.name")
     @PostMapping("/createOrder")
     public ResponseEntity<Object> addOrder(@Valid @RequestBody OrderCreateRequest createRequest, Principal principal) {
+
+        //получили ид машины из запроса
+//        createRequest.getCarId();
+        //получили List в котором вся история аренды тачки
+        orderService.findOrdersByCarId(Long.valueOf(createRequest.getCarId()));
         Order newOrder = orderMapper.orderConvertCreateRequest(createRequest);
         newOrder.setUserId(userService.findByLogin(principal.getName()).getId());
         carService.findByCarId(newOrder.getCarId());
