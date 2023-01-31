@@ -5,6 +5,7 @@ import com.rentcar.controller.requests.OrdersRequests.OrderCreateRequest;
 import com.rentcar.controller.requests.OrdersRequests.OrderUpdateRequest;
 import com.rentcar.controller.response.OrderResponse;
 import com.rentcar.domain.Order;
+import com.rentcar.exception.ForbiddenException;
 import com.rentcar.service.CarService;
 import com.rentcar.service.OrderService;
 import com.rentcar.service.UserService;
@@ -107,12 +108,17 @@ public class OrderController {
     @PreAuthorize(value = "#principal.getName() == authentication.name")
     @PutMapping("/updateOrder")
     public ResponseEntity<Object> updateOrder(@RequestParam("id") Long id, @Valid @RequestBody OrderUpdateRequest orderUpdateRequest, Principal principal) {
-        Order updatedOrder = orderMapper.convertUpdateRequest(orderUpdateRequest, orderService.findById(id));
-        OrderResponse orderResponse = orderMapper.toResponse(orderService.update(updatedOrder));
-        return new ResponseEntity<>(Collections.singletonMap("cars", orderResponse), HttpStatus.OK);
+        if (orderService.findByUserLogin(principal.getName()).contains(orderService.findById(id)) == true){
+            Order updatedOrder = orderMapper.convertUpdateRequest(orderUpdateRequest, orderService.findById(id));
+            OrderResponse orderResponse = orderMapper.toResponse(orderService.update(updatedOrder));
+            return new ResponseEntity<>(Collections.singletonMap("cars", orderResponse), HttpStatus.OK);
+        }
+        else {
+            throw new ForbiddenException("User can change only his orders");
+        }
     }
 
-    @Operation(summary = "Update order", parameters = {
+    @Operation(summary = "Update user order", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
                     schema = @Schema(defaultValue = "token", type = "string"))
     })
