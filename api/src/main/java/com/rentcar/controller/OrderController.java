@@ -100,13 +100,9 @@ public class OrderController {
     @PreAuthorize(value = "#principal.getName() == authentication.name")
     @PostMapping("/createOrder")
     public ResponseEntity<Object> addOrder(@Valid @RequestBody OrderCreateRequest createRequest, Principal principal) {
-        List<Order> list = orderService.findOrdersByCarId(Long.valueOf(createRequest.getCarId()));
-        if (!list.isEmpty()) {
-            for (Order order : list) {
-                if (list.get(list.indexOf(order)).getExpirationDate().isAfter(localDate)) {
-                    throw new ForbiddenException("The car is already rented");
-                }
-            }
+        if (orderService.findOrdersByCarId(Long.valueOf(createRequest.getCarId())).stream().anyMatch(order
+                -> order.getExpirationDate().isAfter(localDate))) {
+            throw new ForbiddenException("The car is already rented");
         }
         Order newOrder = orderMapper.orderConvertCreateRequest(createRequest);
         newOrder.setUserId(userService.findByLogin(principal.getName()).getId());
