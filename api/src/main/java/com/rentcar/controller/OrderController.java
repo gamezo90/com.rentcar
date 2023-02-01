@@ -20,9 +20,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import static com.rentcar.service.impl.DiscountServiceImpl.localDate;
 
@@ -71,7 +74,9 @@ public class OrderController {
     @PreAuthorize(value = "hasAnyRole('ADMIN','MODERATOR')")
     @GetMapping("/findOrderByCarId")
     public ResponseEntity<Object> findOrdersByCarId(@RequestParam("id") Long carId) {
-
+        if ( orderService.findOrdersByCarId(carId).isEmpty()) {
+            throw new EntityNotFoundException(String.format("Orders not found"));
+        }
         return new ResponseEntity<>(Collections.singletonMap("result",
                 orderService.findOrdersByCarId(carId)), HttpStatus.OK);
     }
@@ -95,11 +100,14 @@ public class OrderController {
     @PreAuthorize(value = "#principal.getName() == authentication.name")
     @PostMapping("/createOrder")
     public ResponseEntity<Object> addOrder(@Valid @RequestBody OrderCreateRequest createRequest, Principal principal) {
-
-        //получили ид машины из запроса
-//        createRequest.getCarId();
-        //получили List в котором вся история аренды тачки
-        orderService.findOrdersByCarId(Long.valueOf(createRequest.getCarId()));
+        List<Order> list = orderService.findOrdersByCarId(Long.valueOf(createRequest.getCarId()));
+        if (!list.isEmpty()) {
+            for (int i = 0; i <= list.size(); i++) {
+                if (list.get(i).getExpirationDate().isAfter(localDate)) {
+                    throw new ForbiddenException("The car is already rented");
+                }
+            }
+        }
         Order newOrder = orderMapper.orderConvertCreateRequest(createRequest);
         newOrder.setUserId(userService.findByLogin(principal.getName()).getId());
         carService.findByCarId(newOrder.getCarId());
