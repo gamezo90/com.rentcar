@@ -6,8 +6,10 @@ import com.rentcar.controller.requests.CarsRequests.CarCreateRequest;
 import com.rentcar.controller.requests.CarsRequests.CarUpdateRequest;
 import com.rentcar.controller.response.CarsResponse;
 import com.rentcar.domain.Car;
+import com.rentcar.domain.Order;
 import com.rentcar.exception.ForbiddenException;
 import com.rentcar.service.CarService;
+import com.rentcar.service.OrderService;
 import com.rentcar.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -25,6 +27,9 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.rentcar.service.impl.DiscountServiceImpl.localDate;
 
 @Tag(name = "Car controller")
 @RestController
@@ -38,6 +43,8 @@ public class CarController {
 
     private final UserService userService;
 
+    private final OrderService orderService;
+
     @Operation(summary = "Find car by car id", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
                     schema = @Schema(type = "string"))
@@ -50,7 +57,11 @@ public class CarController {
                 carService.findByCarId(carId)), HttpStatus.OK);
     }
 
-    @Operation(summary = "Find all cars")
+    @Operation(summary = "Find car by car id", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(type = "string"))
+    })
+    @PreAuthorize(value = "hasRole('ADMIN')")
     @GetMapping("/findAllCars")
     public ResponseEntity<Object> findAllCars() {
 
@@ -59,6 +70,22 @@ public class CarController {
                 HttpStatus.OK
         );
     }
+
+    @Operation(summary = "Find all available cars")
+    @GetMapping("/findAllAvailableCars")
+    public ResponseEntity<Object> findAllAvailableCars() {
+
+        // Лист тачки, которые не забанены
+        List<Car> notBanned = carService.findAll().stream().filter(car -> car.getIsBanned() == false).collect(Collectors.toList());
+        // Лист машин, у которых закончилась аренда,!! выводятся аренды, а не тачки
+        List<Order> available = orderService.findAll().stream().filter(order -> order.getExpirationDate().isBefore(localDate)).peek(order -> order.getCar()).collect(Collectors.toList());
+        System.out.println(available);
+        return new ResponseEntity<>(
+                Collections.singletonMap("result", carService.findAll()),
+                HttpStatus.OK
+        );
+    }
+
 
     @Operation(summary = "Find cars by user login", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
