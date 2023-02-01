@@ -102,8 +102,8 @@ public class OrderController {
     public ResponseEntity<Object> addOrder(@Valid @RequestBody OrderCreateRequest createRequest, Principal principal) {
         List<Order> list = orderService.findOrdersByCarId(Long.valueOf(createRequest.getCarId()));
         if (!list.isEmpty()) {
-            for (int i = 0; i <= list.size(); i++) {
-                if (list.get(i).getExpirationDate().isAfter(localDate)) {
+            for (Order order : list) {
+                if (list.get(list.indexOf(order)).getExpirationDate().isAfter(localDate)) {
                     throw new ForbiddenException("The car is already rented");
                 }
             }
