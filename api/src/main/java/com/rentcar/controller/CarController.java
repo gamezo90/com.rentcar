@@ -86,10 +86,11 @@ public class CarController {
                 -> order.getCar()).collect(Collectors.toList());
         availableCars.retainAll(banned);
 
+        availableCars.addAll(carService.findAll().stream().filter(car
+                ->  car.getOrders().isEmpty() & car.getIsBanned() == false).collect(Collectors.toList()));
+
 
         System.out.println(availableCars);
-
-
 
 
         return new ResponseEntity<>(
