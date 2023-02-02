@@ -78,24 +78,18 @@ public class CarController {
     public ResponseEntity<Object> findAllAvailableCars() {
 
         // Лист тачки, которые не забанены
-        List<Car> notBanned = carService.findAll().stream().filter(car -> car.getIsBanned() == false).collect(Collectors.toList());
-        // Массив id незабаненых тачек
-        ArrayList<Long> idOfNotBannedCars = new ArrayList<>();
-        for (int i = 0; i < notBanned.size(); i++) {
-            idOfNotBannedCars.add(notBanned.get(i).getId());
-        }
-        System.out.println(idOfNotBannedCars);
-        // Лист orders, у которых закончилась аренда
-        List<Order> available = orderService.findAll().stream().filter(order
-                -> order.getExpirationDate().isBefore(localDate)).collect(Collectors.toList());
-        // Массив id неарендованных тачек
-        ArrayList<Long> idOfAvailableCars = new ArrayList<>();
-        for (int i = 0; i < available.size(); i++) {
-            idOfAvailableCars.add(available.get(i).getCar().getId());
-        }
-        System.out.println(idOfAvailableCars);
+        List<Car> banned = carService.findAll().stream().filter(car -> car.getIsBanned() == false).collect(Collectors.toList());
+        System.out.println(banned);
+        // Лист тачки, которые не арендованы
+        List<Car> availableCars = orderService.findAll().stream().filter(order
+                -> order.getExpirationDate().isBefore(localDate)).map(order
+                -> order.getCar()).collect(Collectors.toList());
+        availableCars.retainAll(banned);
 
-        idOfAvailableCars.get(0).equals(idOfNotBannedCars)
+
+        System.out.println(availableCars);
+
+
 
 
         return new ResponseEntity<>(
