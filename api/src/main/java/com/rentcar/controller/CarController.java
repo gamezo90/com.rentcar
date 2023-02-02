@@ -78,8 +78,9 @@ public class CarController {
     public ResponseEntity<Object> findAllAvailableCars() {
 
         // Лист тачки, которые не забанены
-        List<Car> banned = carService.findAll().stream().filter(car -> car.getIsBanned() == false).collect(Collectors.toList());
-        System.out.println(banned);
+        List<Car> banned = carService.findAll().stream().filter(car
+                -> car.getIsBanned() == false).collect(Collectors.toList());
+
         // Лист тачки, которые не арендованы
         List<Car> availableCars = orderService.findAll().stream().filter(order
                 -> order.getExpirationDate().isBefore(localDate)).map(order
