@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -77,9 +79,25 @@ public class CarController {
 
         // Лист тачки, которые не забанены
         List<Car> notBanned = carService.findAll().stream().filter(car -> car.getIsBanned() == false).collect(Collectors.toList());
-        // Лист машин, у которых закончилась аренда,!! выводятся аренды, а не тачки
-        List<Order> available = orderService.findAll().stream().filter(order -> order.getExpirationDate().isBefore(localDate)).peek(order -> order.getCar()).collect(Collectors.toList());
-        System.out.println(available);
+        // Массив id незабаненых тачек
+        ArrayList<Long> idOfNotBannedCars = new ArrayList<>();
+        for (int i = 0; i < notBanned.size(); i++) {
+            idOfNotBannedCars.add(notBanned.get(i).getId());
+        }
+        System.out.println(idOfNotBannedCars);
+        // Лист orders, у которых закончилась аренда
+        List<Order> available = orderService.findAll().stream().filter(order
+                -> order.getExpirationDate().isBefore(localDate)).collect(Collectors.toList());
+        // Массив id неарендованных тачек
+        ArrayList<Long> idOfAvailableCars = new ArrayList<>();
+        for (int i = 0; i < available.size(); i++) {
+            idOfAvailableCars.add(available.get(i).getCar().getId());
+        }
+        System.out.println(idOfAvailableCars);
+
+        idOfAvailableCars.get(0).equals(idOfNotBannedCars)
+
+
         return new ResponseEntity<>(
                 Collections.singletonMap("result", carService.findAll()),
                 HttpStatus.OK
