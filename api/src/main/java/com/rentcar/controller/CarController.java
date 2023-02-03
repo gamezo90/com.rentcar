@@ -8,6 +8,7 @@ import com.rentcar.controller.response.CarsResponse;
 import com.rentcar.domain.Car;
 import com.rentcar.exception.ForbiddenException;
 import com.rentcar.service.CarService;
+import com.rentcar.service.DiscountService;
 import com.rentcar.service.OrderService;
 import com.rentcar.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,6 +45,8 @@ public class CarController {
     private final UserService userService;
 
     private final OrderService orderService;
+
+    private final DiscountService discountService;
 
     @Operation(summary = "Find car by car id", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
@@ -85,6 +88,33 @@ public class CarController {
         List<CarsResponse> response = carMapper.toResponse(availableCars);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+
+    @Operation(summary = "Find all available cars for authentication users", parameters = {
+            @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
+                    schema = @Schema(type = "string"))
+    })
+    @PreAuthorize(value = "#principal.getName() == authentication.name")
+    @GetMapping("/findAllAvailableCarsForAuthenticationUsers")
+    public ResponseEntity<Object> findAllAvailableCarsForAuthenticationUsers(Principal principal) {
+        List<Car> availableCars = new ArrayList<>();
+        Stream.of(orderService.findAll().stream().filter(order
+                        -> order.getExpirationDate().isBefore(localDate)).map(order
+                        -> order.getCar()).filter(car
+                        -> car.getIsBanned() == false).collect(Collectors.toList()),
+                carService.findAll().stream().filter(car
+                        ->  car.getOrders().isEmpty() & car.getIsBanned() == false).collect(Collectors.toList())).forEach(availableCars::addAll);
+
+        //скидка пользователя
+        discountService.findByUserLogin(principal.getName()).getDiscountSize();
+        availableCars.stream().map(car -> car.setPrice(5.0));
+        carService.findByCarId(0L).setPrice(4.0);
+        List<CarsResponse> response = carMapper.toResponse(availableCars);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+
+
 
     @Operation(summary = "Find cars by user login", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
