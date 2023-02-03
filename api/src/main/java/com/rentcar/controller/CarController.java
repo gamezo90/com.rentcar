@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.rentcar.service.impl.DiscountServiceImpl.localDate;
 
@@ -76,28 +77,16 @@ public class CarController {
     @Operation(summary = "Find all available cars")
     @GetMapping("/findAllAvailableCars")
     public ResponseEntity<Object> findAllAvailableCars() {
-
-        // Лист тачки, которые не забанены
-        List<Car> banned = carService.findAll().stream().filter(car
-                -> car.getIsBanned() == false).collect(Collectors.toList());
-
-        // Лист тачки, которые не арендованы
-        List<Car> availableCars = orderService.findAll().stream().filter(order
+        List<Car> availableCars = new ArrayList<>();
+        Stream.of(orderService.findAll().stream().filter(order
                 -> order.getExpirationDate().isBefore(localDate)).map(order
-                -> order.getCar()).collect(Collectors.toList());
-        availableCars.retainAll(banned);
-
-        availableCars.addAll(carService.findAll().stream().filter(car
-                ->  car.getOrders().isEmpty() & car.getIsBanned() == false).collect(Collectors.toList()));
-
-
-        System.out.println(availableCars);
-
+                -> order.getCar()).filter(car
+                -> car.getIsBanned() == false).collect(Collectors.toList()),
+                carService.findAll().stream().filter(car
+                ->  car.getOrders().isEmpty() & car.getIsBanned() == false).collect(Collectors.toList())).forEach(availableCars::addAll);
 
         return new ResponseEntity<>(
-                Collections.singletonMap("result", carService.findAll()),
-                HttpStatus.OK
-        );
+                Collections.singletonMap("result", availableCars), HttpStatus.OK);
     }
 
 
