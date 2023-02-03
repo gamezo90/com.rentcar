@@ -85,10 +85,10 @@ public class CarController {
                 carService.findAll().stream().filter(car
                 ->  car.getOrders().isEmpty() & car.getIsBanned() == false).collect(Collectors.toList())).forEach(availableCars::addAll);
 
-        return new ResponseEntity<>(
-                Collections.singletonMap("result", availableCars), HttpStatus.OK);
+        //Need fix
+        CarsResponse response = carMapper.toResponse(availableCars.get(0));
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
-
 
     @Operation(summary = "Find cars by user login", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
