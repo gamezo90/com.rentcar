@@ -8,9 +8,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+import java.util.List;
+
 @Mapper
 public interface CarMapper {
     CarsResponse toResponse(Car car);
+    List<CarsResponse> toResponse(List<Car> car);
     @Mapping(target = "yearOfManufacture", expression =
             "java(com.rentcar.controller.utils.DateConvertUtil.parseToLocalDate(carCreateRequest.getYearOfManufacture()))")
     @Mapping(target = "conditioner", expression =

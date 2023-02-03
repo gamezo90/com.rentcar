@@ -6,7 +6,6 @@ import com.rentcar.controller.requests.CarsRequests.CarCreateRequest;
 import com.rentcar.controller.requests.CarsRequests.CarUpdateRequest;
 import com.rentcar.controller.response.CarsResponse;
 import com.rentcar.domain.Car;
-import com.rentcar.domain.Order;
 import com.rentcar.exception.ForbiddenException;
 import com.rentcar.service.CarService;
 import com.rentcar.service.OrderService;
@@ -20,13 +19,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -85,8 +82,7 @@ public class CarController {
                 carService.findAll().stream().filter(car
                 ->  car.getOrders().isEmpty() & car.getIsBanned() == false).collect(Collectors.toList())).forEach(availableCars::addAll);
 
-        //Need fix
-        CarsResponse response = carMapper.toResponse(availableCars.get(0));
+        List<CarsResponse> response = carMapper.toResponse(availableCars);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
