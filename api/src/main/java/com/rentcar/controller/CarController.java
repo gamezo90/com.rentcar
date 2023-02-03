@@ -89,7 +89,6 @@ public class CarController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-
     @Operation(summary = "Find all available cars for authentication users", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
                     schema = @Schema(type = "string"))
@@ -105,16 +104,11 @@ public class CarController {
                 carService.findAll().stream().filter(car
                         ->  car.getOrders().isEmpty() & car.getIsBanned() == false).collect(Collectors.toList())).forEach(availableCars::addAll);
 
-        //скидка пользователя
-        discountService.findByUserLogin(principal.getName()).getDiscountSize();
-        availableCars.stream().map(car -> car.setPrice(5.0));
-        carService.findByCarId(0L).setPrice(4.0);
+        availableCars.stream().forEach(car
+                -> car.setPrice((car.getPrice() * discountService.findByUserLogin(principal.getName()).getDiscountSize()) / 100));
         List<CarsResponse> response = carMapper.toResponse(availableCars);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
-
-
-
 
     @Operation(summary = "Find cars by user login", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
