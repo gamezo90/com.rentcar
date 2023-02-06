@@ -32,7 +32,7 @@ public class Discount {
     private Long userId;
 
     @Column(name = "discount_size")
-    private Float discountSize;
+    private Double discountSize;
 
     @Column(name = "creation_date")
     @JsonIgnore

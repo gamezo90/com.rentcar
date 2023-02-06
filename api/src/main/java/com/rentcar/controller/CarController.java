@@ -103,9 +103,8 @@ public class CarController {
                         -> car.getIsBanned() == false).collect(Collectors.toList()),
                 carService.findAll().stream().filter(car
                         ->  car.getOrders().isEmpty() & car.getIsBanned() == false).collect(Collectors.toList())).forEach(availableCars::addAll);
-
         availableCars.stream().forEach(car
-                -> car.setPrice((car.getPrice() * discountService.findByUserLogin(principal.getName()).getDiscountSize()) / 100));
+                -> car.setPrice((car.getPrice() * (1 - discountService.findByUserLogin(principal.getName()).getDiscountSize() / 100))));
         List<CarsResponse> response = carMapper.toResponse(availableCars);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
