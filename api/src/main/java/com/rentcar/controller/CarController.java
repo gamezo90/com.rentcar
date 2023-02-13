@@ -23,6 +23,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -102,9 +103,11 @@ public class CarController {
                         -> order.getCar()).filter(car
                         -> car.getIsBanned() == false).collect(Collectors.toList()),
                 carService.findAll().stream().filter(car
-                        ->  car.getOrders().isEmpty() & car.getIsBanned() == false).collect(Collectors.toList())).forEach(availableCars::addAll);
-        availableCars.stream().forEach(car
-                -> car.setPrice((car.getPrice() * (1 - discountService.findByUserLogin(principal.getName()).getDiscountSize() / 100))));
+                        ->  car.getOrders().isEmpty() & car.getIsBanned() == false)
+                        .collect(Collectors.toList())).forEach(availableCars::addAll);
+                        availableCars.stream().forEach(car
+                        -> car.setPrice(Double.valueOf(Math.round(car.getPrice()
+                        * (1 - discountService.findByUserLogin(principal.getName()).getDiscountSize() / 100)))));
         List<CarsResponse> response = carMapper.toResponse(availableCars);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
