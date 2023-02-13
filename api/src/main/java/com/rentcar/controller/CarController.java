@@ -112,6 +112,7 @@ public class CarController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+
     @Operation(summary = "Find cars by user login", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
                     schema = @Schema(type = "string"))
