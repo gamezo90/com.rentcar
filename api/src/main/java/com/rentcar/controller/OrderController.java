@@ -4,9 +4,11 @@ import com.rentcar.controller.mappers.OrderMapper;
 import com.rentcar.controller.requests.OrdersRequests.OrderCreateRequest;
 import com.rentcar.controller.requests.OrdersRequests.OrderUpdateRequest;
 import com.rentcar.controller.response.OrderResponse;
+import com.rentcar.domain.Discount;
 import com.rentcar.domain.Order;
 import com.rentcar.exception.ForbiddenException;
 import com.rentcar.service.CarService;
+import com.rentcar.service.DiscountService;
 import com.rentcar.service.OrderService;
 import com.rentcar.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,8 +25,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import static com.rentcar.service.impl.DiscountServiceImpl.localDate;
@@ -42,6 +47,8 @@ public class OrderController {
     private final UserService userService;
 
     private final CarService carService;
+
+    private final DiscountService discountService;
 
     @Operation(summary = "Find all orders", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,
@@ -108,6 +115,7 @@ public class OrderController {
         newOrder.setUserId(userService.findByLogin(principal.getName()).getId());
         carService.findByCarId(newOrder.getCarId());
         OrderResponse response = orderMapper.toResponse(orderService.create(newOrder));
+        discountService.automaticDiscountAddition(principal.getName());
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -130,7 +138,6 @@ public class OrderController {
             throw new ForbiddenException("User can change only his orders");
         }
     }
-
 
     @Operation(summary = "Update user order", parameters = {
             @Parameter(in = ParameterIn.HEADER, name = "X-Auth-Token", description = "Token", required = true,

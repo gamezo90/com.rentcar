@@ -5,6 +5,8 @@ import com.rentcar.domain.User;
 import com.rentcar.repository.DiscountRepository;
 import com.rentcar.repository.UserRepository;
 import com.rentcar.service.DiscountService;
+import com.rentcar.service.OrderService;
+import com.rentcar.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -24,6 +26,10 @@ import java.util.Optional;
 public class DiscountServiceImpl implements DiscountService {
 
     private final DiscountRepository discountRepository;
+
+    private final OrderService orderService;
+
+    private final UserService userService;
 
     public static final LocalDate localDate = LocalDate.now();
 
@@ -85,6 +91,23 @@ public class DiscountServiceImpl implements DiscountService {
         if (Optional.ofNullable(discountRepository.findByUserId(userId)).isPresent()){
             throw new EntityExistsException(
                     String.format("User discount with this id %s already exists", userId));
+        }
+    }
+
+    public void automaticDiscountAddition(String login) {
+        if (orderService.findByUserLogin(login).size() == 5) {
+            Discount newDiscount = new Discount();
+            newDiscount.setDiscountSize(5d);
+            newDiscount.setExpirationDate(LocalDate.now().plusYears(1));
+            newDiscount.setUserId(userService.findByLogin(login).getId());
+            create(newDiscount);
+        }
+        if (orderService.findByUserLogin(login).size() > 5 && orderService.findByUserLogin(login).size() <= 10) {
+            Discount discountForUpdate = findByUserLogin(login);
+            discountForUpdate.setDiscountSize(Double.valueOf(orderService.findByUserLogin(login).size()));
+            discountForUpdate.setExpirationDate(LocalDate.now().plusYears(1));
+            discountForUpdate.setUserId(userService.findByLogin(login).getId());
+            update(discountForUpdate);
         }
     }
 }

@@ -20,4 +20,6 @@ public interface DiscountService {
 
     void checkUserDiscountAlreadyExists(Long userId);
 
+    void automaticDiscountAddition(String userLogin);
+
 }
