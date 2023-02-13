@@ -6,6 +6,7 @@ import com.rentcar.controller.requests.CarsRequests.CarCreateRequest;
 import com.rentcar.controller.requests.CarsRequests.CarUpdateRequest;
 import com.rentcar.controller.response.CarsResponse;
 import com.rentcar.domain.Car;
+import com.rentcar.domain.Order;
 import com.rentcar.exception.ForbiddenException;
 import com.rentcar.service.CarService;
 import com.rentcar.service.DiscountService;
@@ -98,16 +99,31 @@ public class CarController {
     @GetMapping("/findAllAvailableCarsForAuthenticationUsers")
     public ResponseEntity<Object> findAllAvailableCarsForAuthenticationUsers(Principal principal) {
         List<Car> availableCars = new ArrayList<>();
+
+        long i = 0;
+        orderService.findOrdersByCarId(i).stream().anyMatch(order -> order.getExpirationDate().isAfter(localDate));
+
+        List<Order> test = new ArrayList<>();
+        test.addAll(orderService.findAll());
+        //то удаляем из листа
+        test.remove(orderService.findOrdersByCarId(i).stream().anyMatch(order -> order.getExpirationDate().isAfter(localDate)));
+
+
         Stream.of(orderService.findAll().stream().filter(order
-                        -> order.getExpirationDate().isBefore(localDate)).map(order
+                        -> order.getExpirationDate().isBefore(localDate))
+
+
+                        .map(order
                         -> order.getCar()).filter(car
                         -> car.getIsBanned() == false).collect(Collectors.toList()),
+
                 carService.findAll().stream().filter(car
                         ->  car.getOrders().isEmpty() & car.getIsBanned() == false)
                         .collect(Collectors.toList())).forEach(availableCars::addAll);
-                        availableCars.stream().forEach(car
+
+                availableCars.stream().forEach(car
                         -> car.setPrice(Double.valueOf(Math.round(car.getPrice()
-                        * (1 - discountService.findByUserLogin(principal.getName()).getDiscountSize() / 100)))));
+                        * (1 - discountService.findUserDiscountSize(principal.getName()) / 100)))));
         List<CarsResponse> response = carMapper.toResponse(availableCars);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }

@@ -22,4 +22,6 @@ public interface DiscountService {
 
     void automaticDiscountAddition(String userLogin);
 
+    Double findUserDiscountSize(String userLogin);
+
 }

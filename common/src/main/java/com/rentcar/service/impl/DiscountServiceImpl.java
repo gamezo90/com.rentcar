@@ -49,6 +49,16 @@ public class DiscountServiceImpl implements DiscountService {
         return discountRepository.findByUserCredentialsLogin(login);
     }
 
+    @Override
+    public Double findUserDiscountSize(String userLogin) {
+        if (discountRepository.findByUserCredentialsLogin(userLogin) == null
+                || discountRepository.findByUserCredentialsLogin(userLogin).getExpirationDate().isBefore(localDate)) {
+            return 0d;
+        }
+        else {
+            return discountRepository.findByUserCredentialsLogin(userLogin).getDiscountSize();
+        }
+    }
 
     @Override
     public List<Discount> findAll() {
