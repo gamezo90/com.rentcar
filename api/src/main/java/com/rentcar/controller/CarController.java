@@ -100,30 +100,31 @@ public class CarController {
     public ResponseEntity<Object> findAllAvailableCarsForAuthenticationUsers(Principal principal) {
         List<Car> availableCars = new ArrayList<>();
 
-        long i = 0;
-        orderService.findOrdersByCarId(i).stream().anyMatch(order -> order.getExpirationDate().isAfter(localDate));
+        availableCars.addAll(carService.findAll().stream().filter(car
+                -> car.getIsBanned() == false).collect(Collectors.toList()));
 
-        List<Order> test = new ArrayList<>();
-        test.addAll(orderService.findAll());
-        //то удаляем из листа
-        test.remove(orderService.findOrdersByCarId(i).stream().anyMatch(order -> order.getExpirationDate().isAfter(localDate)));
+        availableCars.removeAll(orderService.findAll().stream().filter(order
+                -> order.getExpirationDate().isAfter(localDate)).map(order
+                -> order.getCar()).collect(Collectors.toList()));
 
-
-        Stream.of(orderService.findAll().stream().filter(order
-                        -> order.getExpirationDate().isBefore(localDate))
-
-
-                        .map(order
-                        -> order.getCar()).filter(car
-                        -> car.getIsBanned() == false).collect(Collectors.toList()),
-
-                carService.findAll().stream().filter(car
-                        ->  car.getOrders().isEmpty() & car.getIsBanned() == false)
-                        .collect(Collectors.toList())).forEach(availableCars::addAll);
-
-                availableCars.stream().forEach(car
-                        -> car.setPrice(Double.valueOf(Math.round(car.getPrice()
-                        * (1 - discountService.findUserDiscountSize(principal.getName()) / 100)))));
+        availableCars.stream().forEach(car
+                -> car.setPrice(Double.valueOf(Math.round(car.getPrice()
+                * (1 - discountService.findUserDiscountSize(principal.getName()) / 100)))));
+//
+//
+//        List<Car> busyCars = orderService.findAll().stream().filter(order
+//                -> order.getExpirationDate().isAfter(localDate)).map(order
+//                -> order.getCar()).collect(Collectors.toList());
+//
+//        List<Car> allNotBannedCars = carService.findAll().stream().filter(car
+//                -> car.getIsBanned() == false).collect(Collectors.toList());
+//
+//        allNotBannedCars.removeAll(busyCars);
+//
+//        availableCars.addAll(allNotBannedCars);
+//                availableCars.stream().forEach(car
+//                        -> car.setPrice(Double.valueOf(Math.round(car.getPrice()
+//                        * (1 - discountService.findUserDiscountSize(principal.getName()) / 100)))));
         List<CarsResponse> response = carMapper.toResponse(availableCars);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
