@@ -35,9 +35,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> findAll() {
-        if (orderRepository.findAll().isEmpty()) {
-            throw new EntityNotFoundException(String.format("Orders not found"));
-        }
+//        if (orderRepository.findAll().isEmpty()) {
+//            throw new EntityNotFoundException(String.format("Orders not found"));
+//        }
         return orderRepository.findAll();
     }
 

@@ -57,7 +57,9 @@ public class OrderController {
     @PreAuthorize(value = "hasAnyRole('ADMIN','MODERATOR')")
     @GetMapping("/findAllOrders")
     public ResponseEntity<Object> findAllOrders() {
-
+        if (orderService.findAll().isEmpty()) {
+            throw new EntityNotFoundException(String.format("Orders not found"));
+        }
         return new ResponseEntity<>(Collections.singletonMap("result",
                 orderService.findAll()), HttpStatus.OK);
     }

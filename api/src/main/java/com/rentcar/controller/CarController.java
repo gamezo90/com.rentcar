@@ -23,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import javax.xml.stream.StreamFilter;
 import java.math.BigDecimal;
@@ -85,6 +86,9 @@ public class CarController {
         availableCars.removeAll(orderService.findAll().stream().filter(order
                 -> order.getExpirationDate().isAfter(localDate)).map(order
                 -> order.getCar()).collect(Collectors.toList()));
+        if (availableCars.isEmpty()) {
+            throw new EntityNotFoundException(String.format("Cars not found"));
+        }
         List<CarsResponse> response = carMapper.toResponse(availableCars);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -104,6 +108,9 @@ public class CarController {
         availableCars.removeAll(orderService.findAll().stream().filter(order
                 -> order.getExpirationDate().isAfter(localDate)).map(order
                 -> order.getCar()).collect(Collectors.toList()));
+        if (availableCars.isEmpty()) {
+            throw new EntityNotFoundException(String.format("Cars not found"));
+        }
         List<CarsResponse> response = carMapper.toResponse(availableCars);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }

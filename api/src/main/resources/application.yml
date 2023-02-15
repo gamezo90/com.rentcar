@@ -5,11 +5,11 @@ spring:
     enabled: true
     baseline-on-migrate: true
     baseline-description: Flyway Scripts
-    #    locations: classpath:/migration
+    locations: classpath:/migration
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}
     url: ${spring.datasource.url}
-#    default-schema: rentcar
+    default-schema: rentcar
     out-of-order: true
     ignore-migration-patterns: '*:ignored'
     schemas: rentcar
@@ -45,11 +45,11 @@ spring:
     enabled: true
     baseline-on-migrate: true
     baseline-description: Flyway Scripts
-    #    locations: classpath:/migration
+    locations: classpath:/migration
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}
     url: ${spring.datasource.url}
-    #    default-schema: rentcar
+    default-schema: rentcar
     out-of-order: true
     ignore-migration-patterns: '*:ignored'
     schemas: rentcar
